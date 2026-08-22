@@ -93,3 +93,9 @@ Pre-requisites:
  * `npm -g install coffee-script`
 
 Usage: `coffee update_locales.coffee`
+
+### To validate
+Run:
+```
+uv run python validate.py -p translations/pt/pack/tde
+```

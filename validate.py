@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Para rodar: uv run python validate.py -p translations/pt/pack/tde
+
 import argparse
 import json
 import jsonschema
