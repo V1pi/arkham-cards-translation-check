@@ -1,0 +1,74 @@
+[
+    {
+        "code": "06195",
+        "name": ".35 Winchester",
+        "text": "Usa (5 muni\u00e7\u00f5es).\n[action] Gaste 1 muni\u00e7\u00e3o: <b>Lute.<\/b> Voc\u00ea recebe +2 [combat] neste ataque. Se uma ficha de caos de +1, 0 ou [elder_sign] for revelada durante este ataque, este ataque causa +2 de dano.",
+        "traits": "Item. Arma. Arma de Fogo.",
+        "slot": "M\u00e3o x2"
+    },
+    {
+        "code": "06196",
+        "flavor": "Fique de olho em qualquer problema, ela me disse.\nEu revirei os olhos. Sempre havia algum problema.",
+        "name": "Salvaguarda",
+        "text": "[reaction] Durante o turno de outro investigador, esgote Salvaguarda: Pelo restante do turno daquele investigador, conforme ele se mover do seu local para um local conectado, voc\u00ea tamb\u00e9m pode se mover para aquele local.",
+        "traits": "Talento."
+    },
+    {
+        "code": "06197",
+        "name": "A Pr\u00e1tica Leva \u00e0 Perfei\u00e7\u00e3o",
+        "text": "Veloz. Jogue durante um teste de per\u00edcia em seu local.\nProcure nas 9 cartas do topo do seu baralho por uma per\u00edcia de [[Praticado]] e a comprometa neste teste de per\u00edcia, se puder. Embaralhe as cartas restantes de volta em seu baralho. Ap\u00f3s este teste terminar, se ele foi bem-sucedido, adicione aquela per\u00edcia \u00e0 sua m\u00e3o em vez de descart\u00e1-la.",
+        "traits": "Gambito. T\u00e1tica."
+    },
+    {
+        "code": "06198",
+        "flavor": "\"Nada aqui tamb\u00e9m. Quantas ainda temos?\"\n\"... Veja a parede atr\u00e1s de voc\u00ea.\"",
+        "name": "Pesquisa Extensiva",
+        "text": "Reduza o custo para jogar Pesquisa Extensiva em 1 para cada outra carta na sua m\u00e3o.\nDescubra 2 pistas em seu local.",
+        "traits": "Introspec\u00e7\u00e3o."
+    },
+    {
+        "code": "06199",
+        "name": "Tr\u00eas Ases",
+        "text": "Mir\u00edade.\nSe voc\u00ea comprometer 3 c\u00f3pias de Tr\u00eas Ases em um teste de per\u00edcia, esse teste automaticamente tem sucesso <i>(n\u00e3o revele fichas de caos da bolsa de caos)<\/i>. Ent\u00e3o, compre 3 cartas e ganhe 3 recursos (m\u00e1x. de uma vez por teste).",
+        "traits": "Sorte. Praticado."
+    },
+    {
+        "code": "06200",
+        "name": "Arrombamento",
+        "text": "[action] Esgote Arrombamento: <b>Investigue.<\/b> Se voc\u00ea tiver sucesso, em vez de descobrir pistas, ganhe 2 recursos, +1 recurso adicional para cada ponto que voc\u00ea tiver sucesso (at\u00e9 um m\u00e1ximo de +3 recursos).",
+        "traits": "Talento. Il\u00edcito."
+    },
+    {
+        "code": "06201",
+        "name": "L\u00e2mina Espectral",
+        "text": "<b>Lute.<\/b> Adicione o seu valor de [willpower] ao seu valor de per\u00edcia para este ataque. Imediatamente antes deste ataque, voc\u00ea pode engajar o inimigo atacado. Este ataque causa +1 de dano (+2 de dano em vez disso se o inimigo for n\u00e3o [[Elite]]).",
+        "traits": "Magia."
+    },
+    {
+        "code": "06202",
+        "flavor": "Luz para salvar nossos olhos.\nCalor para salvar nossa pele.\nUma centelha para salvar nossas almas.",
+        "name": "Palavra de Comando",
+        "text": "Nomeie uma carta de [[Magia]]. Procure em seu baralho 1 c\u00f3pia da carta nomeada e compre-a. Embaralhe seu baralho.",
+        "traits": "Magia."
+    },
+    {
+        "code": "06203",
+        "name": "Pedra da Lua",
+        "text": "Voc\u00ea recebe +1 [willpower] e +1 [agility].\nVoc\u00ea n\u00e3o pode jogar ou comprometer Pedra da Lua da sua m\u00e3o.\n[reaction] Ap\u00f3s voc\u00ea descartar Pedra da Lua da sua m\u00e3o: Jogue-a <i>(pagando seu custo)<\/i>.",
+        "traits": "Item. Rel\u00edquia. Terras On\u00edricas.",
+        "slot": "Acess\u00f3rio"
+    },
+    {
+        "code": "06204",
+        "name": "Vis\u00e3o Agu\u00e7ada",
+        "text": "M\u00e1x. de 1 comprometida por teste de per\u00edcia.\nEnquanto Vis\u00e3o Agu\u00e7ada estiver comprometida durante uma a\u00e7\u00e3o b\u00e1sica de investigar, ela ganha [intellect][intellect] e o texto: \"Se este teste for bem-sucedido por 2 ou mais, descubra 1 pista adicional neste local.\"",
+        "traits": "Inato. Desenvolvido."
+    },
+    {
+        "code": "06205",
+        "flavor": "\"...toda a vida \u00e9 apenas um conjunto de imagens no c\u00e9rebro, entre as quais n\u00e3o h\u00e1 diferen\u00e7a entre as nascidas de coisas reais e as nascidas de sonhos interiores...\" - H. P. Lovecraft, \"A Chave de Prata\"",
+        "name": "Sonho L\u00facido",
+        "text": "Escolha uma carta na sua \u00e1rea de jogo ou revele uma carta na sua m\u00e3o. Procure em seu baralho outra c\u00f3pia daquela carta e compre-a. Embaralhe seu baralho.",
+        "traits": "Magia."
+    }
+]

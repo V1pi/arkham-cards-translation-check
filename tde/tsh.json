@@ -1,0 +1,91 @@
+[
+    {
+        "code": "06155",
+        "name": "Tetsuo Mori",
+        "subname": "Nobre Demais para o Seu Pr\u00f3prio Bem",
+        "text": "Tetsuo Mori pode receber dano e/ou horror causado a outros investigadores em seu local.\n[reaction] Quando Tetsuo Mori for derrotado: Escolha um investigador em seu local. Aquele investigador procura em sua pilha de descarte ou nas 9 cartas do topo do seu baralho por um ativo de [[Item]] e o adiciona \u00e0 sua m\u00e3o. Embaralhe o baralho se ele for procurado.",
+        "traits": "Aliado. Pol\u00edcia.",
+        "slot": "Aliado"
+    },
+    {
+        "code": "06156",
+        "name": "\"Engane-me uma vez...\"",
+        "text": "Veloz. Jogue quando voc\u00ea for descartar uma carta de trai\u00e7\u00e3o ap\u00f3s resolver qualquer um de seus efeitos.\nColoque \"Engane-me uma vez...\" em jogo na sua \u00e1rea de jogo e anexe aquela trai\u00e7\u00e3o a ela.\n[reaction] Quando qualquer investigador comprar uma c\u00f3pia da carta de trai\u00e7\u00e3o anexada, descarte \"Engane-me uma vez...\": Cancele o efeito de revela\u00e7\u00e3o daquela carta.",
+        "traits": "Introspec\u00e7\u00e3o. T\u00e1tica."
+    },
+    {
+        "code": "06157",
+        "name": "Autossacrif\u00edcio",
+        "text": "Comprometa apenas em um teste de per\u00edcia (de qualquer tipo) sendo realizado por outro investigador em seu local.\nSe este teste falhar, voc\u00ea deve resolver todos os efeitos do teste com falha, em vez do investigador que o realizou. Ent\u00e3o, ou voc\u00ea compra 2 cartas, ou o investigador que realizou o teste compra 2 cartas.",
+        "traits": "Esp\u00edrito."
+    },
+    {
+        "code": "06158",
+        "name": "C\u00f3dice do Outro Mundo",
+        "text": "Usa (3 segredos).\n[action] Esgote o C\u00f3dice do Outro Mundo e gaste 1 segredo: Procure nas 9 cartas do topo do baralho de encontro e escolha uma carta n\u00e3o [[Elite]] entre elas. Descarte uma c\u00f3pia da carta escolhida em jogo. Embaralhe todas as cartas procuradas de volta no baralho de encontro.",
+        "traits": "Item. Tomo.",
+        "slot": "M\u00e3o"
+    },
+    {
+        "code": "06159",
+        "name": "Soro Potenciador de Sonhos",
+        "text": "Apenas a primeira c\u00f3pia de cada carta na sua m\u00e3o conta para o seu tamanho m\u00e1ximo de m\u00e3o.\n[reaction] Ap\u00f3s voc\u00ea comprar uma c\u00f3pia de uma carta que j\u00e1 est\u00e1 na sua m\u00e3o, revele ambas as c\u00f3pias e esgote o Soro Potenciador de Sonhos: Compre 1 carta.",
+        "traits": "Item. Ci\u00eancia.",
+        "slot": "Arcano"
+    },
+    {
+        "code": "06160",
+        "name": "\"Que Deus os Julgue...\"",
+        "text": "Jogue apenas durante um dos seus turnos em que voc\u00ea derrotou inimigos com um total de 6 ou mais de vida.\nAdicione \"Que Deus os Julgue...\" \u00e0 vitrine de vit\u00f3ria e encerre imediatamente o seu turno. Ao ganhar experi\u00eancia durante a resolu\u00e7\u00e3o deste cen\u00e1rio, voc\u00ea ganha 1 experi\u00eancia adicional.",
+        "traits": "T\u00e1tica. Predestinado."
+    },
+    {
+        "code": "06161",
+        "name": "Recarga R\u00e1pida",
+        "text": "Veloz. Jogue apenas durante o seu turno.\nEscolha um ativo de [[Arma de Fogo]] que voc\u00ea controla com menos fichas de muni\u00e7\u00e3o do que o seu valor de usa (X). Coloque muni\u00e7\u00e3o naquele ativo at\u00e9 que ele tenha muni\u00e7\u00e3o igual ao seu valor de usa (X).",
+        "traits": "T\u00e1tica. Truque."
+    },
+    {
+        "code": "06162",
+        "flavor": "Muito antes de j\u00e1 receber sua primeira m\u00e3o de cartas, o garoto conseguia encarar um homem e discernir o significado por tr\u00e1s de suas apostas.",
+        "name": "Gregory Gry",
+        "subname": "Rep\u00f3rter",
+        "text": "Usa (9 recursos).\n[reaction] Quando voc\u00ea iniciar um teste de per\u00edcia, gaste at\u00e9 3 recursos de Gregory Gry: Se este teste de per\u00edcia tiver sucesso por pelo menos essa quantidade, ganhe essa quantidade de recursos.",
+        "traits": "Aliado. Criminoso. Sonhador.",
+        "slot": "Aliado"
+    },
+    {
+        "code": "06163",
+        "flavor": "Voc\u00ea n\u00e3o confia necessariamente nas palavras ocultistas, mas n\u00e3o tem outra escolha.",
+        "name": "Palavras Curadoras",
+        "text": "Usa (3 cargas).\n[action] Gaste 1 carga: Cure 1 de dano de um investigador em seu local.",
+        "traits": "Magia.",
+        "slot": "Arcano"
+    },
+    {
+        "code": "06164",
+        "name": "Forma Et\u00e9rea",
+        "text": "<b>Evada.<\/b> Adicione o seu valor de [willpower] ao seu valor de per\u00edcia para esta tentativa de evas\u00e3o. Se voc\u00ea tiver sucesso, desengaje de cada outro inimigo engajado com voc\u00ea, e pelo restante da rodada, voc\u00ea \u00e9 et\u00e9reo (inimigos n\u00e3o podem engajar ou ser engajados com voc\u00ea, e voc\u00ea n\u00e3o pode atacar ou causar dano a inimigos).",
+        "traits": "Magia."
+    },
+    {
+        "code": "06165",
+        "flavor": "Voc\u00ea arranca da m\u00e3o do cad\u00e1ver.\nN\u00e3o \u00e9 como se ele fosse reclamar.",
+        "name": "Garimpando Suprimentos",
+        "text": "Escolha uma carta de n\u00edvel 0 na sua pilha de descarte. Adicione a carta escolhida \u00e0 sua m\u00e3o.",
+        "traits": "Sorte."
+    },
+    {
+        "code": "06166",
+        "name": "For\u00e7a Bruta",
+        "text": "M\u00e1x. de 1 comprometida por teste de per\u00edcia.\nEnquanto For\u00e7a Bruta estiver comprometida durante uma a\u00e7\u00e3o b\u00e1sica de luta, ela ganha [combat][combat] e o texto: \"Se este teste for bem-sucedido por 2 ou mais, este ataque causa +2 de dano.\"",
+        "traits": "Inato. Desenvolvido."
+    },
+    {
+        "code": "06167",
+        "flavor": "\"Discreto\" n\u00e3o significa que voc\u00ea est\u00e1 despreparado.",
+        "name": "Vers\u00e1til",
+        "text": "Permanente.\nVoc\u00ea ganha +5 de Tamanho de Baralho.\nAs Op\u00e7\u00f5es de Constru\u00e7\u00e3o de Baralho do seu investigador ganham: \"mais uma carta de n\u00edvel 0 de qualquer classe ([guardian], [seeker], [rogue], [mystic] ou [survivor]).\"",
+        "traits": "Talento."
+    }
+]

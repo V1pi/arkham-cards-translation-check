@@ -1,0 +1,74 @@
+[
+    {
+        "code": "06276",
+        "name": "Vaso Vazio",
+        "subname": "Abandonado pelos Deuses",
+        "text": "Limite de 1 por baralho. Usa (0 cargas).\n[reaction] Ap\u00f3s voc\u00ea derrotar um inimigo: Coloque 1 carga no Vaso Vazio.\n[fast] Se houver pelo menos 3 cargas no Vaso Vazio: Procure Devorador de Desejos entre suas cartas vinculadas e troque-o pelo Vaso Vazio, movendo todas as cargas do Vaso Vazio para Devorador de Desejos.",
+        "traits": "Item. Rel\u00edquia. Aben\u00e7oado.",
+        "slot": "Acess\u00f3rio"
+    },
+    {
+        "code": "06277",
+        "name": "Devorador de Desejos",
+        "subname": "Joia dos Deuses",
+        "text": "Vinculado (Vaso Vazio).\n[reaction] Quando voc\u00ea revelar uma ficha de caos [skull], [cultist], [tablet] ou [elder_thing] durante um teste de per\u00edcia, gaste 1 carga: Cancele aquela ficha. Cure 1 de dano e 1 de horror.\n<b>For\u00e7ado<\/b> - Se Devorador de Desejos n\u00e3o tiver cargas: Procure Vaso Vazio entre suas cartas vinculadas e troque-o por Devorador de Desejos.",
+        "traits": "Item. Rel\u00edquia. Aben\u00e7oado.",
+        "slot": "Acess\u00f3rio"
+    },
+    {
+        "code": "06278",
+        "name": "Achado Surpreendente",
+        "text": "Mir\u00edade.\n[reaction] Quando voc\u00ea procurar em seu baralho e Achado Surpreendente estiver entre as cartas procuradas: Coloque-o em jogo na sua \u00e1rea de jogo. Voc\u00ea deve comprometê-lo no pr\u00f3ximo teste de per\u00edcia qualificado que realizar. Se aquele teste for bem-sucedido, compre 1 carta. (M\u00e1x. de uma habilidade [[Pesquisa]] por busca.)",
+        "traits": "Sorte. Pesquisa."
+    },
+    {
+        "code": "06279",
+        "name": "Velho Livro do Conhecimento",
+        "text": "Usa (2 segredos).\n[action] Esgote o Velho Livro do Conhecimento: Escolha um investigador em seu local. Aquele investigador procura uma carta nas 3 cartas do topo do seu baralho, compra-a e embaralha o baralho. Ent\u00e3o, voc\u00ea pode gastar 1 segredo para que aquele investigador jogue imediatamente aquela carta, reduzindo seu custo em 2.",
+        "traits": "Item. Tomo.",
+        "slot": "M\u00e3o"
+    },
+    {
+        "code": "06280",
+        "name": "Garrote",
+        "text": "[fast] Durante o seu turno, esgote o Garrote: <b>Lute.<\/b> Voc\u00ea recebe +2 [combat] neste ataque. Use apenas em um inimigo com exatamente 1 de vida restante.",
+        "traits": "Item. Arma.",
+        "slot": "Acess\u00f3rio"
+    },
+    {
+        "code": "06281",
+        "flavor": "\"Sheldon? O'Bannion? N\u00e3o me importa. Desde que eu seja paga.\"",
+        "name": "Delilah O'Rourke",
+        "subname": "Assassina do Sindicato",
+        "text": "Voc\u00ea recebe +1 [combat] e +1 [agility].\n[fast] Esgote Delilah O'Rourke e gaste X recursos: Escolha um inimigo em seu local. Cause 1 de dano ao inimigo escolhido (2 de dano em vez disso se aquele inimigo estiver esgotado). X \u00e9 o valor de evas\u00e3o do inimigo escolhido.",
+        "traits": "Aliado. Criminoso. Sindicato.",
+        "slot": "Aliado"
+    },
+    {
+        "code": "06282",
+        "name": "C\u00e3o Invocado",
+        "text": "Como custo adicional para jogar C\u00e3o Invocado, voc\u00ea deve procurar 1 c\u00f3pia de Fera Desacorrentada entre suas cartas vinculadas e embaralh\u00e1-la em seu baralho.\n[free] Durante o seu turno, exceto durante uma a\u00e7\u00e3o, esgote C\u00e3o Invocado: <b>Lute\/Investigue.<\/b> Ataque com um valor base de [combat] igual a 5 ou investigue com um valor base de [intellect] igual a 5.",
+        "traits": "Aliado. Invoca\u00e7\u00e3o.",
+        "slot": "Aliado. Arcano"
+    },
+    {
+        "code": "06283",
+        "name": "Fera Desacorrentada",
+        "text": "Vinculado (C\u00e3o Invocado).\n<b>Presa<\/b> - Portador.\nCa\u00e7ador. Retaliar.\n<b>Revela\u00e7\u00e3o<\/b> - Se n\u00e3o houver uma c\u00f3pia de C\u00e3o Invocado em jogo, reserve Fera Desacorrentada, fora de jogo. Caso contr\u00e1rio, reserve o C\u00e3o Invocado de um investigador, fora de jogo, e fa\u00e7a Fera Desacorrentada aparecer engajada com o mesmo investigador.",
+        "traits": "Monstro. Extradimensional. T\u00eendalos."
+    },
+    {
+        "code": "06284",
+        "name": "Nada a Perder",
+        "text": "Se voc\u00ea tiver menos de 5 recursos, ganhe recursos at\u00e9 ter 5 recursos.\nSe voc\u00ea tiver menos de 5 cartas na m\u00e3o, compre cartas at\u00e9 ter 5 cartas na m\u00e3o.\nRemova Nada a Perder do jogo.",
+        "traits": "Esp\u00edrito."
+    },
+    {
+        "code": "06285",
+        "name": "O Gato Preto",
+        "subname": "Uma Mentirosa, ou uma Profetisa, ou Ambas",
+        "text": "Sempre que voc\u00ea revelar um s\u00edmbolo [tablet], [elder_thing] ou [elder_sign] durante um teste de per\u00edcia, voc\u00ea pode escolher usar os seguintes efeitos em vez dos efeitos normais daquele s\u00edmbolo:\n[tablet]: -1. O Gato Preto sofre 1 de dano direto.\n[elder_thing]: -1. O Gato Preto sofre 1 de horror direto.\n[elder_sign]: +5. Cure todo o dano e horror de O Gato Preto.",
+        "traits": "Aliado. Avatar. Terras On\u00edricas.",
+        "slot": "Aliado"
+    }
+]
