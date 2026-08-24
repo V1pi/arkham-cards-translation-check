@@ -1,9 +1,27 @@
 [project]
 name = "auto-translate"
 version = "0.1.0"
-description = "Add your description here"
+description = "Arkham Horror LCG Translation Checker — confere traduções PT com webcam e OCR"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 dependencies = [
     "jsonschema>=4.26.0",
+    "paddleocr==3.7.0",
+    "opencv-python==5.0.0.93",
+    "pillow==12.3.0",
+    "paddlepaddle==3.2.0",
 ]
+
+[tool.uv]
+package = false
+dev-dependencies = [
+    "pytest>=8.0",
+]
+
+[[tool.uv.index]]
+name = "paddle"
+url = "https://www.paddlepaddle.org.cn/packages/stable/cpu/"
+explicit = true
+
+[tool.uv.sources]
+paddlepaddle = { index = "paddle" }
