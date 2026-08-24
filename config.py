@@ -23,9 +23,12 @@ DEFAULT_SETTINGS = {
     "camera_index": 0,
     "json_indent": 4,
     "recognition_mode": "ocr",  # "ocr" ou "llm"
-    "llm_provider": "gemini",   # "gemini" ou "ollama"
+    "llm_provider": "gemini",   # "gemini", "openai" ou "ollama"
     "gemini_api_key": os.environ.get("GEMINI_API_KEY", ""),
     "gemini_model": "gemini-3.7-flash",
+    "openai_url": "https://api.openai.com/v1",
+    "openai_api_key": os.environ.get("OPENAI_API_KEY", ""),
+    "openai_model": "gpt-4o",
     "ollama_url": "http://localhost:11434",
     "ollama_model": "llama3.2-vision",
 }
@@ -42,9 +45,11 @@ def load_settings() -> dict:
         except Exception as e:
             print(f"[aviso] Erro ao ler {SETTINGS_FILE.name}: {e}")
 
-    # Fallback para variável de ambiente se api_key não estiver definida
+    # Fallback para variáveis de ambiente se api_key não estiver definida
     if not settings.get("gemini_api_key"):
         settings["gemini_api_key"] = os.environ.get("GEMINI_API_KEY", "")
+    if not settings.get("openai_api_key"):
+        settings["openai_api_key"] = os.environ.get("OPENAI_API_KEY", "")
 
     return settings
 

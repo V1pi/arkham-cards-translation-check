@@ -41,6 +41,7 @@ uv run python main.py
 Clique no botão **`⚙️ Configurar`** na interface para alternar entre:
 - **PaddleOCR (Padrão / Local)**: Execução 100% offline via CPU.
 - **Google Gemini**: Insira sua chave de API (ou exporte `export GEMINI_API_KEY="..."`) e selecione o modelo (ex.: `gemini-3.7-flash`).
+- **OpenAI Compatible**: Suporte a qualquer API compatível com OpenAI (OpenAI oficial, OpenRouter, LM Studio, vLLM, DeepSeek, Groq, etc.) informando a URL e a API Key.
 - **Ollama**: Conecte ao seu Ollama local (ex.: `http://localhost:11434`) com modelos de visão como `llama3.2-vision` ou `llava`.
 
 ### Atalhos de teclado

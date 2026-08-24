@@ -30,6 +30,10 @@ def recognize_card(
             model = config.get_setting("gemini_model", "gemini-3.7-flash")
             result = llm_engine.analyze_with_gemini(processed_frame)
             return result.get("code"), result.get("fields", {}), f"Google Gemini ({model})"
+        elif provider == "openai":
+            model = config.get_setting("openai_model", "gpt-4o")
+            result = llm_engine.analyze_with_openai(processed_frame)
+            return result.get("code"), result.get("fields", {}), f"OpenAI Compatible ({model})"
         elif provider == "ollama":
             model = config.get_setting("ollama_model", "llama3.2-vision")
             result = llm_engine.analyze_with_ollama(processed_frame)

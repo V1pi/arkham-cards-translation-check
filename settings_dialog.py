@@ -60,7 +60,7 @@ class SettingsDialog(tk.Toplevel):
         self.provider_combo = ttk.Combobox(
             self.llm_frame,
             textvariable=self.provider_var,
-            values=["Google Gemini", "Ollama (Local)"],
+            values=["Google Gemini", "OpenAI Compatible", "Ollama (Local)"],
             state="readonly",
             width=24,
         )
@@ -77,9 +77,9 @@ class SettingsDialog(tk.Toplevel):
         self.gemini_key_entry = ttk.Entry(self.gemini_box, textvariable=self.gemini_key_var, show="*")
         self.gemini_key_entry.grid(row=0, column=1, sticky="ew", padx=4, pady=2)
 
-        self.show_key_var = tk.BooleanVar(value=False)
+        self.show_gemini_key_var = tk.BooleanVar(value=False)
         ttk.Checkbutton(
-            self.gemini_box, text="👁", variable=self.show_key_var, command=self._toggle_key_visibility
+            self.gemini_box, text="👁", variable=self.show_gemini_key_var, command=self._toggle_gemini_key_visibility
         ).grid(row=0, column=2, padx=2)
 
         ttk.Label(self.gemini_box, text="Modelo:").grid(row=1, column=0, sticky="w", pady=2)
@@ -101,9 +101,49 @@ class SettingsDialog(tk.Toplevel):
         )
         self.btn_test_gemini.grid(row=2, column=0, columnspan=3, sticky="e", pady=4)
 
+        # Sub-painel: OpenAI Compatible
+        self.openai_box = ttk.Frame(self.llm_frame)
+        self.openai_box.grid(row=1, column=0, columnspan=2, sticky="ew", pady=4)
+        self.openai_box.columnconfigure(1, weight=1)
+
+        ttk.Label(self.openai_box, text="Host URL:").grid(row=0, column=0, sticky="w", pady=2)
+        self.openai_url_var = tk.StringVar(value="https://api.openai.com/v1")
+        ttk.Entry(self.openai_box, textvariable=self.openai_url_var).grid(
+            row=0, column=1, columnspan=2, sticky="ew", padx=4, pady=2
+        )
+
+        ttk.Label(self.openai_box, text="API Key:").grid(row=1, column=0, sticky="w", pady=2)
+        self.openai_key_var = tk.StringVar()
+        self.openai_key_entry = ttk.Entry(self.openai_box, textvariable=self.openai_key_var, show="*")
+        self.openai_key_entry.grid(row=1, column=1, sticky="ew", padx=4, pady=2)
+
+        self.show_openai_key_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(
+            self.openai_box, text="👁", variable=self.show_openai_key_var, command=self._toggle_openai_key_visibility
+        ).grid(row=1, column=2, padx=2)
+
+        ttk.Label(self.openai_box, text="Modelo:").grid(row=2, column=0, sticky="w", pady=2)
+        self.openai_model_var = tk.StringVar(value="gpt-4o")
+        self.openai_model_combo = ttk.Combobox(
+            self.openai_box,
+            textvariable=self.openai_model_var,
+            values=["gpt-4o", "gpt-4o-mini", "gpt-4-turbo"],
+        )
+        self.openai_model_combo.grid(row=2, column=1, sticky="ew", padx=4, pady=2)
+
+        self.btn_fetch_openai = ttk.Button(
+            self.openai_box, text="🔄", width=3, command=lambda: self._fetch_openai_models(silent=False)
+        )
+        self.btn_fetch_openai.grid(row=2, column=2, padx=2, pady=2)
+
+        self.btn_test_openai = ttk.Button(
+            self.openai_box, text="🔌 Testar Conexão OpenAI Compatible", command=self._test_openai
+        )
+        self.btn_test_openai.grid(row=3, column=0, columnspan=3, sticky="e", pady=4)
+
         # Sub-painel: Ollama
         self.ollama_box = ttk.Frame(self.llm_frame)
-        self.ollama_box.grid(row=2, column=0, columnspan=2, sticky="ew", pady=4)
+        self.ollama_box.grid(row=1, column=0, columnspan=2, sticky="ew", pady=4)
         self.ollama_box.columnconfigure(1, weight=1)
 
         ttk.Label(self.ollama_box, text="Host URL:").grid(row=0, column=0, sticky="w", pady=2)
@@ -160,18 +200,31 @@ class SettingsDialog(tk.Toplevel):
         )
         ttk.Button(btn_row, text="Cancelar", command=self.destroy).pack(side="right", padx=4)
 
-    def _toggle_key_visibility(self):
-        show = "" if self.show_key_var.get() else "*"
+    def _toggle_gemini_key_visibility(self):
+        show = "" if self.show_gemini_key_var.get() else "*"
         self.gemini_key_entry.config(show=show)
+
+    def _toggle_openai_key_visibility(self):
+        show = "" if self.show_openai_key_var.get() else "*"
+        self.openai_key_entry.config(show=show)
 
     def _load_values(self):
         self.mode_var.set(self.settings.get("recognition_mode", "ocr"))
 
         provider = self.settings.get("llm_provider", "gemini")
-        self.provider_combo.current(0 if provider == "gemini" else 1)
+        if provider == "gemini":
+            self.provider_combo.current(0)
+        elif provider == "openai":
+            self.provider_combo.current(1)
+        else:
+            self.provider_combo.current(2)
 
         self.gemini_key_var.set(self.settings.get("gemini_api_key", ""))
         self.gemini_model_var.set(self.settings.get("gemini_model", "gemini-3.7-flash"))
+
+        self.openai_url_var.set(self.settings.get("openai_url", "https://api.openai.com/v1"))
+        self.openai_key_var.set(self.settings.get("openai_api_key", ""))
+        self.openai_model_var.set(self.settings.get("openai_model", "gpt-4o"))
 
         self.ollama_url_var.set(self.settings.get("ollama_url", "http://localhost:11434"))
         self.ollama_model_var.set(self.settings.get("ollama_model", "llama3.2-vision"))
@@ -181,6 +234,8 @@ class SettingsDialog(tk.Toplevel):
         # Carrega modelos em segundo plano se configurados
         if self.gemini_key_var.get().strip():
             self._fetch_gemini_models(silent=True)
+        if self.openai_url_var.get().strip():
+            self._fetch_openai_models(silent=True)
         if self.ollama_url_var.get().strip():
             self._fetch_ollama_models(silent=True)
 
@@ -189,7 +244,7 @@ class SettingsDialog(tk.Toplevel):
         if mode == "llm":
             self.llm_frame.pack(fill="x", after=self.engine_frame, padx=10, pady=6)
             self._on_provider_changed()
-            self.geometry("520x560")
+            self.geometry("520x590")
         else:
             self.llm_frame.pack_forget()
             self.geometry("520x290")
@@ -197,14 +252,20 @@ class SettingsDialog(tk.Toplevel):
     def _on_provider_changed(self, event=None):
         if self.mode_var.get() != "llm":
             return
-        is_gemini = self.provider_combo.current() == 0
-        if is_gemini:
+        idx = self.provider_combo.current()
+        self.gemini_box.grid_remove()
+        self.openai_box.grid_remove()
+        self.ollama_box.grid_remove()
+
+        if idx == 0:  # Gemini
             self.gemini_box.grid()
-            self.ollama_box.grid_remove()
             if self.gemini_key_var.get().strip() and len(self.gemini_model_combo["values"]) <= 4:
                 self._fetch_gemini_models(silent=True)
-        else:
-            self.gemini_box.grid_remove()
+        elif idx == 1:  # OpenAI Compatible
+            self.openai_box.grid()
+            if self.openai_url_var.get().strip() and len(self.openai_model_combo["values"]) <= 3:
+                self._fetch_openai_models(silent=True)
+        else:  # Ollama
             self.ollama_box.grid()
             if self.ollama_url_var.get().strip() and len(self.ollama_model_combo["values"]) <= 4:
                 self._fetch_ollama_models(silent=True)
@@ -233,6 +294,37 @@ class SettingsDialog(tk.Toplevel):
             current = self.gemini_model_var.get()
             if current not in models:
                 self.gemini_model_var.set(models[0])
+            if not silent:
+                self.status_var.set(f"✅ {msg}")
+        elif not silent:
+            self.status_var.set(f"❌ {msg}")
+            messagebox.showerror("Erro ao carregar modelos", msg, parent=self)
+
+    def _fetch_openai_models(self, silent: bool = False):
+        url = self.openai_url_var.get().strip()
+        key = self.openai_key_var.get().strip()
+        if not url:
+            if not silent:
+                messagebox.showwarning("OpenAI Compatible", "Informe o Host URL.", parent=self)
+            return
+
+        if not silent:
+            self.status_var.set(f"⏳ Buscando modelos em {url}...")
+            self.btn_fetch_openai.config(state="disabled")
+
+        def run():
+            ok, models, msg = llm_engine.fetch_openai_models(url, key)
+            self.after(0, lambda s=ok, m=models, t=msg: self._on_openai_models_loaded(s, m, t, silent))
+
+        threading.Thread(target=run, daemon=True).start()
+
+    def _on_openai_models_loaded(self, ok: bool, models: list[str], msg: str, silent: bool):
+        self.btn_fetch_openai.config(state="normal")
+        if ok and models:
+            self.openai_model_combo["values"] = models
+            current = self.openai_model_var.get()
+            if current not in models:
+                self.openai_model_var.set(models[0])
             if not silent:
                 self.status_var.set(f"✅ {msg}")
         elif not silent:
@@ -283,6 +375,21 @@ class SettingsDialog(tk.Toplevel):
 
         threading.Thread(target=run, daemon=True).start()
 
+    def _test_openai(self):
+        url = self.openai_url_var.get().strip()
+        key = self.openai_key_var.get().strip()
+        model = self.openai_model_var.get().strip()
+        self.status_var.set(f"⏳ Conectando a {url}...")
+        self.btn_test_openai.config(state="disabled")
+
+        def run():
+            ok, msg = llm_engine.test_openai_connection(url, key, model)
+            self.after(0, lambda s=ok, m=msg, b=self.btn_test_openai: self._on_test_result(s, m, b))
+            # Atualiza lista de modelos simultaneamente
+            self.after(0, lambda: self._fetch_openai_models(silent=True))
+
+        threading.Thread(target=run, daemon=True).start()
+
     def _test_ollama(self):
         url = self.ollama_url_var.get().strip()
         model = self.ollama_model_var.get().strip()
@@ -307,12 +414,18 @@ class SettingsDialog(tk.Toplevel):
             messagebox.showerror("Falha na Conexão", message, parent=self)
 
     def _save_settings(self):
-        provider = "gemini" if self.provider_combo.current() == 0 else "ollama"
+        providers = ["gemini", "openai", "ollama"]
+        idx = self.provider_combo.current()
+        provider = providers[idx] if 0 <= idx < len(providers) else "gemini"
+
         new_settings = {
             "recognition_mode": self.mode_var.get(),
             "llm_provider": provider,
             "gemini_api_key": self.gemini_key_var.get().strip(),
             "gemini_model": self.gemini_model_var.get().strip(),
+            "openai_url": self.openai_url_var.get().strip(),
+            "openai_api_key": self.openai_key_var.get().strip(),
+            "openai_model": self.openai_model_var.get().strip(),
             "ollama_url": self.ollama_url_var.get().strip(),
             "ollama_model": self.ollama_model_var.get().strip(),
             "pack_prefix": self.pack_prefix_var.get().strip(),

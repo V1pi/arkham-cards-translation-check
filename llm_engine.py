@@ -266,6 +266,95 @@ def analyze_with_ollama(
         raise RuntimeError(f"Falha na requisição para o Ollama: {e}")
 
 
+# ---------------------------------------------------------------------------
+# Provedor: OpenAI Compatible (OpenAI, OpenRouter, LM Studio, vLLM, etc.)
+# ---------------------------------------------------------------------------
+def analyze_with_openai(
+    frame_or_path,
+    openai_url: str | None = None,
+    api_key: str | None = None,
+    model: str | None = None,
+    pack_prefix: str | None = None,
+) -> dict:
+    """Envia a imagem para um endpoint compatível com OpenAI e retorna os campos extraídos."""
+    openai_url = openai_url or config.get_setting("openai_url", "https://api.openai.com/v1")
+    openai_url = openai_url.rstrip("/")
+    api_key = api_key if api_key is not None else config.get_setting("openai_api_key", "")
+    model = model or config.get_setting("openai_model", "gpt-4o")
+    pack_prefix = pack_prefix or config.get_setting("pack_prefix", "06")
+
+    b64_image = _frame_to_base64_jpeg(frame_or_path)
+    prompt = CARD_ANALYSIS_PROMPT.replace("{PACK_PREFIX}", pack_prefix)
+
+    url = f"{openai_url}/chat/completions"
+
+    payload = {
+        "model": model,
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": prompt,
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{b64_image}"
+                        },
+                    },
+                ],
+            }
+        ],
+        "temperature": 0.1,
+        "response_format": {"type": "json_object"},
+    }
+
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "ArkhamTranslator/1.0",
+    }
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers=headers,
+        method="POST",
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            choices = data.get("choices", [])
+            if not choices:
+                raise ValueError("Nenhuma resposta retornada pela API OpenAI Compatible.")
+            content = choices[0].get("message", {}).get("content", "{}")
+            result_json = _clean_json_response(content)
+            return _normalize_llm_result(result_json, pack_prefix)
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode("utf-8", errors="ignore")
+        # Se falhar por suporte estrito a response_format, tenta sem
+        if e.code == 400 and "response_format" in err_body:
+            payload.pop("response_format", None)
+            req_retry = urllib.request.Request(
+                url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers=headers,
+                method="POST",
+            )
+            with urllib.request.urlopen(req_retry, timeout=60) as resp_retry:
+                data = json.loads(resp_retry.read().decode("utf-8"))
+                choices = data.get("choices", [])
+                content = choices[0].get("message", {}).get("content", "{}") if choices else "{}"
+                return _normalize_llm_result(_clean_json_response(content), pack_prefix)
+        raise RuntimeError(f"Erro na API OpenAI Compatible (HTTP {e.code}): {err_body}")
+    except Exception as e:
+        raise RuntimeError(f"Falha na requisição para OpenAI Compatible: {e}")
+
+
 def _normalize_llm_result(raw_dict: dict, pack_prefix: str) -> dict:
     """Padroniza e sanitiza o dicionário retornado pela LLM."""
     code = raw_dict.get("code")
@@ -352,6 +441,58 @@ def fetch_gemini_models(api_key: str) -> tuple[bool, list[str], str]:
         return False, [], f"Erro ao buscar modelos do Gemini: {e}"
 
 
+def fetch_openai_models(openai_url: str, api_key: str = "") -> tuple[bool, list[str], str]:
+    """
+    Consulta o endpoint /models da API compatível com OpenAI e retorna os modelos disponíveis.
+    """
+    if not openai_url:
+        return False, [], "URL do endpoint OpenAI não informada."
+
+    openai_url = openai_url.rstrip("/")
+    url = f"{openai_url}/models"
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "ArkhamTranslator/1.0",
+    }
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+
+    req = urllib.request.Request(url, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            raw_data = data.get("data", [])
+            models = []
+            for item in raw_data:
+                if isinstance(item, dict):
+                    m_id = item.get("id")
+                    if m_id:
+                        models.append(m_id)
+                elif isinstance(item, str):
+                    models.append(item)
+
+            def openai_priority(name: str):
+                score = 0
+                n = name.lower()
+                if "gpt-4o" in n: score += 50
+                elif "gpt-4" in n: score += 40
+                elif "claude" in n: score += 35
+                elif "qwen" in n: score += 30
+                elif "llama" in n: score += 25
+                elif "vision" in n or "vl" in n: score += 20
+                return (-score, name)
+
+            models.sort(key=openai_priority)
+            if not models:
+                models = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo"]
+            return True, models, f"{len(models)} modelos carregados da API OpenAI Compatible."
+    except urllib.error.HTTPError as e:
+        err = e.read().decode("utf-8", errors="ignore")
+        return False, [], f"Erro na API (HTTP {e.code}): {err}"
+    except Exception as e:
+        return False, [], f"Erro ao conectar a {openai_url}: {e}"
+
+
 def fetch_ollama_models(ollama_url: str) -> tuple[bool, list[str], str]:
     """
     Consulta o servidor Ollama e retorna os modelos instalados/disponíveis.
@@ -395,6 +536,42 @@ def test_gemini_connection(api_key: str, model: str) -> tuple[bool, str]:
     except urllib.error.HTTPError as e:
         err = e.read().decode("utf-8", errors="ignore")
         return False, f"Erro na API Gemini (HTTP {e.code}): {err}"
+    except Exception as e:
+        return False, f"Erro de conexão: {e}"
+
+
+def test_openai_connection(openai_url: str, api_key: str, model: str) -> tuple[bool, str]:
+    """Testa a conexão com o endpoint OpenAI compatível."""
+    if not openai_url:
+        return False, "Host URL não informada."
+    openai_url = openai_url.rstrip("/")
+    url = f"{openai_url}/chat/completions"
+    payload = {
+        "model": model,
+        "messages": [{"role": "user", "content": "Hello, reply with 'OK'."}],
+        "max_tokens": 10,
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "ArkhamTranslator/1.0",
+    }
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers=headers,
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            if resp.status == 200:
+                return True, f"Conexão com {openai_url} (modelo '{model}') realizada com sucesso!"
+            return False, f"Resposta inesperada (HTTP {resp.status})"
+    except urllib.error.HTTPError as e:
+        err = e.read().decode("utf-8", errors="ignore")
+        return False, f"Erro na API OpenAI (HTTP {e.code}): {err}"
     except Exception as e:
         return False, f"Erro de conexão: {e}"
 

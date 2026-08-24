@@ -297,6 +297,9 @@ class App(tk.Tk):
             if provider == "gemini":
                 model = config.get_setting("gemini_model", "gemini-3.7-flash")
                 self.engine_status_var.set(f"🤖 Gemini ({model})")
+            elif provider == "openai":
+                model = config.get_setting("openai_model", "gpt-4o")
+                self.engine_status_var.set(f"⚡ OpenAI ({model})")
             else:
                 model = config.get_setting("ollama_model", "llama3.2-vision")
                 self.engine_status_var.set(f"🦙 Ollama ({model})")

@@ -70,3 +70,20 @@ Espero ter ajudado!"""
         assert not ok
         assert models == []
         assert "Não foi possível conectar" in msg
+
+    def test_fetch_openai_models_empty_url(self):
+        ok, models, msg = llm_engine.fetch_openai_models("")
+        assert not ok
+        assert models == []
+        assert "não informada" in msg
+
+    def test_fetch_openai_models_invalid_url(self):
+        ok, models, msg = llm_engine.fetch_openai_models("http://127.0.0.1:59999", "dummy_key")
+        assert not ok
+        assert models == []
+        assert "Erro ao conectar" in msg
+
+    def test_test_openai_connection_empty_url(self):
+        ok, msg = llm_engine.test_openai_connection("", "dummy_key", "gpt-4o")
+        assert not ok
+        assert "não informada" in msg
