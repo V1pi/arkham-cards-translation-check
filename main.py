@@ -105,8 +105,9 @@ class App(tk.Tk):
     # ------------------------------------------------------------------
     def _build_ui(self):
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=2)
-        self.rowconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.rowconfigure(0, weight=3)
+        self.rowconfigure(1, weight=2)
 
         self._build_left_panel()
         self._build_right_panel()
@@ -159,11 +160,12 @@ class App(tk.Tk):
 
         self._refresh_camera_list()
 
-        # Canvas do vídeo / prévia
+        # Canvas do vídeo / prévia (redimensionável dinamicamente)
         self.cam_canvas = tk.Canvas(left, width=CAM_WIDTH, height=CAM_HEIGHT,
                                      bg="#1a1a2e", highlightthickness=1,
                                      highlightbackground="#444")
         self.cam_canvas.grid(row=1, column=0, sticky="nsew", pady=4)
+        self.cam_canvas.bind("<Configure>", self._on_canvas_resize)
 
         # Botões de captura e carregamento
         btn_frame = ttk.Frame(left)
@@ -364,26 +366,47 @@ class App(tk.Tk):
         # Habilita foco automático se suportado
         self.cap.set(cv2.CAP_PROP_AUTOFOCUS, 1)
 
+    def _on_canvas_resize(self, event=None):
+        """Redesenha a imagem atual quando o canvas muda de tamanho."""
+        if self.is_static_preview and getattr(self, 'captured_frame', None) is not None:
+            self._display_frame_on_canvas(self.captured_frame)
+        elif getattr(self, '_last_frame', None) is not None:
+            corners = getattr(self, '_last_detected_corners', None)
+            display_frame = card_detector.draw_card_overlay(self._last_frame, corners) if corners is not None else self._last_frame
+            self._display_frame_on_canvas(display_frame)
+
     def _display_frame_on_canvas(self, frame_bgr: np.ndarray):
-        """Renderiza uma imagem no canvas mantendo aspect ratio e centralizado."""
+        """Renderiza uma imagem no canvas mantendo aspect ratio, centralizado e dimensionado dinamicamente."""
+        if frame_bgr is None or frame_bgr.size == 0:
+            return
+
         h, w = frame_bgr.shape[:2]
         if h == 0 or w == 0:
             return
 
-        scale = min(CAM_WIDTH / w, CAM_HEIGHT / h)
+        # Obtém tamanho real dinâmico do canvas
+        canvas_w = self.cam_canvas.winfo_width()
+        canvas_h = self.cam_canvas.winfo_height()
+
+        if canvas_w < 50 or canvas_h < 50:
+            canvas_w = CAM_WIDTH
+            canvas_h = CAM_HEIGHT
+
+        scale = min(canvas_w / w, canvas_h / h)
         new_w = max(1, int(w * scale))
         new_h = max(1, int(h * scale))
 
-        resized = cv2.resize(frame_bgr, (new_w, new_h), interpolation=cv2.INTER_AREA)
-        canvas_bg = np.full((CAM_HEIGHT, CAM_WIDTH, 3), 26, dtype=np.uint8)  # fundo #1a1a2e
+        resized = cv2.resize(frame_bgr, (new_w, new_h), interpolation=cv2.INTER_AREA if scale < 1.0 else cv2.INTER_CUBIC)
+        canvas_bg = np.full((canvas_h, canvas_w, 3), 26, dtype=np.uint8)  # fundo #1a1a2e
 
-        y_off = (CAM_HEIGHT - new_h) // 2
-        x_off = (CAM_WIDTH - new_w) // 2
+        y_off = (canvas_h - new_h) // 2
+        x_off = (canvas_w - new_w) // 2
         canvas_bg[y_off:y_off + new_h, x_off:x_off + new_w] = resized
 
         rgb = cv2.cvtColor(canvas_bg, cv2.COLOR_BGR2RGB)
         imgtk = ImageTk.PhotoImage(image=Image.fromarray(rgb))
         self.cam_canvas.imgtk = imgtk
+        self.cam_canvas.delete("all")
         self.cam_canvas.create_image(0, 0, anchor="nw", image=imgtk)
 
     def _update_camera_frame(self):
