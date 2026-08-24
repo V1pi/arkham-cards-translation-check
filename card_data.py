@@ -8,12 +8,42 @@ Campos opcionais: flavor, subname, back_text, back_flavor, slot.
 """
 
 import json
+import re
 from pathlib import Path
 
 from config import JSON_INDENT
 
 # Campos que contêm texto traduzível a comparar com o OCR
 TEXT_FIELDS = ["name", "subname", "text", "traits", "flavor", "back_text", "back_flavor"]
+
+
+def normalize_code(code: str, pack_prefix: str | None = None) -> str:
+    """
+    Normaliza um código/número informado pelo usuário ou OCR.
+    Se o usuário digitar '6', '26' ou '202', formata automaticamente:
+      - '6' -> '06006' (usando o pack_prefix atual, ex.: '06')
+      - '26' -> '06026'
+      - '202' -> '06202'
+      - '06026' -> '06026'
+    """
+    if not code:
+        return ""
+    code_str = str(code).strip()
+    if not code_str:
+        return ""
+
+    if pack_prefix is None:
+        import config
+        pack_prefix = config.get_setting("pack_prefix", "06")
+
+    digits = re.findall(r"\d+", code_str)
+    if digits:
+        num = digits[0]
+        if len(num) <= 3:
+            return pack_prefix + num.zfill(3)
+        elif len(num) == 5:
+            return num
+    return code_str
 
 
 def load_all_cards(translations_path: Path) -> dict:
@@ -43,11 +73,23 @@ def load_all_cards(translations_path: Path) -> dict:
     return all_cards
 
 
-def find_card(code: str, all_cards: dict) -> dict | None:
+def find_card(code: str, all_cards: dict, pack_prefix: str | None = None) -> dict | None:
     """
-    Busca uma carta pelo código. Retorna {"card": ..., "file": ...} ou None.
+    Busca uma carta pelo código. Tenta busca exata e busca normalizada com prefixo.
     """
-    return all_cards.get(code)
+    if not code:
+        return None
+
+    # 1. Busca exata direta
+    if code in all_cards:
+        return all_cards[code]
+
+    # 2. Busca com código normalizado (ex.: '6' -> '06006', '26' -> '06026')
+    norm = normalize_code(code, pack_prefix)
+    if norm in all_cards:
+        return all_cards[norm]
+
+    return None
 
 
 def save_card(card: dict, filepath: Path, updated_fields: dict) -> None:

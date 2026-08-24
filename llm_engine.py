@@ -21,30 +21,48 @@ Retorne APENAS um objeto JSON válido (sem blocos de código markdown adicionais
 
 {
   "code": "Código numérico de 5 dígitos da carta (ex.: '06026' ou '06202'). No canto inferior direito da carta há um número impresso de 2 ou 3 dígitos (ex.: '26' ou '202'). O prefixo do pacote é '{PACK_PREFIX}'. Se o número for '26', o código é '{PACK_PREFIX}026'. Se for '202', é '{PACK_PREFIX}202'. Se não conseguir ler com certeza, retorne null.",
-  "name": "Nome/Título da carta no topo (ex.: 'Alvo Fácil', 'Palavra de Comando').",
+  "name": "Nome/Título da carta no topo (ex.: 'Alvo Fácil', 'Palavra de Comando'). Não use tags HTML no nome.",
   "subname": "Subtítulo da carta logo abaixo do nome, se houver (geralmente em cartas únicas com um asterisco ou personagens). Se não houver, use null.",
-  "traits": "Características/Traits da carta logo abaixo da ilustração ou nome, geralmente em negrito e itálico terminando com ponto final (ex.: 'Truque. Miríade.' ou 'Magia.'). Se não houver, use null.",
-  "text": "Texto principal de regras da carta. MANTENHA as quebras de linha com \\n. IMPORTANTE: Substitua os ícones de símbolos do jogo pelos seguintes marcadores entre colchetes:
-    - Ícone de Ação (seta) -> [action]
-    - Ícone de Reação (seta curva) -> [reaction]
-    - Ícone de Ação Rápida/Gatilho Livre (raio) -> [fast]
-    - Ícone de Vontade (cabeça) -> [willpower]
-    - Ícone de Intelecto (livro) -> [intellect]
-    - Ícone de Combate (punho) -> [combat]
-    - Ícone de Agilidade (pé) -> [agility]
-    - Ícone Coringa (interrogação) -> [wild]
-    - Ícone Sinal dos Anciãos -> [elder_sign]
-    - Ícone Caveira -> [skull]
-    - Ícone Cultista -> [cultist]
-    - Ícone Tabuleta -> [tablet]
-    - Ícone Coisa Anciã -> [elder_thing]
-    - Ícone Falha Automática -> [auto_fail]
-    - Ícone Bênção -> [bless]
-    - Ícone Maldição -> [curse]
-    - Ícone Gelo -> [frost]",
-  "flavor": "Texto de ambientação/sabor (flavor text), que geralmente fica em itálico ou entre aspas na parte inferior da caixa de texto. Se não houver, use null.",
-  "back_text": "Texto do verso da carta (se for o verso de uma carta dupla face ou local). Caso contrário, null.",
-  "back_flavor": "Flavor text do verso da carta. Caso contrário, null."
+  "traits": "Características/Traits da carta logo abaixo da ilustração ou nome, terminando com ponto final (ex.: 'Truque. Miríade.' ou 'Magia.'). Não use tags HTML como <i> ou <b> aqui, retorne apenas o texto puro dos traits.",
+  "text": "Texto principal de regras da carta. MANTENHA as quebras de linha com \\n.
+    - FORMATAÇÃO HTML: Caso o texto na imagem esteja em negrito, use o delimitador html <b></b> (ex.: '<b>Forçado</b> - ', '<b>Ação:</b>'). Caso esteja em itálico, use o delimitador html <i></i> (ex.: '<i>(Limite de 1 por rodada.)</i>', 'carta de <i>Magia</i>').
+    - SÍMBOLOS DO JOGO: Substitua qualquer ícone ou símbolo do jogo no texto pelos marcadores correspondentes entre colchetes:
+      - Gatilhos e Ações:
+        - Ícone de Ação (seta) -> [action]
+        - Ícone de Reação (seta curva) -> [reaction]
+        - Ícone de Ação Rápida / Gatilho Livre (raio) -> [fast]
+      - Perícias:
+        - Ícone de Vontade (cabeça) -> [willpower]
+        - Ícone de Intelecto (livro) -> [intellect]
+        - Ícone de Combate (punho) -> [combat]
+        - Ícone de Agilidade (pé) -> [agility]
+        - Ícone Coringa (interrogação) -> [wild]
+      - Tokens de Caos:
+        - Sinal dos Anciãos -> [elder_sign]
+        - Caveira -> [skull]
+        - Cultista -> [cultist]
+        - Tabuleta -> [tablet]
+        - Coisa Anciã -> [elder_thing]
+        - Falha Automática (tentáculos) -> [auto_fail]
+        - Bênção -> [bless]
+        - Maldição -> [curse]
+        - Gelo -> [frost]
+      - Classes:
+        - Guardião -> [guardian]
+        - Buscador -> [seeker]
+        - Ladino -> [rogue]
+        - Místico -> [mystic]
+        - Sobrevivente -> [survivor]
+        - Neutro -> [neutral]
+      - Atributos e Mecânicas:
+        - Vida (coração) -> [health]
+        - Sanidade (cérebro) -> [sanity]
+        - Por Investigador (ícone de pessoa/multiplicador) -> [per_investigator]
+        - Sangue -> [blood]
+        - Selos de Hemlock Vale -> [seal_a], [seal_b], [seal_c], [seal_d], [seal_e]",
+  "flavor": "Texto de ambientação/sabor (flavor text), que fica na parte inferior da caixa de texto. NÃO use tags <i></i> ou <b></b> aqui (flavor é texto puro, pois o jogo já o renderiza naturalmente em itálico). Se não houver, use null.",
+  "back_text": "Texto do verso da carta (se for o verso de uma carta dupla face ou local). Aplique as mesmas regras de <b></b>, <i></i> e [símbolos]. Caso contrário, null.",
+  "back_flavor": "Flavor text do verso da carta (texto puro, sem tags <i></i> ou <b></b>). Caso contrário, null."
 }
 
 Exemplo 1 (Carta 06026 - Alvo Fácil):
@@ -65,7 +83,7 @@ Exemplo 2 (Carta 06202 - Palavra de Comando):
   "name": "Palavra de Comando",
   "subname": null,
   "traits": "Magia.",
-  "text": "Nomeie uma carta de Magia. Procure 1 cópia da carta nomeada em seu baralho e compre-a.\\nEmbaralhe o seu baralho.",
+  "text": "Nomeie uma carta de <i>Magia</i>. Procure 1 cópia da carta nomeada em seu baralho e compre-a.\\nEmbaralhe o seu baralho.",
   "flavor": "Luz para salvar nossos olhos.\\nCalor para salvar nossa pele.\\nUma fagulha para salvar nossas almas.",
   "back_text": null,
   "back_flavor": null

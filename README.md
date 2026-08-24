@@ -11,7 +11,7 @@ Ferramenta local em Python para conferir traduções portuguesas de cartas físi
 5. Busca a carta correspondente nos arquivos JSON em `translations/pt/pack/tde/`
 6. Compara campo a campo a tradução do JSON com o texto oficial reconhecido
 7. Mostra as diferenças com highlighting colorido
-8. Você escolhe: **ACEITAR** (salva no JSON preservando símbolos `[reaction]`, `[action]`, etc.), **EDITAR** (corrige antes de salvar), **MANTER** ou **PRÓXIMA CARTA**
+8. Você escolhe: **ACEITAR** (salva no JSON preservando símbolos `[reaction]`, `[action]`, etc.), **MANTER** ou **PRÓXIMA CARTA** (você pode editar o texto diretamente no campo a qualquer momento)
 
 ---
 

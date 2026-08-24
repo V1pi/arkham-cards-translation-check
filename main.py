@@ -270,7 +270,6 @@ class App(tk.Tk):
 
         ttk.Button(btn_row, text="✅ ACEITAR", command=self._action_accept,
                    style="Accent.TButton").pack(side="left", padx=4)
-        ttk.Button(btn_row, text="✏️  EDITAR", command=self._action_edit).pack(side="left", padx=4)
         ttk.Button(btn_row, text="⏭  MANTER", command=self._action_keep).pack(side="left", padx=4)
         ttk.Button(btn_row, text="⏩ PRÓXIMA", command=self._action_next).pack(side="left", padx=4)
 
@@ -479,24 +478,25 @@ class App(tk.Tk):
         threading.Thread(target=run, daemon=True).start()
 
     def _on_recognition_done(self, code: str | None, fields_or_raw: dict, engine_name: str):
+        pack_prefix = config.get_setting("pack_prefix", "06")
         if not code:
-            pack_prefix = config.get_setting("pack_prefix", "06")
-            code = simpledialog.askstring(
-                "Código não reconhecido",
+            user_input = simpledialog.askstring(
+                "Código da Carta",
                 f"O motor ({engine_name}) não identificou o código da carta automaticamente.\n"
-                f"Digite o código manualmente (ex.: {pack_prefix}026):",
+                f"Digite o número da carta (ex.: '6', '26', '202' ou '{pack_prefix}026'):",
                 parent=self
             )
+            if not user_input:
+                self.status_var.set("Operação cancelada.")
+                return
+            code = card_data.normalize_code(user_input, pack_prefix)
+        else:
+            code = card_data.normalize_code(code, pack_prefix)
 
-        if not code:
-            self.status_var.set("Operação cancelada.")
-            return
-
-        code = code.strip()
-        entry = card_data.find_card(code, self.all_cards)
+        entry = card_data.find_card(code, self.all_cards, pack_prefix)
         if not entry:
             self.status_var.set(f"❌ Carta '{code}' não encontrada nos JSON.")
-            messagebox.showwarning("Não encontrada", f"Código '{code}' não está nos arquivos de tradução.")
+            messagebox.showwarning("Não encontrada", f"Código '{code}' não foi encontrado nos arquivos de tradução.")
             return
 
         if "_raw_ocr" in fields_or_raw:
@@ -513,18 +513,18 @@ class App(tk.Tk):
     def _choose_card_manually(self):
         """Abre diálogo para o usuário digitar o código da carta manualmente."""
         pack_prefix = config.get_setting("pack_prefix", "06")
-        code = simpledialog.askstring(
+        user_input = simpledialog.askstring(
             "Escolher Carta",
-            f"Digite o código da carta (ex.: {pack_prefix}026):",
+            f"Digite o número ou código da carta (ex.: '6', '26', '202' ou '{pack_prefix}026'):",
             parent=self
         )
-        if not code:
+        if not user_input:
             return
 
-        code = code.strip()
-        entry = card_data.find_card(code, self.all_cards)
+        code = card_data.normalize_code(user_input, pack_prefix)
+        entry = card_data.find_card(code, self.all_cards, pack_prefix)
         if not entry:
-            messagebox.showwarning("Não encontrada", f"Código '{code}' não está nos arquivos de tradução.")
+            messagebox.showwarning("Não encontrada", f"Código '{code}' não foi encontrado nos arquivos de tradução.")
             return
 
         # Carrega carta em branco para o usuário preencher/conferir
@@ -668,12 +668,6 @@ class App(tk.Tk):
             self.status_var.set(f"✅ Campo '{FIELD_LABELS.get(field, field)}' salvo no JSON.")
         except Exception as e:
             messagebox.showerror("Erro ao salvar", str(e))
-
-    def _action_edit(self):
-        """Foca no campo OCR para edição manual."""
-        self.txt_ocr.focus_set()
-        self.txt_ocr.see(tk.END)
-        self.status_var.set("✏️  Edite o texto no campo 'Texto oficial reconhecido' — a comparação atualiza em tempo real.")
 
     def _on_ocr_edit(self, event=None):
         if getattr(self, '_is_updating_ui', False):
