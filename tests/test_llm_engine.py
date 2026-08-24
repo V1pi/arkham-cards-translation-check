@@ -58,3 +58,15 @@ Espero ter ajudado!"""
         res = llm_engine._normalize_llm_result(raw, pack_prefix="06")
         assert res["code"] == "06202"
         assert res["fields"]["name"] == "Palavra de Comando"
+
+    def test_fetch_gemini_models_empty_key(self):
+        ok, models, msg = llm_engine.fetch_gemini_models("")
+        assert not ok
+        assert models == []
+        assert "não informada" in msg
+
+    def test_fetch_ollama_models_invalid_url(self):
+        ok, models, msg = llm_engine.fetch_ollama_models("http://127.0.0.1:59999")
+        assert not ok
+        assert models == []
+        assert "Não foi possível conectar" in msg

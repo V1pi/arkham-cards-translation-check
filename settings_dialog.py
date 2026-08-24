@@ -89,7 +89,12 @@ class SettingsDialog(tk.Toplevel):
             textvariable=self.gemini_model_var,
             values=["gemini-3.7-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.5-flash"],
         )
-        self.gemini_model_combo.grid(row=1, column=1, columnspan=2, sticky="ew", padx=4, pady=2)
+        self.gemini_model_combo.grid(row=1, column=1, sticky="ew", padx=4, pady=2)
+
+        self.btn_fetch_gemini = ttk.Button(
+            self.gemini_box, text="🔄", width=3, command=lambda: self._fetch_gemini_models(silent=False)
+        )
+        self.btn_fetch_gemini.grid(row=1, column=2, padx=2, pady=2)
 
         self.btn_test_gemini = ttk.Button(
             self.gemini_box, text="🔌 Testar Conexão Gemini", command=self._test_gemini
@@ -104,7 +109,7 @@ class SettingsDialog(tk.Toplevel):
         ttk.Label(self.ollama_box, text="Host URL:").grid(row=0, column=0, sticky="w", pady=2)
         self.ollama_url_var = tk.StringVar(value="http://localhost:11434")
         ttk.Entry(self.ollama_box, textvariable=self.ollama_url_var).grid(
-            row=0, column=1, sticky="ew", padx=4, pady=2
+            row=0, column=1, columnspan=2, sticky="ew", padx=4, pady=2
         )
 
         ttk.Label(self.ollama_box, text="Modelo:").grid(row=1, column=0, sticky="w", pady=2)
@@ -116,10 +121,15 @@ class SettingsDialog(tk.Toplevel):
         )
         self.ollama_model_combo.grid(row=1, column=1, sticky="ew", padx=4, pady=2)
 
+        self.btn_fetch_ollama = ttk.Button(
+            self.ollama_box, text="🔄", width=3, command=lambda: self._fetch_ollama_models(silent=False)
+        )
+        self.btn_fetch_ollama.grid(row=1, column=2, padx=2, pady=2)
+
         self.btn_test_ollama = ttk.Button(
             self.ollama_box, text="🔌 Testar Conexão Ollama", command=self._test_ollama
         )
-        self.btn_test_ollama.grid(row=2, column=0, columnspan=2, sticky="e", pady=4)
+        self.btn_test_ollama.grid(row=2, column=0, columnspan=3, sticky="e", pady=4)
 
         # 3. Configurações Gerais
         self.general_frame = ttk.LabelFrame(self, text="3. Configurações do Pacote", padding=8)
@@ -168,6 +178,12 @@ class SettingsDialog(tk.Toplevel):
 
         self.pack_prefix_var.set(self.settings.get("pack_prefix", "06"))
 
+        # Carrega modelos em segundo plano se configurados
+        if self.gemini_key_var.get().strip():
+            self._fetch_gemini_models(silent=True)
+        if self.ollama_url_var.get().strip():
+            self._fetch_ollama_models(silent=True)
+
     def _update_visibility(self):
         mode = self.mode_var.get()
         if mode == "llm":
@@ -185,9 +201,73 @@ class SettingsDialog(tk.Toplevel):
         if is_gemini:
             self.gemini_box.grid()
             self.ollama_box.grid_remove()
+            if self.gemini_key_var.get().strip() and len(self.gemini_model_combo["values"]) <= 4:
+                self._fetch_gemini_models(silent=True)
         else:
             self.gemini_box.grid_remove()
             self.ollama_box.grid()
+            if self.ollama_url_var.get().strip() and len(self.ollama_model_combo["values"]) <= 4:
+                self._fetch_ollama_models(silent=True)
+
+    def _fetch_gemini_models(self, silent: bool = False):
+        key = self.gemini_key_var.get().strip()
+        if not key:
+            if not silent:
+                messagebox.showwarning("Gemini", "Informe a API Key antes de buscar modelos.", parent=self)
+            return
+
+        if not silent:
+            self.status_var.set("⏳ Carregando modelos da API do Google Gemini...")
+            self.btn_fetch_gemini.config(state="disabled")
+
+        def run():
+            ok, models, msg = llm_engine.fetch_gemini_models(key)
+            self.after(0, lambda s=ok, m=models, t=msg: self._on_gemini_models_loaded(s, m, t, silent))
+
+        threading.Thread(target=run, daemon=True).start()
+
+    def _on_gemini_models_loaded(self, ok: bool, models: list[str], msg: str, silent: bool):
+        self.btn_fetch_gemini.config(state="normal")
+        if ok and models:
+            self.gemini_model_combo["values"] = models
+            current = self.gemini_model_var.get()
+            if current not in models:
+                self.gemini_model_var.set(models[0])
+            if not silent:
+                self.status_var.set(f"✅ {msg}")
+        elif not silent:
+            self.status_var.set(f"❌ {msg}")
+            messagebox.showerror("Erro ao carregar modelos", msg, parent=self)
+
+    def _fetch_ollama_models(self, silent: bool = False):
+        url = self.ollama_url_var.get().strip()
+        if not url:
+            if not silent:
+                messagebox.showwarning("Ollama", "Informe o Host URL do Ollama.", parent=self)
+            return
+
+        if not silent:
+            self.status_var.set(f"⏳ Buscando modelos no Ollama ({url})...")
+            self.btn_fetch_ollama.config(state="disabled")
+
+        def run():
+            ok, models, msg = llm_engine.fetch_ollama_models(url)
+            self.after(0, lambda s=ok, m=models, t=msg: self._on_ollama_models_loaded(s, m, t, silent))
+
+        threading.Thread(target=run, daemon=True).start()
+
+    def _on_ollama_models_loaded(self, ok: bool, models: list[str], msg: str, silent: bool):
+        self.btn_fetch_ollama.config(state="normal")
+        if ok and models:
+            self.ollama_model_combo["values"] = models
+            current = self.ollama_model_var.get()
+            if current not in models:
+                self.ollama_model_var.set(models[0])
+            if not silent:
+                self.status_var.set(f"✅ {msg}")
+        elif not silent:
+            self.status_var.set(f"❌ {msg}")
+            messagebox.showerror("Erro ao carregar modelos", msg, parent=self)
 
     def _test_gemini(self):
         key = self.gemini_key_var.get().strip()
@@ -198,6 +278,8 @@ class SettingsDialog(tk.Toplevel):
         def run():
             ok, msg = llm_engine.test_gemini_connection(key, model)
             self.after(0, lambda s=ok, m=msg, b=self.btn_test_gemini: self._on_test_result(s, m, b))
+            # Atualiza lista de modelos simultaneamente
+            self.after(0, lambda: self._fetch_gemini_models(silent=True))
 
         threading.Thread(target=run, daemon=True).start()
 
@@ -210,6 +292,8 @@ class SettingsDialog(tk.Toplevel):
         def run():
             ok, msg = llm_engine.test_ollama_connection(url, model)
             self.after(0, lambda s=ok, m=msg, b=self.btn_test_ollama: self._on_test_result(s, m, b))
+            # Atualiza lista de modelos simultaneamente
+            self.after(0, lambda: self._fetch_ollama_models(silent=True))
 
         threading.Thread(target=run, daemon=True).start()
 

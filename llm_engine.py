@@ -297,8 +297,82 @@ def _normalize_llm_result(raw_dict: dict, pack_prefix: str) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Testes de Conexão
+# Testes de Conexão e Busca Dinâmica de Modelos
 # ---------------------------------------------------------------------------
+def fetch_gemini_models(api_key: str) -> tuple[bool, list[str], str]:
+    """
+    Consulta a API do Google Gemini e retorna a lista de modelos de visão/geração disponíveis.
+    Retorna (sucesso, lista_de_modelos, mensagem).
+    """
+    if not api_key:
+        return False, [], "Chave de API do Gemini não informada."
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}"
+    req = urllib.request.Request(url, headers={"User-Agent": "ArkhamTranslator/1.0"})
+
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            raw_models = data.get("models", [])
+
+            models = []
+            for m in raw_models:
+                name = m.get("name", "").replace("models/", "")
+                methods = m.get("supportedGenerationMethods", [])
+                if "generateContent" in methods and "gemini" in name.lower():
+                    # Exclui modelos apenas de áudio/tts ou embedding
+                    if not name.endswith("-tts") and "embedding" not in name:
+                        models.append(name)
+
+            def model_priority(name: str):
+                score = 0
+                if "3.7" in name: score += 70
+                elif "3.6" in name: score += 60
+                elif "3.5" in name: score += 50
+                elif "3.0" in name: score += 40
+                elif "2.5" in name: score += 30
+                elif "2.0" in name: score += 20
+                elif "1.5" in name: score += 10
+
+                if "flash" in name: score += 15
+                if "pro" in name: score += 10
+                if "latest" in name: score += 5
+                if "preview" in name or "experimental" in name: score -= 10
+                return (-score, name)
+
+            models.sort(key=model_priority)
+            if not models:
+                models = ["gemini-3.7-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.5-flash"]
+
+            return True, models, f"{len(models)} modelos carregados da API do Gemini."
+    except urllib.error.HTTPError as e:
+        err = e.read().decode("utf-8", errors="ignore")
+        return False, [], f"Erro na API Gemini (HTTP {e.code}): {err}"
+    except Exception as e:
+        return False, [], f"Erro ao buscar modelos do Gemini: {e}"
+
+
+def fetch_ollama_models(ollama_url: str) -> tuple[bool, list[str], str]:
+    """
+    Consulta o servidor Ollama e retorna os modelos instalados/disponíveis.
+    Retorna (sucesso, lista_de_modelos, mensagem).
+    """
+    ollama_url = ollama_url.rstrip("/")
+    url = f"{ollama_url}/api/tags"
+    req = urllib.request.Request(url, headers={"Content-Type": "application/json", "User-Agent": "ArkhamTranslator/1.0"})
+
+    try:
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            raw_models = data.get("models", [])
+            models = [m.get("name") for m in raw_models if m.get("name")]
+            if not models:
+                return False, [], "Nenhum modelo encontrado no Ollama local."
+            return True, models, f"{len(models)} modelo(s) encontrado(s) no Ollama."
+    except Exception as e:
+        return False, [], f"Não foi possível conectar ao Ollama em {ollama_url}: {e}"
+
+
 def test_gemini_connection(api_key: str, model: str) -> tuple[bool, str]:
     """Testa se a chave de API e modelo do Gemini são válidos."""
     if not api_key:
@@ -329,13 +403,11 @@ def test_ollama_connection(ollama_url: str, model: str) -> tuple[bool, str]:
     """Testa se o host do Ollama está acessível e se o modelo existe."""
     ollama_url = ollama_url.rstrip("/")
     try:
-        # Testa listar modelos instalados no Ollama
         tags_url = f"{ollama_url}/api/tags"
         req = urllib.request.Request(tags_url, headers={"Content-Type": "application/json"})
         with urllib.request.urlopen(req, timeout=5) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             models = [m.get("name") for m in data.get("models", [])]
-            # Verifica se o modelo especificado está instalado
             model_matched = any(model in m for m in models) if models else False
             if model_matched:
                 return True, f"Ollama online! Modelo '{model}' disponível."
