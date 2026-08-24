@@ -88,6 +88,17 @@ Exemplo 2 (Carta 06202 - Palavra de Comando):
   "back_text": null,
   "back_flavor": null
 }
+
+Exemplo 3 (Carta 06162 - Gregory Gry):
+{
+    "code": "06162",
+    "flavor": "Muito antes de receber sua primeira mão, o rapaz fora capaz de observar um homem e discernir o significado de suas apostas.",
+    "name": "Gregory Gry",
+    "subname": "Jornalista Investigativo",
+    "text": "Usa (9 recursos).\n[reaction] Quando você iniciar um teste de perícia, gaste até 3 recursos de Gregory Gry: Se este teste de perícia for bem-sucedido por pelo menos esse valor, gaste essa quantidade de recursos.",
+    "traits": "Aliado. Criminoso. Sonhador.",
+    "slot": "Aliado"
+}
 """
 
 
