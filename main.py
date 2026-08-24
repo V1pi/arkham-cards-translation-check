@@ -66,6 +66,8 @@ class App(tk.Tk):
         self._current_field_key: str | None = None
         self._is_updating_ui: bool = False
         self.captured_frame: np.ndarray | None = None
+        self.last_recognized_fields_or_raw: dict | None = None
+        self.last_engine_name: str | None = None
         self.ocr_text_by_field: dict = {}   # campo → texto OCR/LLM classificado
         self.json_fields: dict = {}          # campo → texto do JSON
 
@@ -268,8 +270,9 @@ class App(tk.Tk):
         btn_row = ttk.Frame(bottom)
         btn_row.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(6, 0))
 
-        ttk.Button(btn_row, text="✅ ACEITAR", command=self._action_accept,
+        ttk.Button(btn_row, text="✅ ACEITAR TUDO", command=self._action_accept_all,
                    style="Accent.TButton").pack(side="left", padx=4)
+        ttk.Button(btn_row, text="✔️ ACEITAR CAMPO", command=self._action_accept).pack(side="left", padx=4)
         ttk.Button(btn_row, text="⏭  MANTER", command=self._action_keep).pack(side="left", padx=4)
         ttk.Button(btn_row, text="⏩ PRÓXIMA", command=self._action_next).pack(side="left", padx=4)
 
@@ -478,27 +481,44 @@ class App(tk.Tk):
         threading.Thread(target=run, daemon=True).start()
 
     def _on_recognition_done(self, code: str | None, fields_or_raw: dict, engine_name: str):
+        self.last_recognized_fields_or_raw = fields_or_raw
+        self.last_engine_name = engine_name
         pack_prefix = config.get_setting("pack_prefix", "06")
-        if not code:
-            user_input = simpledialog.askstring(
-                "Código da Carta",
-                f"O motor ({engine_name}) não identificou o código da carta automaticamente.\n"
-                f"Digite o número da carta (ex.: '6', '26', '202' ou '{pack_prefix}026'):",
-                parent=self
-            )
-            if not user_input:
-                self.status_var.set("Operação cancelada.")
-                return
-            code = card_data.normalize_code(user_input, pack_prefix)
-        else:
+
+        if code:
             code = card_data.normalize_code(code, pack_prefix)
 
-        entry = card_data.find_card(code, self.all_cards, pack_prefix)
-        if not entry:
-            self.status_var.set(f"❌ Carta '{code}' não encontrada nos JSON.")
-            messagebox.showwarning("Não encontrada", f"Código '{code}' não foi encontrado nos arquivos de tradução.")
-            return
+        entry = card_data.find_card(code, self.all_cards, pack_prefix) if code else None
 
+        # Se o código não foi identificado ou não existe no JSON, permite ao usuário digitar/corrigir
+        while not entry:
+            if code:
+                prompt_msg = (
+                    f"⚠️ O código '{code}' não foi encontrado nos arquivos de tradução.\n\n"
+                    f"Digite o número/código correto da carta (ex.: '6', '26', '202' ou '{pack_prefix}026') "
+                    f"para vincular aos textos já reconhecidos por {engine_name}:"
+                )
+            else:
+                prompt_msg = (
+                    f"O motor ({engine_name}) não identificou o código da carta automaticamente.\n\n"
+                    f"Digite o número da carta (ex.: '6', '26', '202' ou '{pack_prefix}026'):"
+                )
+
+            user_input = simpledialog.askstring("Código da Carta", prompt_msg, parent=self)
+            if not user_input:
+                self.status_var.set("Reconhecimento concluído. Digite o código manualmente pelo botão 🔍 Escolher por Código.")
+                return
+
+            code = card_data.normalize_code(user_input, pack_prefix)
+            entry = card_data.find_card(code, self.all_cards, pack_prefix)
+            if not entry:
+                messagebox.showwarning(
+                    "Carta não encontrada",
+                    f"Código '{code}' não foi encontrado na base de traduções.\nVerifique o número e tente novamente.",
+                    parent=self
+                )
+
+        # Aplica o resultado do reconhecimento já existente na carta selecionada
         if "_raw_ocr" in fields_or_raw:
             self._load_card(entry, full_ocr_text=fields_or_raw["_raw_ocr"])
         else:
@@ -527,8 +547,17 @@ class App(tk.Tk):
             messagebox.showwarning("Não encontrada", f"Código '{code}' não foi encontrado nos arquivos de tradução.")
             return
 
-        # Carrega carta em branco para o usuário preencher/conferir
-        self._load_card(entry, full_ocr_text="")
+        # Se houver textos previamente reconhecidos na sessão, reutiliza-os diretamente!
+        if getattr(self, 'last_recognized_fields_or_raw', None):
+            if "_raw_ocr" in self.last_recognized_fields_or_raw:
+                self._load_card(entry, full_ocr_text=self.last_recognized_fields_or_raw["_raw_ocr"])
+            else:
+                self._load_card_from_llm(entry, self.last_recognized_fields_or_raw)
+            engine = getattr(self, 'last_engine_name', 'Reconhecimento')
+            self.status_var.set(f"✅ Carta {code} — {entry['card'].get('name')} vinculada aos textos de {engine}.")
+        else:
+            # Carrega carta em branco para o usuário preencher/conferir
+            self._load_card(entry, full_ocr_text="")
 
     # ------------------------------------------------------------------
     # Carregamento da carta na UI
@@ -643,7 +672,7 @@ class App(tk.Tk):
     # Ações
     # ------------------------------------------------------------------
     def _action_accept(self):
-        """Aceita o texto OCR atual e salva no JSON."""
+        """Aceita o texto do campo atualmente selecionado e salva no JSON."""
         if not self.current_card:
             return
         field = getattr(self, '_current_field_key', None)
@@ -668,6 +697,50 @@ class App(tk.Tk):
             self.status_var.set(f"✅ Campo '{FIELD_LABELS.get(field, field)}' salvo no JSON.")
         except Exception as e:
             messagebox.showerror("Erro ao salvar", str(e))
+
+    def _action_accept_all(self):
+        """Aceita todos os campos reconhecidos e salva tudo no JSON de uma só vez."""
+        if not self.current_card or not self.current_card_file:
+            return
+
+        # Salva o campo atualmente em foco antes de processar
+        curr_field = getattr(self, '_current_field_key', None)
+        if curr_field:
+            self.ocr_text_by_field[curr_field] = self.txt_ocr.get("1.0", "end-1c")
+
+        updated_fields = {}
+        for field in self.json_fields:
+            ocr_text = self.ocr_text_by_field.get(field, "").strip()
+            json_text = self.json_fields.get(field, "")
+
+            # Se houver texto no OCR/LLM para este campo, aplica com inferência de símbolos
+            if ocr_text:
+                new_text = text_utils.apply_ocr_to_json(json_text, ocr_text)
+            else:
+                new_text = json_text
+
+            updated_fields[field] = new_text
+
+        if not updated_fields:
+            return
+
+        try:
+            card_data.save_card(self.current_card, self.current_card_file, updated_fields)
+
+            # Atualiza estado local
+            for f, val in updated_fields.items():
+                self.json_fields[f] = val
+                self.current_card[f] = val
+                self.ocr_text_by_field[f] = val
+
+            if curr_field:
+                self._show_field(curr_field)
+
+            card_name = self.current_card.get('name', '')
+            card_code = self.current_card.get('code', '')
+            self.status_var.set(f"✅ Todos os campos da carta {card_code} ('{card_name}') foram salvos no JSON com sucesso!")
+        except Exception as e:
+            messagebox.showerror("Erro ao salvar todos os campos", str(e))
 
     def _on_ocr_edit(self, event=None):
         if getattr(self, '_is_updating_ui', False):
