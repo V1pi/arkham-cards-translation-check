@@ -9,8 +9,8 @@
     {
         "code": "06324",
         "name": "Abigail Foreman",
-        "subname": "Estagi\u00e1ria da Biblioteca",
-        "text": "[fast]: Anexe um ativo de [[Tomo]] na sua \u00e1rea de jogo a Abigail Foreman, ou troque um ativo de [[Tomo]] na sua \u00e1rea de jogo por um ativo anexado. O ativo anexado a ela n\u00e3o ocupa nenhum espa\u00e7o de m\u00e3o. (Limite de 1 ativo anexado.)\n[reaction] Ap\u00f3s voc\u00ea resolver uma habilidade [action] no ativo de [[Tomo]] anexado, esgote Abigail Foreman: Resolva seus efeitos novamente.",
+        "subname": "Aprendiz de Bibliotec\u00e1ria",
+        "text": "[fast] [fast]: Anexe um ativo de [Tomo] <i>Tomo</i> em sua \u00e1rea de jogo a Abigail Foreman ou troque um ativo de [Tomo] <i>Tomo</i> em sua \u00e1rea de jogo por um ativo anexado. O ativo anexado a ela n\u00e3o ocupa espa\u00e7os de m\u00e3o. <i>(Limite de 1 ativo anexado.)</i>\n[reaction] [reaction] Ap\u00f3s voc\u00ea resolver uma habilidade [action] [action] do ativo de <i>Tomo</i> [Tomo] anexado, esgote Abigail Foreman: Resolva os efeitos do ativo novamente.",
         "traits": "Aliado. Miskatonic.",
         "slot": "Aliado"
     },
@@ -18,21 +18,21 @@
         "code": "06325",
         "flavor": "Ele est\u00e1 sempre observando voc\u00ea.",
         "name": "O Olho da Verdade",
-        "text": "Se este teste de per\u00edcia for em uma trai\u00e7\u00e3o e o teste for bem-sucedido, adicione aquela trai\u00e7\u00e3o \u00e0 vitrine de vit\u00f3ria e anexe O Olho da Verdade a ela.\nEnquanto estiver anexado, O Olho da Verdade contribui com seus \u00edcones de per\u00edcia para todos os testes em c\u00f3pias da trai\u00e7\u00e3o anexada.",
-        "traits": "Magia. Praticado."
+        "text": "Se este teste de per\u00edcia estiver em uma trai\u00e7\u00e3o e o teste for bem-sucedido, adicione essa trai\u00e7\u00e3o ao painel de vit\u00f3rias e anexe O Olho da Verdade a ela.\nEnquanto estiver anexado, O Olho da Verdade contribui com seus \u00edcones de per\u00edcia em todos os testes das c\u00f3pias da trai\u00e7\u00e3o anexada.",
+        "traits": "Magia. Treinado."
     },
     {
         "code": "06326",
         "name": "Joey \"O Rato\" Vigil",
         "subname": "S\u00f3 Pensando em Si",
-        "text": "[free] Gaste 1 recurso: Escolha um ativo de [[Item]] da sua m\u00e3o e jogue-o <i>(pagando seu custo)<\/i>.\n[free] Descarte um ativo de [[Item]] em jogo: Ganhe 2 recursos.",
+        "text": "[free] Gaste 1 recurso: Escolha um ativo de [[Item]] da sua m\u00e3o e jogue-o <i>(pagando seu custo)</i>.\n[free] Descarte um ativo de [[Item]] em jogo: Ganhe 2 recursos.",
         "traits": "Aliado. Criminoso.",
         "slot": "Aliado"
     },
     {
         "code": "06327",
         "name": "Escopeta Recortada",
-        "text": "Usa (2 muni\u00e7\u00f5es).\n[action] Gaste 1 muni\u00e7\u00e3o: <b>Lute.<\/b> Em vez do seu dano padr\u00e3o, este ataque causa 1 de dano para cada ponto que voc\u00ea tiver sucesso (m\u00ednimo 1, m\u00e1ximo 6). Se voc\u00ea falhar e for causar dano a outro investigador, este ataque causa 1 de dano para cada ponto que voc\u00ea falhar (m\u00ednimo 1, m\u00e1ximo 6).",
+        "text": "Usa (2 muni\u00e7\u00f5es).\n[action] Gaste 1 muni\u00e7\u00e3o: <b>Lute.</b> Em vez do seu dano padr\u00e3o, este ataque causa 1 de dano para cada ponto que voc\u00ea tiver sucesso (m\u00ednimo 1, m\u00e1ximo 6). Se voc\u00ea falhar e for causar dano a outro investigador, este ataque causa 1 de dano para cada ponto que voc\u00ea falhar (m\u00ednimo 1, m\u00e1ximo 6).",
         "traits": "Item. Arma. Arma de Fogo. Il\u00edcito.",
         "slot": "M\u00e3o"
     },
@@ -46,27 +46,27 @@
     {
         "code": "06329",
         "name": "Trapezaedro Brilhante",
-        "text": "[reaction] Quando voc\u00ea for pagar o custo de uma carta de [[Magia]], esgote o Trapezaedro Brilhante: Em vez disso, teste [willpower] (X), onde X \u00e9 o custo em recursos da carta. Se voc\u00ea tiver sucesso, seu custo em recursos \u00e9 considerado pago. Se voc\u00ea falhar, cancele o jogo daquela carta sem pagar nenhum de seus custos <i>(incluindo seu custo de a\u00e7\u00e3o)<\/i>. Pelo restante da rodada, voc\u00ea n\u00e3o pode jogar c\u00f3pias daquela carta.",
+        "text": "[reaction] Quando voc\u00ea for pagar o custo de uma carta de [[Magia]], esgote o Trapezaedro Brilhante: Em vez disso, teste [willpower] (X), onde X \u00e9 o custo em recursos da carta. Se voc\u00ea tiver sucesso, seu custo em recursos \u00e9 considerado pago. Se voc\u00ea falhar, cancele o jogo daquela carta sem pagar nenhum de seus custos <i>(incluindo seu custo de a\u00e7\u00e3o)</i>. Pelo restante da rodada, voc\u00ea n\u00e3o pode jogar c\u00f3pias daquela carta.",
         "traits": "Item. Rel\u00edquia.",
         "slot": "Acess\u00f3rio"
     },
     {
         "code": "06330",
         "name": "Berloque do Pesadelo",
-        "text": "Limite de 1 por baralho.\n<b>For\u00e7ado<\/b> - Ap\u00f3s o Berloque do Pesadelo entrar em jogo: Procure 3 c\u00f3pias de Parasita dos Sonhos entre suas cartas vinculadas e anexe-as ao Berloque do Pesadelo. Quando o Berloque do Pesadelo sair de jogo, reserve cada Parasita dos Sonhos anexado, fora de jogo.\n[reaction] Quando voc\u00ea revelar uma ficha de caos [auto_fail], embaralhe um Parasita dos Sonhos anexado em seu baralho: Cancele aquela ficha.",
+        "text": "Limite de 1 por baralho.\n<b>For\u00e7ado</b> - Ap\u00f3s o Berloque do Pesadelo entrar em jogo: Procure 3 c\u00f3pias de Parasita dos Sonhos entre suas cartas vinculadas e anexe-as ao Berloque do Pesadelo. Quando o Berloque do Pesadelo sair de jogo, reserve cada Parasita dos Sonhos anexado, fora de jogo.\n[reaction] Quando voc\u00ea revelar uma ficha de caos [auto_fail], embaralhe um Parasita dos Sonhos anexado em seu baralho: Cancele aquela ficha.",
         "traits": "Item. Talism\u00e3. Amaldi\u00e7oado.",
         "slot": "Acess\u00f3rio"
     },
     {
         "code": "06331",
         "name": "Parasita dos Sonhos",
-        "text": "Vinculado (Berloque do Pesadelo).\nEnquanto Parasita dos Sonhos estiver na sua m\u00e3o, voc\u00ea deve comprometê-lo no pr\u00f3ximo teste de per\u00edcia que realizar, se puder.\nOs \u00edcones desta per\u00edcia subtraem do seu valor de per\u00edcia em vez de somar.\nSe este teste de per\u00edcia falhar, sofra 1 de dano e 1 de horror.",
+        "text": "Vinculado (Berloque do Pesadelo).\nEnquanto Parasita dos Sonhos estiver na sua m\u00e3o, voc\u00ea deve compromet\u00ea-lo no pr\u00f3ximo teste de per\u00edcia que realizar, se puder.\nOs \u00edcones desta per\u00edcia subtraem do seu valor de per\u00edcia em vez de somar.\nSe este teste de per\u00edcia falhar, sofra 1 de dano e 1 de horror.",
         "traits": "Maldi\u00e7\u00e3o."
     },
     {
         "code": "06332",
         "name": "Vasculhar",
-        "text": "[reaction] Ap\u00f3s voc\u00ea investigar com sucesso por 2 ou mais, esgote Vasculhar: Escolha uma carta de [[Item]] na sua pilha de descarte e adicione-a \u00e0 sua m\u00e3o ou jogue-a <i>(pagando seu custo)<\/i>.",
+        "text": "[reaction] Ap\u00f3s voc\u00ea investigar com sucesso por 2 ou mais, esgote Vasculhar: Escolha uma carta de [[Item]] na sua pilha de descarte e adicione-a \u00e0 sua m\u00e3o ou jogue-a <i>(pagando seu custo)</i>.",
         "traits": "Talento."
     }
 ]
