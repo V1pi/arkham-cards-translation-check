@@ -17,6 +17,8 @@ import config
 import card_data
 import text_utils
 import ocr_engine
+import recognition_service
+from settings_dialog import SettingsDialog
 
 
 # ---------------------------------------------------------------------------
@@ -55,21 +57,22 @@ class App(tk.Tk):
 
         # Estado
         self.cap = None
-        self.current_camera_index = config.CAMERA_INDEX
+        self.current_camera_index = config.get_setting("camera_index", 0)
         self.camera_rotation = 0  # 0, 90, 180, 270 graus
-        self.is_static_preview = False  # se True, exibe imagem fixa carregada de arquivo
+        self.is_static_preview = False  # se True, exibe imagem fixa carregada de arquivo/captura
         self.all_cards: dict = {}
         self.current_card: dict | None = None
         self.current_card_file: Path | None = None
         self._current_field_key: str | None = None
         self._is_updating_ui: bool = False
         self.captured_frame: np.ndarray | None = None
-        self.ocr_text_by_field: dict = {}   # campo → texto OCR classificado
+        self.ocr_text_by_field: dict = {}   # campo → texto OCR/LLM classificado
         self.json_fields: dict = {}          # campo → texto do JSON
 
         self._load_cards()
         self._build_ui()
         self._setup_shortcuts()
+        self._update_engine_status_label()
         self._open_camera(self.current_camera_index)
         self._update_camera_frame()
 
@@ -83,7 +86,7 @@ class App(tk.Tk):
     def _on_shortcut_capture(self, event=None):
         """Manipulador do atalho para capturar a imagem da câmera."""
         if str(self.btn_capture["state"]) != "disabled":
-            self._capture_and_ocr()
+            self._capture_and_process()
         return "break"
 
     # ------------------------------------------------------------------
@@ -112,8 +115,8 @@ class App(tk.Tk):
         left.columnconfigure(0, weight=1)
         left.rowconfigure(1, weight=1)
 
-        # Seletor e controles de câmera
-        cam_frame = ttk.LabelFrame(left, text="Câmera e Orientação", padding=6)
+        # Seletor e controles de câmera e motor
+        cam_frame = ttk.LabelFrame(left, text="Câmera, Orientação e Motor", padding=6)
         cam_frame.grid(row=0, column=0, sticky="ew", pady=(0, 4))
         cam_frame.columnconfigure(1, weight=1)
 
@@ -141,6 +144,16 @@ class App(tk.Tk):
         ttk.Button(cam_frame, text="🔄 Girar 90°", width=10,
                    command=self._rotate_camera_90).grid(row=1, column=2, pady=2)
 
+        # Linha 2: Motor de Reconhecimento ativo e Botão de Configurações
+        ttk.Label(cam_frame, text="Motor:").grid(row=2, column=0, sticky="w", padx=(0, 4), pady=2)
+        self.engine_status_var = tk.StringVar(value="...")
+        lbl_engine = ttk.Label(cam_frame, textvariable=self.engine_status_var,
+                               font=("TkDefaultFont", 9, "bold"), foreground="#007acc")
+        lbl_engine.grid(row=2, column=1, sticky="w", padx=(0, 4), pady=2)
+
+        ttk.Button(cam_frame, text="⚙️ Configurar", width=10,
+                   command=self._open_settings_dialog).grid(row=2, column=2, pady=2)
+
         self._refresh_camera_list()
 
         # Canvas do vídeo / prévia
@@ -155,8 +168,8 @@ class App(tk.Tk):
         btn_frame.columnconfigure(0, weight=1)
         btn_frame.columnconfigure(1, weight=1)
 
-        self.btn_capture = ttk.Button(btn_frame, text="📷 CAPTURAR (Cmd+Espaço)",
-                                       command=self._capture_and_ocr)
+        self.btn_capture = ttk.Button(btn_frame, text="📷 CAPTURAR (Shift+Enter)",
+                                       command=self._capture_and_process)
         self.btn_capture.grid(row=0, column=0, sticky="ew", padx=(0, 2), pady=2)
 
         self.btn_load_file = ttk.Button(btn_frame, text="📁 BUSCAR CARTA NO PC",
@@ -210,8 +223,8 @@ class App(tk.Tk):
         self.txt_json.grid(row=3, column=0, sticky="nsew", pady=2)
         right.rowconfigure(3, weight=1)
 
-        # Texto OCR
-        ttk.Label(right, text="Texto oficial (OCR):").grid(row=4, column=0, sticky="w")
+        # Texto OCR / LLM
+        ttk.Label(right, text="Texto oficial reconhecido:").grid(row=4, column=0, sticky="w")
         self.txt_ocr = scrolledtext.ScrolledText(right, height=6, wrap=tk.WORD,
                                                    font=("TkFixedFont", 9))
         self.txt_ocr.grid(row=5, column=0, sticky="nsew", pady=2)
@@ -222,7 +235,7 @@ class App(tk.Tk):
         # Nota de classificação de campos
         self.lbl_classify = ttk.Label(
             right,
-            text="💡 Ajuste o texto OCR acima se necessário antes de aceitar. A comparação atualiza em tempo real.",
+            text="💡 Ajuste o texto acima se necessário antes de aceitar. A comparação atualiza em tempo real.",
             foreground="#888", wraplength=400
         )
         self.lbl_classify.grid(row=6, column=0, sticky="w")
@@ -260,6 +273,30 @@ class App(tk.Tk):
         ttk.Button(btn_row, text="✏️  EDITAR", command=self._action_edit).pack(side="left", padx=4)
         ttk.Button(btn_row, text="⏭  MANTER", command=self._action_keep).pack(side="left", padx=4)
         ttk.Button(btn_row, text="⏩ PRÓXIMA", command=self._action_next).pack(side="left", padx=4)
+
+    # ------------------------------------------------------------------
+    # Configurações & Status do Motor
+    # ------------------------------------------------------------------
+    def _open_settings_dialog(self):
+        """Abre a janela modal de configurações."""
+        SettingsDialog(self, on_save_callback=self._on_settings_saved)
+
+    def _on_settings_saved(self, new_settings: dict):
+        """Atualiza a UI após salvar as configurações."""
+        self._update_engine_status_label()
+
+    def _update_engine_status_label(self):
+        mode = config.get_setting("recognition_mode", "ocr")
+        if mode == "llm":
+            provider = config.get_setting("llm_provider", "gemini")
+            if provider == "gemini":
+                model = config.get_setting("gemini_model", "gemini-3.7-flash")
+                self.engine_status_var.set(f"🤖 Gemini ({model})")
+            else:
+                model = config.get_setting("ollama_model", "llama3.2-vision")
+                self.engine_status_var.set(f"🦙 Ollama ({model})")
+        else:
+            self.engine_status_var.set("🔍 PaddleOCR (Local)")
 
     # ------------------------------------------------------------------
     # Câmera e Renderização
@@ -358,7 +395,7 @@ class App(tk.Tk):
         self.after(REFRESH_MS, self._update_camera_frame)
 
     # ------------------------------------------------------------------
-    # Captura, Carregamento de Arquivo e OCR
+    # Captura, Carregamento de Arquivo e Reconhecimento
     # ------------------------------------------------------------------
     def _set_processing_state(self, processing: bool, status_msg: str = ""):
         state = "disabled" if processing else "normal"
@@ -368,33 +405,36 @@ class App(tk.Tk):
         if status_msg:
             self.status_var.set(status_msg)
 
-    def _capture_and_ocr(self):
-        """Captura o frame atual da câmera, congela o preview e roda o OCR em background."""
+    def _capture_and_process(self):
+        """Captura o frame atual da câmera, congela o preview e executa o reconhecimento."""
         frame = getattr(self, '_last_frame', None)
         if frame is None:
             messagebox.showwarning("Câmera", "Nenhum frame disponível. Verifique a câmera.")
             return
 
-        # Congela o preview com a imagem capturada para mostrar o que está sendo processado
         self.is_static_preview = True
         self.captured_frame = frame.copy()
         self._display_frame_on_canvas(self.captured_frame)
-        self._set_processing_state(True, "⏳ Imagem capturada! Processando OCR... (clique ↻ Atualizar para retomar a câmera)")
+
+        mode = config.get_setting("recognition_mode", "ocr")
+        provider = config.get_setting("llm_provider", "gemini")
+        engine_label = f"LLM ({provider.title()})" if mode == "llm" else "PaddleOCR"
+        self._set_processing_state(True, f"⏳ Imagem capturada! Analisando com {engine_label}... aguarde.")
 
         def run():
             try:
-                code = ocr_engine.extract_card_number(self.captured_frame)
-                full_text = ocr_engine.extract_text_from_image(self.captured_frame)
-                self.after(0, lambda: self._on_ocr_done(code, full_text))
-            except Exception as e:
-                self.after(0, lambda: self._on_ocr_error(str(e)))
+                code, fields, engine_name = recognition_service.recognize_card(self.captured_frame)
+                self.after(0, lambda c=code, f=fields, e=engine_name: self._on_recognition_done(c, f, e))
+            except Exception as exc:
+                err_msg = str(exc)
+                self.after(0, lambda msg=err_msg: self._on_recognition_error(msg))
             finally:
                 self.after(0, lambda: self._set_processing_state(False))
 
         threading.Thread(target=run, daemon=True).start()
 
     def _load_image_from_file(self):
-        """Abre diálogo para selecionar arquivo de imagem e executa OCR."""
+        """Abre diálogo para selecionar arquivo de imagem e executa o reconhecimento."""
         filepath = filedialog.askopenfilename(
             title="Buscar foto da carta no computador",
             filetypes=[
@@ -421,27 +461,30 @@ class App(tk.Tk):
         self._display_frame_on_canvas(img)
 
         filename = Path(filepath).name
-        self._set_processing_state(True, f"⏳ Processando OCR no arquivo '{filename}'... aguarde.")
+        mode = config.get_setting("recognition_mode", "ocr")
+        provider = config.get_setting("llm_provider", "gemini")
+        engine_label = f"LLM ({provider.title()})" if mode == "llm" else "PaddleOCR"
+        self._set_processing_state(True, f"⏳ Analisando '{filename}' com {engine_label}... aguarde.")
 
         def run():
             try:
-                code = ocr_engine.extract_card_number(img)
-                full_text = ocr_engine.extract_text_from_image(img)
-                self.after(0, lambda: self._on_ocr_done(code, full_text))
-            except Exception as e:
-                self.after(0, lambda: self._on_ocr_error(str(e)))
+                code, fields, engine_name = recognition_service.recognize_card(img)
+                self.after(0, lambda c=code, f=fields, e=engine_name: self._on_recognition_done(c, f, e))
+            except Exception as exc:
+                err_msg = str(exc)
+                self.after(0, lambda msg=err_msg: self._on_recognition_error(msg))
             finally:
                 self.after(0, lambda: self._set_processing_state(False))
 
         threading.Thread(target=run, daemon=True).start()
 
-    def _on_ocr_done(self, code: str | None, full_text: str):
+    def _on_recognition_done(self, code: str | None, fields_or_raw: dict, engine_name: str):
         if not code:
-            # Não reconheceu o código — pede confirmação manual
+            pack_prefix = config.get_setting("pack_prefix", "06")
             code = simpledialog.askstring(
                 "Código não reconhecido",
-                "O OCR não identificou o código da carta automaticamente.\n"
-                f"Digite o código manualmente (ex.: {config.PACK_PREFIX}026):",
+                f"O motor ({engine_name}) não identificou o código da carta automaticamente.\n"
+                f"Digite o código manualmente (ex.: {pack_prefix}026):",
                 parent=self
             )
 
@@ -456,17 +499,23 @@ class App(tk.Tk):
             messagebox.showwarning("Não encontrada", f"Código '{code}' não está nos arquivos de tradução.")
             return
 
-        self._load_card(entry, full_text)
+        if "_raw_ocr" in fields_or_raw:
+            self._load_card(entry, full_ocr_text=fields_or_raw["_raw_ocr"])
+        else:
+            self._load_card_from_llm(entry, fields_or_raw)
 
-    def _on_ocr_error(self, error: str):
-        self.status_var.set(f"❌ Erro no OCR: {error}")
-        messagebox.showerror("Erro OCR", f"Ocorreu um erro durante o OCR:\n{error}")
+        self.status_var.set(f"✅ Carta {code} — {entry['card'].get('name')} reconhecida via {engine_name}.")
+
+    def _on_recognition_error(self, error: str):
+        self.status_var.set(f"❌ Erro no reconhecimento: {error}")
+        messagebox.showerror("Erro de Reconhecimento", f"Ocorreu um erro durante a análise:\n{error}")
 
     def _choose_card_manually(self):
         """Abre diálogo para o usuário digitar o código da carta manualmente."""
+        pack_prefix = config.get_setting("pack_prefix", "06")
         code = simpledialog.askstring(
             "Escolher Carta",
-            f"Digite o código da carta (ex.: {config.PACK_PREFIX}026):",
+            f"Digite o código da carta (ex.: {pack_prefix}026):",
             parent=self
         )
         if not code:
@@ -478,14 +527,14 @@ class App(tk.Tk):
             messagebox.showwarning("Não encontrada", f"Código '{code}' não está nos arquivos de tradução.")
             return
 
-        # Carrega carta sem OCR — campos OCR ficam em branco para o usuário preencher
+        # Carrega carta em branco para o usuário preencher/conferir
         self._load_card(entry, full_ocr_text="")
 
     # ------------------------------------------------------------------
     # Carregamento da carta na UI
     # ------------------------------------------------------------------
     def _load_card(self, entry: dict, full_ocr_text: str):
-        """Preenche a UI com os dados da carta e o texto OCR."""
+        """Preenche a UI com os dados da carta e o texto OCR (com heurísticas de classificação)."""
         card = entry["card"]
         self.current_card = card
         self.current_card_file = entry["file"]
@@ -493,10 +542,9 @@ class App(tk.Tk):
         # Campos do JSON
         self.json_fields = card_data.get_card_text_fields(card)
 
-        # Classifica o texto OCR nos campos
-        raw_ocr_by_field = _classify_ocr_text(full_ocr_text, self.json_fields)
+        # Classifica o texto OCR nos campos e infere símbolos
+        raw_ocr_by_field = recognition_service.classify_ocr_text(full_ocr_text, self.json_fields)
 
-        # Infere e posiciona os símbolos [token] do JSON dentro do texto OCR para cada campo
         self.ocr_text_by_field = {}
         for field, raw_text in raw_ocr_by_field.items():
             json_text = self.json_fields.get(field, "")
@@ -519,7 +567,33 @@ class App(tk.Tk):
             self.field_combo.current(0)
             self._show_field(available_fields[0])
 
-        self.status_var.set(f"✅ Carta {card.get('code')} — {card.get('name')} carregada.")
+    def _load_card_from_llm(self, entry: dict, fields_dict: dict):
+        """Preenche a UI com os dados da carta e os campos já estruturados pelo LLM."""
+        card = entry["card"]
+        self.current_card = card
+        self.current_card_file = entry["file"]
+
+        # Campos do JSON
+        self.json_fields = card_data.get_card_text_fields(card)
+
+        # Campos extraídos e classificados pelo LLM
+        self.ocr_text_by_field = {}
+        for field in self.json_fields:
+            self.ocr_text_by_field[field] = fields_dict.get(field, "")
+
+        # Atualiza labels de informação
+        self.lbl_code.config(text=card.get("code", "?"))
+        self.lbl_name.config(text=card.get("name", "?"))
+
+        # Popula o seletor de campo com os campos disponíveis
+        available_fields = list(self.json_fields.keys())
+        field_labels = [f"{FIELD_LABELS.get(f, f)}" for f in available_fields]
+        self.field_combo["values"] = field_labels
+        self._field_keys = available_fields
+
+        if available_fields:
+            self.field_combo.current(0)
+            self._show_field(available_fields[0])
 
     def _on_field_selected(self, event=None):
         idx = self.field_combo.current()
@@ -599,7 +673,7 @@ class App(tk.Tk):
         """Foca no campo OCR para edição manual."""
         self.txt_ocr.focus_set()
         self.txt_ocr.see(tk.END)
-        self.status_var.set("✏️  Edite o texto no campo 'Texto oficial (OCR)' — a comparação atualiza em tempo real.")
+        self.status_var.set("✏️  Edite o texto no campo 'Texto oficial reconhecido' — a comparação atualiza em tempo real.")
 
     def _on_ocr_edit(self, event=None):
         if getattr(self, '_is_updating_ui', False):
@@ -649,98 +723,6 @@ class App(tk.Tk):
         if self.cap and self.cap.isOpened():
             self.cap.release()
         super().destroy()
-
-
-# ---------------------------------------------------------------------------
-# Heurísticas de classificação de campos OCR
-# ---------------------------------------------------------------------------
-def _classify_ocr_text(full_text: str, json_fields: dict) -> dict:
-    """
-    Tenta classificar o texto OCR corrido nos campos do JSON usando heurísticas.
-
-    Estratégia:
-    - O texto da carta tem uma ordem visual típica:
-        1. Título (linha curta, topo)
-        2. Traits (curtos, terminam com ponto, ex. "Magia." / "Item. Arma.")
-        3. Texto do corpo (parágrafo principal)
-        4. Flavor (itálico — geralmente no fim da carta ou com aspas)
-
-    Retorna dict { campo: texto_ocr_classificado }.
-    O usuário pode ajustar pelo campo OCR editável.
-    """
-    if not full_text.strip():
-        return {field: "" for field in json_fields}
-
-    lines = [l.strip() for l in full_text.split('\n') if l.strip()]
-    result = {}
-
-    # --- Nome ---
-    if "name" in json_fields:
-        name_candidate = ""
-        for line in lines[:5]:
-            # Ignora números isolados ou palavras genéricas de topo como EVENTO/ATIVO
-            if line.upper() in {"EVENTO", "ATIVO", "PERÍCIA", "PERICIA", "FRAQUEZA", "TREACHERY"}:
-                continue
-            if len(line) < 50 and not line.endswith('.') and not line.isdigit():
-                name_candidate = line
-                break
-        result["name"] = name_candidate
-
-    # --- Traits ---
-    if "traits" in json_fields:
-        traits_candidate = ""
-        for line in lines:
-            if line.endswith('.') and len(line) < 60:
-                words = line.rstrip('.').split('.')
-                if all(w.strip() and w.strip()[0].isupper() for w in words if w.strip()):
-                    traits_candidate = line
-                    break
-        result["traits"] = traits_candidate
-
-    # --- Texto principal ---
-    if "text" in json_fields:
-        exclude = {
-            result.get("name", ""),
-            result.get("traits", ""),
-            "EVENTO", "ATIVO", "PERÍCIA", "PERICIA", "FRAQUEZA"
-        } - {""}
-        text_lines = [l for l in lines if l not in exclude and not l.isdigit()]
-
-        flavor_start = len(text_lines)
-        if "flavor" in json_fields:
-            for i, line in enumerate(text_lines):
-                if line.startswith('"') or line.startswith('“') or line.startswith('*'):
-                    flavor_start = i
-                    break
-
-            expected_flavor = json_fields.get("flavor", "")
-            if flavor_start == len(text_lines) and expected_flavor:
-                flavor_chars = len(expected_flavor)
-                acc = 0
-                for i in range(len(text_lines) - 1, -1, -1):
-                    acc += len(text_lines[i])
-                    if acc >= flavor_chars * 0.6:
-                        flavor_start = i
-                        break
-
-        result["text"] = '\n'.join(text_lines[:flavor_start])
-
-        if "flavor" in json_fields:
-            result["flavor"] = '\n'.join(text_lines[flavor_start:])
-
-    # --- Subtítulo ---
-    if "subname" in json_fields:
-        result["subname"] = ""
-
-    # --- Verso ---
-    for back_field in ["back_text", "back_flavor"]:
-        if back_field in json_fields:
-            result[back_field] = ""
-
-    for field in json_fields:
-        result.setdefault(field, "")
-
-    return result
 
 
 # ---------------------------------------------------------------------------

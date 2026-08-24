@@ -5,11 +5,11 @@ Ferramenta local em Python para conferir traduções portuguesas de cartas físi
 ## O que faz
 
 1. Abre a webcam e mostra o vídeo ao vivo (com controle de orientação: Paisagem ou Retrato 90°/180°/270°)
-2. Você pode capturar da câmera ou clicar em **BUSCAR CARTA NO PC** para selecionar uma imagem salva no computador
-3. O programa faz OCR da carta (via PaddleOCR v3 em português)
-4. Identifica automaticamente o código da carta (número no canto inferior direito, ex.: 26 → 06026)
+2. Permite escolher o motor de análise: **PaddleOCR (Local)** ou **LLM Multimodal (Google Gemini ou Ollama)** via modal de configurações (`⚙️ Configurar`)
+3. Você pode capturar da câmera (`Shift+Enter`) ou clicar em **BUSCAR CARTA NO PC** para selecionar uma imagem salva no computador
+4. O motor analisa a imagem, identifica automaticamente o código da carta (ex.: `06026`) e classifica os campos (`name`, `traits`, `text`, `flavor`, etc.)
 5. Busca a carta correspondente nos arquivos JSON em `translations/pt/pack/tde/`
-6. Compara campo a campo (nome, traits, texto, flavor, etc.) a tradução do JSON com o texto oficial OCR
+6. Compara campo a campo a tradução do JSON com o texto oficial reconhecido
 7. Mostra as diferenças com highlighting colorido
 8. Você escolhe: **ACEITAR** (salva no JSON preservando símbolos `[reaction]`, `[action]`, etc.), **EDITAR** (corrige antes de salvar), **MANTER** ou **PRÓXIMA CARTA**
 
@@ -29,8 +29,6 @@ brew install python-tk@3.13
 uv sync
 ```
 
-Na primeira execução o PaddleOCR baixa os modelos automaticamente (~100–300 MB).
-
 ---
 
 ## Execução
@@ -38,6 +36,12 @@ Na primeira execução o PaddleOCR baixa os modelos automaticamente (~100–300 
 ```bash
 uv run python main.py
 ```
+
+### Configuração de LLM (Opcional)
+Clique no botão **`⚙️ Configurar`** na interface para alternar entre:
+- **PaddleOCR (Padrão / Local)**: Execução 100% offline via CPU.
+- **Google Gemini**: Insira sua chave de API (ou exporte `export GEMINI_API_KEY="..."`) e selecione o modelo (ex.: `gemini-3.7-flash`).
+- **Ollama**: Conecte ao seu Ollama local (ex.: `http://localhost:11434`) com modelos de visão como `llama3.2-vision` ou `llava`.
 
 ### Atalhos de teclado
 - **`Shift + Enter`**: Captura a foto da câmera e congela a imagem para OCR.
