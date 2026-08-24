@@ -32,12 +32,12 @@ class SettingsDialog(tk.Toplevel):
         pad_opts = {"padx": 10, "pady": 6}
 
         # 1. Seletor do Motor
-        engine_frame = ttk.LabelFrame(self, text="1. Modo de Reconhecimento", padding=8)
-        engine_frame.pack(fill="x", **pad_opts)
+        self.engine_frame = ttk.LabelFrame(self, text="1. Modo de Reconhecimento", padding=8)
+        self.engine_frame.pack(fill="x", **pad_opts)
 
         self.mode_var = tk.StringVar(value="ocr")
         ttk.Radiobutton(
-            engine_frame,
+            self.engine_frame,
             text="PaddleOCR (Reconhecimento de Texto Local via CPU)",
             variable=self.mode_var,
             value="ocr",
@@ -45,16 +45,15 @@ class SettingsDialog(tk.Toplevel):
         ).pack(anchor="w", pady=2)
 
         ttk.Radiobutton(
-            engine_frame,
+            self.engine_frame,
             text="LLM Multimodal (Visão Inteligente + Auto-Classificação de Símbolos)",
             variable=self.mode_var,
             value="llm",
             command=self._update_visibility,
         ).pack(anchor="w", pady=2)
 
-        # 2. Configurações de LLM
+        # 2. Configurações de LLM (visível apenas quando LLM estiver ativo)
         self.llm_frame = ttk.LabelFrame(self, text="2. Configurações de LLM", padding=8)
-        self.llm_frame.pack(fill="x", **pad_opts)
 
         ttk.Label(self.llm_frame, text="Provedor:").grid(row=0, column=0, sticky="w", pady=4)
         self.provider_var = tk.StringVar(value="gemini")
@@ -123,16 +122,16 @@ class SettingsDialog(tk.Toplevel):
         self.btn_test_ollama.grid(row=2, column=0, columnspan=2, sticky="e", pady=4)
 
         # 3. Configurações Gerais
-        general_frame = ttk.LabelFrame(self, text="3. Configurações do Pacote", padding=8)
-        general_frame.pack(fill="x", **pad_opts)
-        general_frame.columnconfigure(1, weight=1)
+        self.general_frame = ttk.LabelFrame(self, text="3. Configurações do Pacote", padding=8)
+        self.general_frame.pack(fill="x", **pad_opts)
+        self.general_frame.columnconfigure(1, weight=1)
 
-        ttk.Label(general_frame, text="Prefixo do Ciclo:").grid(row=0, column=0, sticky="w", pady=2)
+        ttk.Label(self.general_frame, text="Prefixo do Ciclo:").grid(row=0, column=0, sticky="w", pady=2)
         self.pack_prefix_var = tk.StringVar(value="06")
-        ttk.Entry(general_frame, textvariable=self.pack_prefix_var, width=8).grid(
+        ttk.Entry(self.general_frame, textvariable=self.pack_prefix_var, width=8).grid(
             row=0, column=1, sticky="w", padx=4, pady=2
         )
-        ttk.Label(general_frame, text="(TDE = 06, Forgotten Age = 04, etc.)", foreground="#888").grid(
+        ttk.Label(self.general_frame, text="(TDE = 06, Forgotten Age = 04, etc.)", foreground="#888").grid(
             row=0, column=2, sticky="w"
         )
 
@@ -172,13 +171,12 @@ class SettingsDialog(tk.Toplevel):
     def _update_visibility(self):
         mode = self.mode_var.get()
         if mode == "llm":
-            for child in self.llm_frame.winfo_children():
-                if hasattr(child, "state"):
-                    child.state(["!disabled"])
+            self.llm_frame.pack(fill="x", after=self.engine_frame, padx=10, pady=6)
             self._on_provider_changed()
+            self.geometry("520x560")
         else:
-            self.gemini_box.grid_remove()
-            self.ollama_box.grid_remove()
+            self.llm_frame.pack_forget()
+            self.geometry("520x290")
 
     def _on_provider_changed(self, event=None):
         if self.mode_var.get() != "llm":
