@@ -8,6 +8,7 @@ import config
 import ocr_engine
 import llm_engine
 import text_utils
+import card_detector
 
 
 def recognize_card(
@@ -16,33 +17,29 @@ def recognize_card(
 ) -> tuple[str | None, dict[str, str], str]:
     """
     Processa a imagem da carta usando o motor selecionado (OCR ou LLM).
-
-    Retorna uma tupla:
-      (code, fields_dict, engine_display_name)
-
-    onde:
-      - code: código da carta identificado (ex.: '06026') ou None
-      - fields_dict: dicionário com os campos classificados {'name': ..., 'text': ..., ...}
-      - engine_display_name: nome descritivo do motor utilizado (ex.: 'PaddleOCR', 'Gemini', 'Ollama')
+    Garante o recorte e alinhamento da carta antes da análise.
     """
+    # Recorta e alinha a carta automaticamente se houver contorno detectado
+    processed_frame = card_detector.crop_and_warp_card(frame)
+
     mode = config.get_setting("recognition_mode", "ocr")
 
     if mode == "llm":
         provider = config.get_setting("llm_provider", "gemini")
         if provider == "gemini":
             model = config.get_setting("gemini_model", "gemini-3.7-flash")
-            result = llm_engine.analyze_with_gemini(frame)
+            result = llm_engine.analyze_with_gemini(processed_frame)
             return result.get("code"), result.get("fields", {}), f"Google Gemini ({model})"
         elif provider == "ollama":
             model = config.get_setting("ollama_model", "llama3.2-vision")
-            result = llm_engine.analyze_with_ollama(frame)
+            result = llm_engine.analyze_with_ollama(processed_frame)
             return result.get("code"), result.get("fields", {}), f"Ollama ({model})"
         else:
             raise ValueError(f"Provedor LLM desconhecido: '{provider}'")
 
     # Modo padrão: PaddleOCR
-    code = ocr_engine.extract_card_number(frame)
-    full_text = ocr_engine.extract_text_from_image(frame)
+    code = ocr_engine.extract_card_number(processed_frame)
+    full_text = ocr_engine.extract_text_from_image(processed_frame)
 
     # Classifica o texto usando heurísticas se conhecermos os campos do JSON
     if known_json_fields:

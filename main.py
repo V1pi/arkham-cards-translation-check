@@ -18,6 +18,7 @@ import card_data
 import text_utils
 import ocr_engine
 import recognition_service
+import card_detector
 from settings_dialog import SettingsDialog
 
 
@@ -348,13 +349,20 @@ class App(tk.Tk):
                 break
 
     def _open_camera(self, index: int):
-        """Fecha a câmera atual e abre a nova."""
+        """Fecha a câmera atual e abre a nova com alta resolução e foco automático."""
         if self.cap and self.cap.isOpened():
             self.cap.release()
         self.cap = cv2.VideoCapture(index)
         self.current_camera_index = index
         if not self.cap.isOpened():
             self.status_var.set(f"⚠️  Câmera {index} não encontrada.")
+            return
+
+        # Solicita resolução Full HD (1920x1080) ou máxima suportada para capturar texto nítido
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        # Habilita foco automático se suportado
+        self.cap.set(cv2.CAP_PROP_AUTOFOCUS, 1)
 
     def _display_frame_on_canvas(self, frame_bgr: np.ndarray):
         """Renderiza uma imagem no canvas mantendo aspect ratio e centralizado."""
@@ -379,7 +387,7 @@ class App(tk.Tk):
         self.cam_canvas.create_image(0, 0, anchor="nw", image=imgtk)
 
     def _update_camera_frame(self):
-        """Loop de atualização do frame da câmera no canvas (usa after)."""
+        """Loop de atualização do frame da câmera no canvas com feedback visual de contorno."""
         if not self.is_static_preview and self.cap and self.cap.isOpened():
             ret, frame = self.cap.read()
             if ret:
@@ -391,8 +399,14 @@ class App(tk.Tk):
                 elif self.camera_rotation == 270:
                     frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
-                self._last_frame = frame  # guarda para captura já na orientação correta
-                self._display_frame_on_canvas(frame)
+                self._last_frame = frame  # guarda frame original limpo para captura
+
+                # Detecta contorno da carta para desenhar a sobreposição visual na tela
+                corners = card_detector.detect_card_quad(frame)
+                self._last_detected_corners = corners
+                display_frame = card_detector.draw_card_overlay(frame, corners) if corners is not None else frame
+
+                self._display_frame_on_canvas(display_frame)
 
         self.after(REFRESH_MS, self._update_camera_frame)
 
@@ -408,20 +422,28 @@ class App(tk.Tk):
             self.status_var.set(status_msg)
 
     def _capture_and_process(self):
-        """Captura o frame atual da câmera, congela o preview e executa o reconhecimento."""
+        """Captura o frame atual da câmera, recorta a carta se detectada, congela o preview e executa o reconhecimento."""
         frame = getattr(self, '_last_frame', None)
         if frame is None:
             messagebox.showwarning("Câmera", "Nenhum frame disponível. Verifique a câmera.")
             return
 
+        corners = getattr(self, '_last_detected_corners', None)
+
+        # Recorta a carta com correção de perspectiva se contorno foi identificado
+        if corners is not None:
+            cropped = card_detector.crop_and_warp_card(frame, corners)
+        else:
+            cropped = card_detector.crop_and_warp_card(frame)
+
         self.is_static_preview = True
-        self.captured_frame = frame.copy()
+        self.captured_frame = cropped.copy()
         self._display_frame_on_canvas(self.captured_frame)
 
         mode = config.get_setting("recognition_mode", "ocr")
         provider = config.get_setting("llm_provider", "gemini")
         engine_label = f"LLM ({provider.title()})" if mode == "llm" else "PaddleOCR"
-        self._set_processing_state(True, f"⏳ Imagem capturada! Analisando com {engine_label}... aguarde.")
+        self._set_processing_state(True, f"⏳ Carta enquadrada e capturada! Analisando com {engine_label}... aguarde.")
 
         def run():
             try:
@@ -436,7 +458,7 @@ class App(tk.Tk):
         threading.Thread(target=run, daemon=True).start()
 
     def _load_image_from_file(self):
-        """Abre diálogo para selecionar arquivo de imagem e executa o reconhecimento."""
+        """Abre diálogo para selecionar arquivo de imagem, recorta a carta se detectada e executa o reconhecimento."""
         filepath = filedialog.askopenfilename(
             title="Buscar foto da carta no computador",
             filetypes=[
@@ -458,9 +480,12 @@ class App(tk.Tk):
             messagebox.showerror("Erro ao carregar imagem", f"Não foi possível abrir o arquivo:\n{e}")
             return
 
+        # Recorta automaticamente a carta se houver fundo ao redor
+        cropped = card_detector.crop_and_warp_card(img)
+
         self.is_static_preview = True
-        self.captured_frame = img.copy()
-        self._display_frame_on_canvas(img)
+        self.captured_frame = cropped.copy()
+        self._display_frame_on_canvas(self.captured_frame)
 
         filename = Path(filepath).name
         mode = config.get_setting("recognition_mode", "ocr")
@@ -470,7 +495,7 @@ class App(tk.Tk):
 
         def run():
             try:
-                code, fields, engine_name = recognition_service.recognize_card(img)
+                code, fields, engine_name = recognition_service.recognize_card(self.captured_frame)
                 self.after(0, lambda c=code, f=fields, e=engine_name: self._on_recognition_done(c, f, e))
             except Exception as exc:
                 err_msg = str(exc)
