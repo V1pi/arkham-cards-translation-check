@@ -87,7 +87,7 @@ class SettingsDialog(tk.Toplevel):
         self.gemini_model_combo = ttk.Combobox(
             self.gemini_box,
             textvariable=self.gemini_model_var,
-            values=["gemini-3.7-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.5-flash"],
+            values=["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash"],
         )
         self.gemini_model_combo.grid(row=1, column=1, sticky="ew", padx=4, pady=2)
 
@@ -127,7 +127,7 @@ class SettingsDialog(tk.Toplevel):
         self.openai_model_combo = ttk.Combobox(
             self.openai_box,
             textvariable=self.openai_model_var,
-            values=["gpt-4o", "gpt-4o-mini", "gpt-4-turbo"],
+            values=["gpt-4-turbo", "gpt-4o", "gpt-4o-mini"],
         )
         self.openai_model_combo.grid(row=2, column=1, sticky="ew", padx=4, pady=2)
 

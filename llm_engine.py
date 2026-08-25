@@ -413,25 +413,9 @@ def fetch_gemini_models(api_key: str) -> tuple[bool, list[str], str]:
                     if not name.endswith("-tts") and "embedding" not in name:
                         models.append(name)
 
-            def model_priority(name: str):
-                score = 0
-                if "3.7" in name: score += 70
-                elif "3.6" in name: score += 60
-                elif "3.5" in name: score += 50
-                elif "3.0" in name: score += 40
-                elif "2.5" in name: score += 30
-                elif "2.0" in name: score += 20
-                elif "1.5" in name: score += 10
-
-                if "flash" in name: score += 15
-                if "pro" in name: score += 10
-                if "latest" in name: score += 5
-                if "preview" in name or "experimental" in name: score -= 10
-                return (-score, name)
-
-            models.sort(key=model_priority)
+            models.sort(key=str.lower)
             if not models:
-                models = ["gemini-3.7-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.5-flash"]
+                models = ["gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-3.6-flash", "gemini-3.7-flash"]
 
             return True, models, f"{len(models)} modelos carregados da API do Gemini."
     except urllib.error.HTTPError as e:
@@ -471,20 +455,9 @@ def fetch_openai_models(openai_url: str, api_key: str = "") -> tuple[bool, list[
                 elif isinstance(item, str):
                     models.append(item)
 
-            def openai_priority(name: str):
-                score = 0
-                n = name.lower()
-                if "gpt-4o" in n: score += 50
-                elif "gpt-4" in n: score += 40
-                elif "claude" in n: score += 35
-                elif "qwen" in n: score += 30
-                elif "llama" in n: score += 25
-                elif "vision" in n or "vl" in n: score += 20
-                return (-score, name)
-
-            models.sort(key=openai_priority)
+            models.sort(key=str.lower)
             if not models:
-                models = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo"]
+                models = ["gpt-4-turbo", "gpt-4o", "gpt-4o-mini"]
             return True, models, f"{len(models)} modelos carregados da API OpenAI Compatible."
     except urllib.error.HTTPError as e:
         err = e.read().decode("utf-8", errors="ignore")
@@ -507,6 +480,7 @@ def fetch_ollama_models(ollama_url: str) -> tuple[bool, list[str], str]:
             data = json.loads(resp.read().decode("utf-8"))
             raw_models = data.get("models", [])
             models = [m.get("name") for m in raw_models if m.get("name")]
+            models.sort(key=str.lower)
             if not models:
                 return False, [], "Nenhum modelo encontrado no Ollama local."
             return True, models, f"{len(models)} modelo(s) encontrado(s) no Ollama."
