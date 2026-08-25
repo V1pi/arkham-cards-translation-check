@@ -48,7 +48,7 @@ def recognize_card(
     # Classifica o texto usando heurísticas se conhecermos os campos do JSON
     if known_json_fields:
         classified = classify_ocr_text(full_text, known_json_fields)
-        # Aplica inferência de símbolos
+        # Aplica inferência de símbolos para o PaddleOCR
         final_fields = {}
         for f, raw in classified.items():
             j_val = known_json_fields.get(f, "")

@@ -27,8 +27,8 @@
     },
     {
         "code": "06114",
-        "name": "Rastreado",
-        "text": "<b>Investigue.<\/b> Escolha um inimigo em seu local. Voc\u00ea recebe +1 [intellect] para esta investiga\u00e7\u00e3o para cada dano sobre o inimigo escolhido (at\u00e9 um m\u00e1ximo de +5 [intellect]). Se voc\u00ea tiver sucesso, descubra 1 pista adicional neste local. Esta a\u00e7\u00e3o n\u00e3o provoca ataques de oportunidade do inimigo escolhido.",
+        "name": "Perseguido",
+        "text": "<b>Investigue.</b> Escolha um inimigo em seu local. Voc\u00ea recebe +1 [intellect] nesta investiga\u00e7\u00e3o para cada dano no inimigo escolhido (at\u00e9 um m\u00e1ximo de +5 [intellect]). Se voc\u00ea tiver sucesso, descubra 1 pista adicional nesse local. Esta a\u00e7\u00e3o n\u00e3o provoca ataques de oportunidade do inimigo escolhido.",
         "traits": "T\u00e1tica."
     },
     {
@@ -50,7 +50,7 @@
         "code": "06117",
         "flavor": "Um futuro macabro se apresenta diante de voc\u00ea.\nVoc\u00ea vai se afastar? Ou vai abra\u00e7\u00e1-lo?",
         "name": "Ler os Sinais",
-        "text": "<b>Investigue.<\/b> Adicione o seu valor de [willpower] ao seu valor de per\u00edcia para esta investiga\u00e7\u00e3o. Voc\u00ea pode ignorar qualquer efeito ou palavra-chave em seu local que seria ativado durante esta investiga\u00e7\u00e3o. Se voc\u00ea tiver sucesso, descubra 1 pista adicional neste local.",
+        "text": "<b>Investigue.</b> Adicione o seu valor de [willpower] ao seu valor de per\u00edcia para esta investiga\u00e7\u00e3o. Voc\u00ea pode ignorar qualquer efeito ou palavra-chave em seu local que seria ativado durante esta investiga\u00e7\u00e3o. Se voc\u00ea tiver sucesso, descubra 1 pista adicional neste local.",
         "traits": "Magia."
     },
     {

@@ -120,12 +120,13 @@ def build_diff_html_segments(json_text: str, ocr_text: str) -> list[tuple[str, s
 
 def apply_ocr_to_json(json_text: str, ocr_text: str) -> str:
     """
-    Inferência inteligente de símbolos e aplicação do OCR ao JSON.
+    Inferência inteligente de símbolos e aplicação do OCR ao JSON (para OCR tradicional).
     Preserva a formatação/quebras de linha e posiciona os [símbolos] do JSON
     no local contextual correspondente do texto OCR.
+    Se o ocr_text já contiver os símbolos (ex.: vindo de LLM), não os duplica.
     """
     if not json_text or not ocr_text:
-        return ocr_text
+        return ocr_text.strip() if ocr_text else json_text
 
     clean_json, symbol_map = extract_symbols(json_text)
     if not symbol_map:
@@ -135,6 +136,11 @@ def apply_ocr_to_json(json_text: str, ocr_text: str) -> str:
     existing_symbols = re.findall(r'\[[^\[\]]+\]', ocr_text)
     expected_symbols = list(symbol_map.values())
     if existing_symbols == expected_symbols:
+        return ocr_text.strip()
+
+    # Se o ocr_text já possui todos os símbolos nas mesmas quantidades
+    from collections import Counter
+    if Counter(existing_symbols) == Counter(expected_symbols):
         return ocr_text.strip()
 
     def tokenize(text):

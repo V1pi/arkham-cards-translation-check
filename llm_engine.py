@@ -97,9 +97,115 @@ Exemplo 3 (Carta 06162 - Gregory Gry):
     "subname": "Jornalista Investigativo",
     "text": "Usa (9 recursos).\n[reaction] Quando você iniciar um teste de perícia, gaste até 3 recursos de Gregory Gry: Se este teste de perícia for bem-sucedido por pelo menos esse valor, gaste essa quantidade de recursos.",
     "traits": "Aliado. Criminoso. Sonhador.",
-    "slot": "Aliado"
+    "back_text": null,
+    "back_flavor": null
 }
 """
+
+# JSON Schema estrito para Structured Outputs (OpenAI, Ollama, etc.)
+CARD_JSON_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "code": {
+            "type": ["string", "null"],
+            "description": "Código numérico de 5 dígitos da carta (ex.: '06026' ou '06202'), ou null se não legível.",
+        },
+        "name": {
+            "type": "string",
+            "description": "Nome/Título da carta no topo, sem tags HTML.",
+        },
+        "subname": {
+            "type": ["string", "null"],
+            "description": "Subtítulo da carta logo abaixo do nome, se houver, ou null.",
+        },
+        "traits": {
+            "type": ["string", "null"],
+            "description": "Características/Traits da carta terminando com ponto final, texto puro, ou null.",
+        },
+        "text": {
+            "type": "string",
+            "description": "Texto principal de regras da carta com tags HTML <b></b>, <i></i> e ícones/símbolos entre colchetes.",
+        },
+        "flavor": {
+            "type": ["string", "null"],
+            "description": "Texto de ambientação/flavor text puro, sem tags <b>/<i>, ou null.",
+        },
+        "back_text": {
+            "type": ["string", "null"],
+            "description": "Texto de regras do verso da carta se houver, ou null.",
+        },
+        "back_flavor": {
+            "type": ["string", "null"],
+            "description": "Texto de flavor do verso da carta se houver, ou null.",
+        },
+    },
+    "required": [
+        "code",
+        "name",
+        "subname",
+        "traits",
+        "text",
+        "flavor",
+        "back_text",
+        "back_flavor",
+    ],
+    "additionalProperties": False,
+}
+
+# Schema adaptado para o formato do Google Gemini (responseSchema)
+GEMINI_RESPONSE_SCHEMA = {
+    "type": "OBJECT",
+    "properties": {
+        "code": {
+            "type": "STRING",
+            "nullable": True,
+            "description": "Código numérico de 5 dígitos da carta (ex.: '06026') ou null.",
+        },
+        "name": {
+            "type": "STRING",
+            "description": "Nome/Título da carta no topo, sem tags HTML.",
+        },
+        "subname": {
+            "type": "STRING",
+            "nullable": True,
+            "description": "Subtítulo da carta logo abaixo do nome, ou null.",
+        },
+        "traits": {
+            "type": "STRING",
+            "nullable": True,
+            "description": "Características/Traits da carta, texto puro, ou null.",
+        },
+        "text": {
+            "type": "STRING",
+            "description": "Texto principal de regras com tags HTML e símbolos entre colchetes.",
+        },
+        "flavor": {
+            "type": "STRING",
+            "nullable": True,
+            "description": "Texto de ambientação/flavor puro, ou null.",
+        },
+        "back_text": {
+            "type": "STRING",
+            "nullable": True,
+            "description": "Texto de regras do verso da carta, ou null.",
+        },
+        "back_flavor": {
+            "type": "STRING",
+            "nullable": True,
+            "description": "Texto de flavor do verso da carta, ou null.",
+        },
+    },
+    "required": [
+        "code",
+        "name",
+        "subname",
+        "traits",
+        "text",
+        "flavor",
+        "back_text",
+        "back_flavor",
+    ],
+}
 
 
 def _frame_to_base64_jpeg(frame_or_path) -> str:
@@ -153,7 +259,7 @@ def analyze_with_gemini(
     model: str | None = None,
     pack_prefix: str | None = None,
 ) -> dict:
-    """Envia a imagem para a API do Google Gemini e retorna os campos extraídos."""
+    """Envia a imagem para a API do Google Gemini com Structured Outputs e retorna os campos extraídos."""
     api_key = api_key or config.get_setting("gemini_api_key")
     if not api_key:
         raise ValueError("Chave de API do Google Gemini não configurada. Configure nas Configurações.")
@@ -181,7 +287,8 @@ def analyze_with_gemini(
             }
         ],
         "generationConfig": {
-            "response_mime_type": "application/json",
+            "responseMimeType": "application/json",
+            "responseSchema": GEMINI_RESPONSE_SCHEMA,
             "temperature": 0.1,
         },
     }
@@ -206,6 +313,21 @@ def analyze_with_gemini(
             return _normalize_llm_result(result_json, pack_prefix)
     except urllib.error.HTTPError as e:
         err_body = e.read().decode("utf-8", errors="ignore")
+        # Se falhar pelo schema em modelos legados, tenta sem responseSchema
+        if e.code == 400 and ("responseSchema" in err_body or "response_schema" in err_body):
+            payload["generationConfig"].pop("responseSchema", None)
+            req_retry = urllib.request.Request(
+                url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+            with urllib.request.urlopen(req_retry, timeout=30) as resp_retry:
+                data = json.loads(resp_retry.read().decode("utf-8"))
+                candidates = data.get("candidates", [])
+                parts = candidates[0].get("content", {}).get("parts", []) if candidates else []
+                text_content = parts[0].get("text", "{}") if parts else "{}"
+                return _normalize_llm_result(_clean_json_response(text_content), pack_prefix)
         raise RuntimeError(f"Erro na API do Gemini (HTTP {e.code}): {err_body}")
     except Exception as e:
         raise RuntimeError(f"Falha na requisição para o Gemini: {e}")
@@ -220,7 +342,7 @@ def analyze_with_ollama(
     model: str | None = None,
     pack_prefix: str | None = None,
 ) -> dict:
-    """Envia a imagem para o Ollama local e retorna os campos extraídos."""
+    """Envia a imagem para o Ollama local com Structured Outputs e retorna os campos extraídos."""
     ollama_url = ollama_url or config.get_setting("ollama_url", "http://localhost:11434")
     ollama_url = ollama_url.rstrip("/")
     model = model or config.get_setting("ollama_model", "llama3.2-vision")
@@ -240,7 +362,7 @@ def analyze_with_ollama(
                 "images": [b64_image],
             }
         ],
-        "format": "json",
+        "format": CARD_JSON_SCHEMA,
         "stream": False,
         "options": {
             "temperature": 0.1,
@@ -260,6 +382,22 @@ def analyze_with_ollama(
             content = data.get("message", {}).get("content", "{}")
             result_json = _clean_json_response(content)
             return _normalize_llm_result(result_json, pack_prefix)
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode("utf-8", errors="ignore")
+        # Fallback para versões mais antigas do Ollama que aceitam apenas "json"
+        if e.code == 400 and "format" in err_body:
+            payload["format"] = "json"
+            req_retry = urllib.request.Request(
+                url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+            with urllib.request.urlopen(req_retry, timeout=60) as resp_retry:
+                data = json.loads(resp_retry.read().decode("utf-8"))
+                content = data.get("message", {}).get("content", "{}")
+                return _normalize_llm_result(_clean_json_response(content), pack_prefix)
+        raise RuntimeError(f"Erro no Ollama (HTTP {e.code}): {err_body}")
     except urllib.error.URLError as e:
         raise RuntimeError(f"Não foi possível conectar ao Ollama em '{ollama_url}'. Verifique se o Ollama está rodando. ({e})")
     except Exception as e:
@@ -276,7 +414,7 @@ def analyze_with_openai(
     model: str | None = None,
     pack_prefix: str | None = None,
 ) -> dict:
-    """Envia a imagem para um endpoint compatível com OpenAI e retorna os campos extraídos."""
+    """Envia a imagem para um endpoint compatível com OpenAI usando Structured Outputs."""
     openai_url = openai_url or config.get_setting("openai_url", "https://api.openai.com/v1")
     openai_url = openai_url.rstrip("/")
     api_key = api_key if api_key is not None else config.get_setting("openai_api_key", "")
@@ -308,7 +446,14 @@ def analyze_with_openai(
             }
         ],
         "temperature": 0.1,
-        "response_format": {"type": "json_object"},
+        "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+                "name": "card_analysis",
+                "strict": True,
+                "schema": CARD_JSON_SCHEMA,
+            },
+        },
     }
 
     headers = {
@@ -336,20 +481,36 @@ def analyze_with_openai(
             return _normalize_llm_result(result_json, pack_prefix)
     except urllib.error.HTTPError as e:
         err_body = e.read().decode("utf-8", errors="ignore")
-        # Se falhar por suporte estrito a response_format, tenta sem
-        if e.code == 400 and "response_format" in err_body:
-            payload.pop("response_format", None)
-            req_retry = urllib.request.Request(
-                url,
-                data=json.dumps(payload).encode("utf-8"),
-                headers=headers,
-                method="POST",
-            )
-            with urllib.request.urlopen(req_retry, timeout=60) as resp_retry:
-                data = json.loads(resp_retry.read().decode("utf-8"))
-                choices = data.get("choices", [])
-                content = choices[0].get("message", {}).get("content", "{}") if choices else "{}"
-                return _normalize_llm_result(_clean_json_response(content), pack_prefix)
+        # Se falhar por suporte estrito a json_schema em proxies ou modelos legados, tenta fallback
+        if e.code == 400 and ("response_format" in err_body or "json_schema" in err_body or "schema" in err_body):
+            try:
+                # Tenta fallback para JSON mode padrão
+                payload["response_format"] = {"type": "json_object"}
+                req_retry = urllib.request.Request(
+                    url,
+                    data=json.dumps(payload).encode("utf-8"),
+                    headers=headers,
+                    method="POST",
+                )
+                with urllib.request.urlopen(req_retry, timeout=60) as resp_retry:
+                    data = json.loads(resp_retry.read().decode("utf-8"))
+                    choices = data.get("choices", [])
+                    content = choices[0].get("message", {}).get("content", "{}") if choices else "{}"
+                    return _normalize_llm_result(_clean_json_response(content), pack_prefix)
+            except Exception:
+                # Tenta sem response_format
+                payload.pop("response_format", None)
+                req_retry2 = urllib.request.Request(
+                    url,
+                    data=json.dumps(payload).encode("utf-8"),
+                    headers=headers,
+                    method="POST",
+                )
+                with urllib.request.urlopen(req_retry2, timeout=60) as resp_retry2:
+                    data = json.loads(resp_retry2.read().decode("utf-8"))
+                    choices = data.get("choices", [])
+                    content = choices[0].get("message", {}).get("content", "{}") if choices else "{}"
+                    return _normalize_llm_result(_clean_json_response(content), pack_prefix)
         raise RuntimeError(f"Erro na API OpenAI Compatible (HTTP {e.code}): {err_body}")
     except Exception as e:
         raise RuntimeError(f"Falha na requisição para OpenAI Compatible: {e}")

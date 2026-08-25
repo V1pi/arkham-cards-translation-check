@@ -237,13 +237,64 @@ class App(tk.Tk):
         self.txt_ocr.bind("<KeyRelease>", self._on_ocr_edit)
         self.txt_ocr.bind("<FocusOut>", self._on_ocr_edit)
 
+        # Painel de atalhos de Wildcards/Símbolos (Categorizado e Responsivo)
+        sym_frame = ttk.LabelFrame(right, text="Inserir Wildcards no Cursor", padding=4)
+        sym_frame.grid(row=6, column=0, sticky="ew", pady=(2, 2))
+
+        # Linha 1: Gatilhos e Formatação
+        r1_frame = ttk.Frame(sym_frame)
+        r1_frame.pack(fill="x", pady=1)
+        ttk.Label(r1_frame, text="Gatilhos:", font=("TkDefaultFont", 8, "bold"), foreground="#888", width=9).pack(side="left")
+        for sym_code, sym_label in [
+            ("[reaction]", "⚡ [reaction]"),
+            ("[action]", "▶ [action]"),
+            ("[fast]", "⚡ [fast]"),
+            ("<b></b>", "<b>negrito</b>"),
+            ("<i></i>", "<i>itálico</i>"),
+        ]:
+            ttk.Button(r1_frame, text=sym_label,
+                       command=lambda s=sym_code: self._insert_symbol(s)).pack(side="left", padx=1)
+
+        # Linha 2: Perícias
+        r2_frame = ttk.Frame(sym_frame)
+        r2_frame.pack(fill="x", pady=1)
+        ttk.Label(r2_frame, text="Perícias:", font=("TkDefaultFont", 8, "bold"), foreground="#888", width=9).pack(side="left")
+        for sym_code, sym_label in [
+            ("[willpower]", "🧠 [willpower]"),
+            ("[intellect]", "📖 [intellect]"),
+            ("[combat]", "🥊 [combat]"),
+            ("[agility]", "👟 [agility]"),
+            ("[wild]", "❓ [wild]"),
+        ]:
+            ttk.Button(r2_frame, text=sym_label,
+                       command=lambda s=sym_code: self._insert_symbol(s)).pack(side="left", padx=1)
+
+        # Linha 3: Tokens de Caos e Demais Símbolos
+        r3_frame = ttk.Frame(sym_frame)
+        r3_frame.pack(fill="x", pady=1)
+        ttk.Label(r3_frame, text="Outros:", font=("TkDefaultFont", 8, "bold"), foreground="#888", width=9).pack(side="left")
+
+        all_more_symbols = [
+            "[elder_sign]", "[skull]", "[cultist]", "[tablet]", "[elder_thing]",
+            "[auto_fail]", "[bless]", "[curse]", "[frost]",
+            "[guardian]", "[seeker]", "[rogue]", "[mystic]", "[survivor]", "[neutral]",
+            "[health]", "[sanity]", "[per_investigator]", "[blood]"
+        ]
+        self.more_sym_var = tk.StringVar(value=all_more_symbols[0])
+        self.more_sym_combo = ttk.Combobox(r3_frame, textvariable=self.more_sym_var,
+                                           values=all_more_symbols, width=18, state="readonly")
+        self.more_sym_combo.pack(side="left", padx=(0, 4))
+
+        ttk.Button(r3_frame, text="➕ Inserir Símbolo",
+                   command=lambda: self._insert_symbol(self.more_sym_var.get())).pack(side="left")
+
         # Nota de classificação de campos
         self.lbl_classify = ttk.Label(
             right,
             text="💡 Ajuste o texto acima se necessário antes de aceitar. A comparação atualiza em tempo real.",
             foreground="#888", wraplength=400
         )
-        self.lbl_classify.grid(row=6, column=0, sticky="w")
+        self.lbl_classify.grid(row=7, column=0, sticky="w")
 
     def _build_bottom_panel(self):
         bottom = ttk.LabelFrame(self, text="Diferenças", padding=6)
@@ -675,6 +726,15 @@ class App(tk.Tk):
             self.field_combo.current(0)
             self._show_field(available_fields[0])
 
+    def _insert_symbol(self, symbol: str):
+        """Insere um wildcard/símbolo na posição atual do cursor no campo de texto oficial."""
+        try:
+            self.txt_ocr.insert(tk.INSERT, symbol)
+            self.txt_ocr.focus_set()
+            self._on_ocr_edit()
+        except Exception:
+            pass
+
     def _on_field_selected(self, event=None):
         idx = self.field_combo.current()
         if idx >= 0 and idx < len(self._field_keys):
@@ -732,10 +792,8 @@ class App(tk.Tk):
 
         ocr_text = self.txt_ocr.get("1.0", "end-1c").strip()
         self.ocr_text_by_field[field] = ocr_text
-        json_text = self.json_fields.get(field, "")
 
-        # Aplica OCR preservando símbolos do JSON original
-        new_text = text_utils.apply_ocr_to_json(json_text, ocr_text)
+        new_text = ocr_text
 
         try:
             card_data.save_card(self.current_card, self.current_card_file,
@@ -764,9 +822,8 @@ class App(tk.Tk):
             ocr_text = self.ocr_text_by_field.get(field, "").strip()
             json_text = self.json_fields.get(field, "")
 
-            # Se houver texto no OCR/LLM para este campo, aplica com inferência de símbolos
             if ocr_text:
-                new_text = text_utils.apply_ocr_to_json(json_text, ocr_text)
+                new_text = ocr_text
             else:
                 new_text = json_text
 

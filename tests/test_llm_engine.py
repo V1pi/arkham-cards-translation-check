@@ -179,3 +179,164 @@ Espero ter ajudado!"""
             "llava:latest",
             "qwen2.5-vl:latest",
         ]
+
+    def test_analyze_with_gemini_structured_outputs(self, monkeypatch):
+        import json
+        import numpy as np
+
+        captured_requests = []
+
+        fake_gemini_response = {
+            "candidates": [
+                {
+                    "content": {
+                        "parts": [
+                            {
+                                "text": json.dumps({
+                                    "code": "06026",
+                                    "name": "Alvo Fácil",
+                                    "subname": None,
+                                    "traits": "Truque.",
+                                    "text": "Ganhe 2 recursos.",
+                                    "flavor": None,
+                                    "back_text": None,
+                                    "back_flavor": None,
+                                })
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+
+        class FakeResponse:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                pass
+            def read(self):
+                return json.dumps(fake_gemini_response).encode("utf-8")
+
+        def fake_urlopen(req, timeout=30):
+            captured_requests.append(req)
+            return FakeResponse()
+
+        monkeypatch.setattr(llm_engine.urllib.request, "urlopen", fake_urlopen)
+
+        dummy_frame = np.zeros((100, 100, 3), dtype=np.uint8)
+        res = llm_engine.analyze_with_gemini(dummy_frame, api_key="dummy_gemini_key")
+
+        assert res["code"] == "06026"
+        assert res["fields"]["name"] == "Alvo Fácil"
+        assert len(captured_requests) == 1
+
+        req_body = json.loads(captured_requests[0].data.decode("utf-8"))
+        gen_cfg = req_body["generationConfig"]
+        assert gen_cfg["responseMimeType"] == "application/json"
+        assert gen_cfg["responseSchema"] == llm_engine.GEMINI_RESPONSE_SCHEMA
+
+    def test_analyze_with_openai_structured_outputs(self, monkeypatch):
+        import json
+        import numpy as np
+
+        captured_requests = []
+
+        fake_openai_response = {
+            "choices": [
+                {
+                    "message": {
+                        "content": json.dumps({
+                            "code": "06202",
+                            "name": "Palavra de Comando",
+                            "subname": None,
+                            "traits": "Magia.",
+                            "text": "Nomeie uma carta.",
+                            "flavor": "Luz para salvar nossos olhos.",
+                            "back_text": None,
+                            "back_flavor": None,
+                        })
+                    }
+                }
+            ]
+        }
+
+        class FakeResponse:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                pass
+            def read(self):
+                return json.dumps(fake_openai_response).encode("utf-8")
+
+        def fake_urlopen(req, timeout=60):
+            captured_requests.append(req)
+            return FakeResponse()
+
+        monkeypatch.setattr(llm_engine.urllib.request, "urlopen", fake_urlopen)
+
+        dummy_frame = np.zeros((100, 100, 3), dtype=np.uint8)
+        res = llm_engine.analyze_with_openai(
+            dummy_frame,
+            openai_url="https://api.openai.com/v1",
+            api_key="dummy_key",
+            model="gpt-4o",
+        )
+
+        assert res["code"] == "06202"
+        assert res["fields"]["name"] == "Palavra de Comando"
+        assert len(captured_requests) == 1
+
+        req_body = json.loads(captured_requests[0].data.decode("utf-8"))
+        resp_fmt = req_body["response_format"]
+        assert resp_fmt["type"] == "json_schema"
+        assert resp_fmt["json_schema"]["strict"] is True
+        assert resp_fmt["json_schema"]["schema"] == llm_engine.CARD_JSON_SCHEMA
+
+    def test_analyze_with_ollama_structured_outputs(self, monkeypatch):
+        import json
+        import numpy as np
+
+        captured_requests = []
+
+        fake_ollama_response = {
+            "message": {
+                "content": json.dumps({
+                    "code": "06162",
+                    "name": "Gregory Gry",
+                    "subname": "Jornalista Investigativo",
+                    "traits": "Aliado. Criminoso.",
+                    "text": "Usa (9 recursos).",
+                    "flavor": None,
+                    "back_text": None,
+                    "back_flavor": None,
+                })
+            }
+        }
+
+        class FakeResponse:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                pass
+            def read(self):
+                return json.dumps(fake_ollama_response).encode("utf-8")
+
+        def fake_urlopen(req, timeout=60):
+            captured_requests.append(req)
+            return FakeResponse()
+
+        monkeypatch.setattr(llm_engine.urllib.request, "urlopen", fake_urlopen)
+
+        dummy_frame = np.zeros((100, 100, 3), dtype=np.uint8)
+        res = llm_engine.analyze_with_ollama(
+            dummy_frame,
+            ollama_url="http://localhost:11434",
+            model="llama3.2-vision",
+        )
+
+        assert res["code"] == "06162"
+        assert res["fields"]["name"] == "Gregory Gry"
+        assert len(captured_requests) == 1
+
+        req_body = json.loads(captured_requests[0].data.decode("utf-8"))
+        assert req_body["format"] == llm_engine.CARD_JSON_SCHEMA

@@ -17,8 +17,8 @@
     },
     {
         "code": "06278",
-        "name": "Achado Surpreendente",
-        "text": "Mir\u00edade.\n[reaction] Quando voc\u00ea procurar em seu baralho e Achado Surpreendente estiver entre as cartas procuradas: Coloque-o em jogo na sua \u00e1rea de jogo. Voc\u00ea deve compromet\u00ea-lo no pr\u00f3ximo teste de per\u00edcia qualificado que realizar. Se aquele teste for bem-sucedido, compre 1 carta. (M\u00e1x. de uma habilidade [[Pesquisa]] por busca.)",
+        "name": "Descoberta Surpreendente",
+        "text": "Mir\u00edade.\n[reaction] Quando voc\u00ea procurar em seu baralho e Descoberta Surpreendente estiver entre as cartas procuradas: Coloque-a em jogo em sua \u00e1rea de jogo. Voc\u00ea deve compromet\u00ea-la no pr\u00f3ximo teste de per\u00edcia eleg\u00edvel que voc\u00ea realizar. Se esse teste for bem-sucedido, compre 1 carta. (M\u00e1x. de uma habilidade de <i>Pesquisa</i> por procura.)",
         "traits": "Sorte. Pesquisa."
     },
     {

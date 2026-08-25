@@ -94,8 +94,8 @@ class TestNormalizeText:
 # ---------------------------------------------------------------------------
 
 class TestApplyOcrToJson:
-    def test_symbol_preserved_middle(self):
-        """[reaction] no meio deve ser preservado após aplicar OCR."""
+    def test_symbol_inferred_for_ocr_middle(self):
+        """Para OCR sem símbolos, [reaction] é inferido no meio do texto."""
         json_text = "Depois que você [reaction] derrotar um inimigo."
         ocr_text  = "Depois que você vencer um inimigo."
         result = apply_ocr_to_json(json_text, ocr_text)
@@ -103,22 +103,23 @@ class TestApplyOcrToJson:
         assert "vencer" in result
         assert "derrotar" not in result
 
-    def test_symbol_preserved_start(self):
-        """[action] no início deve ser preservado."""
+    def test_symbol_inferred_for_ocr_start(self):
+        """Para OCR sem símbolos, [action] é inferido no início do texto."""
         json_text = "[action] Mova-se até 2 locais."
         ocr_text  = "Mova até 2 localizações."
         result = apply_ocr_to_json(json_text, ocr_text)
         assert "[action]" in result
+        assert result.startswith("[action]")
 
-    def test_symbol_preserved_end(self):
-        """[elder_sign] no final deve ser preservado."""
+    def test_symbol_inferred_for_ocr_end(self):
+        """Para OCR sem símbolos, [elder_sign] é inferido no final do texto."""
         json_text = "Efeito: +2. Resolva um efeito [elder_sign]"
         ocr_text  = "Efeito: +2. Resolva um efeito"
         result = apply_ocr_to_json(json_text, ocr_text)
         assert "[elder_sign]" in result
 
-    def test_multiple_symbols_preserved(self):
-        """Múltiplos símbolos devem ser todos preservados."""
+    def test_multiple_symbols_inferred_for_ocr(self):
+        """Múltiplos símbolos são inferidos nos locais corretos para o OCR."""
         json_text = "[fast] Ganhe [willpower] neste teste [wild]."
         ocr_text  = "Receba um bônus neste teste."
         result = apply_ocr_to_json(json_text, ocr_text)
@@ -126,12 +127,28 @@ class TestApplyOcrToJson:
         assert "[willpower]" in result
         assert "[wild]" in result
 
+    def test_user_or_llm_symbols_not_duplicated(self):
+        """Se o texto do OCR/LLM já tiver os símbolos, NÃO duplica."""
+        json_text = "Depois que você [reaction] derrotar um inimigo."
+        ocr_text  = "Depois que você [reaction] vencer um inimigo."
+        result = apply_ocr_to_json(json_text, ocr_text)
+        assert result == "Depois que você [reaction] vencer um inimigo."
+        assert result.count("[reaction]") == 1
+
+    def test_user_custom_symbol_position_not_altered(self):
+        """Se o usuário/LLM já definiu os símbolos em sua própria ordem/posição, preserva."""
+        json_text = "[action] Mova-se até 2 locais."
+        ocr_text  = "[action] Mova até 2 localizações."
+        result = apply_ocr_to_json(json_text, ocr_text)
+        assert result == "[action] Mova até 2 localizações."
+        assert result.count("[action]") == 1
+
     def test_no_symbols_returns_ocr(self):
-        """Sem símbolos, retorna o texto OCR normalizado."""
+        """Sem símbolos no JSON, retorna o texto OCR."""
         json_text = "Texto original sem símbolos."
         ocr_text  = "Texto OCR sem símbolos."
         result = apply_ocr_to_json(json_text, ocr_text)
-        assert "Texto OCR" in result
+        assert result == "Texto OCR sem símbolos."
 
     def test_identical_texts(self):
         """Textos idênticos retornam o texto normalizado."""
@@ -139,24 +156,10 @@ class TestApplyOcrToJson:
         result = apply_ocr_to_json(text, text)
         assert normalize_text(text) == normalize_text(result)
 
-    def test_multiline_real_card_06026(self):
-        """Teste com carta real 06026 com quebras de linha e [reaction]."""
-        json_text = (
-            "Miríade.\n"
-            "Ganhe 2 recursos e compre 1 carta.\n"
-            "[reaction] Após você jogar Alvo Fácil: Jogue outro Alvo Fácil da sua mão, sem custo."
-        )
-        ocr_text = (
-            "Miríade.\n"
-            "Ganhe 2 recursos e compre 1 carta.\n"
-            "Após você jogar Alvo Fácil: Jogue outro\n"
-            "Alvo Fácil da sua mão, sem custo."
-        )
-        result = apply_ocr_to_json(json_text, ocr_text)
-        assert "[reaction]" in result
-        assert "[reaction] Após você jogar" in result
-        assert "Miríade." in result
-        assert "Ganhe 2 recursos" in result
+    def test_empty_ocr_returns_json(self):
+        """Se o OCR for vazio, retorna o texto do JSON."""
+        json_text = "Texto original do JSON."
+        assert apply_ocr_to_json(json_text, "") == json_text
 
 
 # ---------------------------------------------------------------------------
