@@ -3,12 +3,18 @@ Serviço unificado de reconhecimento de cartas.
 Abstrai a escolha entre o PaddleOCR tradicional e modelos multimodais de LLM (Gemini e Ollama).
 """
 
+import re
 import numpy as np
 import config
 import ocr_engine
 import llm_engine
 import text_utils
 import card_detector
+
+
+def _is_code_or_number(text: str) -> bool:
+    """Verifica se o texto se assemelha a um código ou número de carta isolado (ex: '26', '06015a', '15a')."""
+    return bool(re.match(r"^\d{1,5}[a-zA-Z]?$", text.strip()))
 
 
 def recognize_card(
@@ -81,7 +87,7 @@ def classify_ocr_text(full_text: str, json_fields: dict) -> dict:
         for line in lines[:5]:
             if line.upper() in {"EVENTO", "ATIVO", "PERÍCIA", "PERICIA", "FRAQUEZA", "TREACHERY"}:
                 continue
-            if len(line) < 50 and not line.endswith('.') and not line.isdigit():
+            if len(line) < 50 and not line.endswith('.') and not _is_code_or_number(line):
                 name_candidate = line
                 break
         result["name"] = name_candidate
@@ -104,7 +110,7 @@ def classify_ocr_text(full_text: str, json_fields: dict) -> dict:
             result.get("traits", ""),
             "EVENTO", "ATIVO", "PERÍCIA", "PERICIA", "FRAQUEZA"
         } - {""}
-        text_lines = [l for l in lines if l not in exclude and not l.isdigit()]
+        text_lines = [l for l in lines if l not in exclude and not _is_code_or_number(l)]
 
         flavor_start = len(text_lines)
         if "flavor" in json_fields:

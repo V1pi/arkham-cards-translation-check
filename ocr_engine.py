@@ -123,16 +123,17 @@ def extract_card_number(frame: np.ndarray) -> str | None:
     """
     Tenta extrair o número da carta do canto inferior direito.
 
-    O número (2-3 dígitos) fica impresso no canto inf. direito.
-    Exemplo: "26" → código "06026", "202" → "06202".
+    O número (2-3 dígitos, opcionalmente com letra ex.: '15a') fica impresso no canto inf. direito.
+    Exemplo: "26" → código "06026", "202" → "06202", "15a" → "06015a".
 
     Estratégia:
     1. Faz crop da região inferior direita (~25% x 20% da imagem)
     2. Roda OCR nessa região
-    3. Busca com regex o padrão de 2-3 dígitos
+    3. Busca com regex o padrão de dígitos com letra opcional
     4. Fallback: roda OCR no frame inteiro e busca número no quarto inferior
-    5. Retorna o código completo com PACK_PREFIX + zero-padding de 3 dígitos
+    5. Retorna o código normalizado com PACK_PREFIX
     """
+    import card_data
     h, w = frame.shape[:2]
 
     # Crop: 25% direito × 20% inferior
@@ -147,10 +148,10 @@ def extract_card_number(frame: np.ndarray) -> str | None:
                               interpolation=cv2.INTER_LANCZOS4)
         lines = _run_ocr_on_frame(crop_big)
         all_text = ' '.join(text for _, text, _ in lines)
-        match = re.search(r'\b(\d{2,3})\b', all_text)
+        match = re.search(r'\b(\d{1,3}[a-zA-Z]?)\b', all_text)
         if match:
-            number = match.group(1)
-            return PACK_PREFIX + number.zfill(3)
+            raw_code = match.group(1)
+            return card_data.normalize_code(raw_code, PACK_PREFIX)
 
     # Fallback: OCR no frame completo, busca números no quarto inferior
     lines_full = _run_ocr_on_frame(frame)
@@ -161,11 +162,11 @@ def extract_card_number(frame: np.ndarray) -> str | None:
     ]
 
     all_bottom_text = ' '.join(text for _, text, _ in bottom_lines)
-    # Busca número de 2-4 dígitos isolado (evita anos como 2024)
-    match = re.search(r'(?<!\d)(\d{2,3})(?!\d)', all_bottom_text)
+    # Busca número de 1-3 dígitos com letra opcional isolado (evita anos como 2024)
+    match = re.search(r'(?<!\d)(\d{1,3}[a-zA-Z]?)(?![a-zA-Z0-9])', all_bottom_text)
     if match:
-        number = match.group(1)
-        return PACK_PREFIX + number.zfill(3)
+        raw_code = match.group(1)
+        return card_data.normalize_code(raw_code, PACK_PREFIX)
 
     return None
 

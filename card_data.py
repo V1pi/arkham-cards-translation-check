@@ -20,10 +20,14 @@ TEXT_FIELDS = ["name", "subname", "text", "traits", "flavor", "back_text", "back
 def normalize_code(code: str, pack_prefix: str | None = None) -> str:
     """
     Normaliza um código/número informado pelo usuário ou OCR.
-    Se o usuário digitar '6', '26' ou '202', formata automaticamente:
+    Suporta códigos numéricos e com sufixos de letras (ex.: '06015a', '15a', '06015b').
+
+    Se o usuário digitar '6', '26', '202', '15a' ou '06015a', formata automaticamente:
       - '6' -> '06006' (usando o pack_prefix atual, ex.: '06')
       - '26' -> '06026'
       - '202' -> '06202'
+      - '15a' -> '06015a'
+      - '06015a' -> '06015a'
       - '06026' -> '06026'
     """
     if not code:
@@ -36,14 +40,19 @@ def normalize_code(code: str, pack_prefix: str | None = None) -> str:
         import config
         pack_prefix = config.get_setting("pack_prefix", "06")
 
-    digits = re.findall(r"\d+", code_str)
-    if digits:
-        num = digits[0]
+    # Tenta casar formato: dígitos seguidos opcionalmente por letras (ex: "15a", "06015b", "26", "06026")
+    match = re.match(r"^[\s#]*(\d+)[-_\s.]*([a-zA-Z]*)\s*$", code_str)
+    if match:
+        num, letter = match.groups()
+        letter = letter.lower()
         if len(num) <= 3:
-            return pack_prefix + num.zfill(3)
+            return pack_prefix + num.zfill(3) + letter
         elif len(num) == 5:
-            return num
-    return code_str
+            return num + letter
+        else:
+            return num + letter
+
+    return code_str.lower()
 
 
 def load_all_cards(translations_path: Path) -> dict:
@@ -75,19 +84,25 @@ def load_all_cards(translations_path: Path) -> dict:
 
 def find_card(code: str, all_cards: dict, pack_prefix: str | None = None) -> dict | None:
     """
-    Busca uma carta pelo código. Tenta busca exata e busca normalizada com prefixo.
+    Busca uma carta pelo código. Tenta busca exata (com e sem case) e busca normalizada com prefixo.
     """
     if not code:
         return None
 
-    # 1. Busca exata direta
-    if code in all_cards:
-        return all_cards[code]
+    code_clean = str(code).strip()
 
-    # 2. Busca com código normalizado (ex.: '6' -> '06006', '26' -> '06026')
-    norm = normalize_code(code, pack_prefix)
+    # 1. Busca exata direta
+    if code_clean in all_cards:
+        return all_cards[code_clean]
+    if code_clean.lower() in all_cards:
+        return all_cards[code_clean.lower()]
+
+    # 2. Busca com código normalizado (ex.: '6' -> '06006', '26' -> '06026', '15a' -> '06015a')
+    norm = normalize_code(code_clean, pack_prefix)
     if norm in all_cards:
         return all_cards[norm]
+    if norm.lower() in all_cards:
+        return all_cards[norm.lower()]
 
     return None
 

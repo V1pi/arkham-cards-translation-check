@@ -13,6 +13,7 @@ import numpy as np
 from pathlib import Path
 
 import config
+import card_data
 
 CARD_ANALYSIS_PROMPT = """Você é um assistente especialista no jogo de cartas "Arkham Horror: The Card Game" (Arkham Horror LCG) em Português.
 Sua tarefa é analisar visualmente a imagem da carta fornecida e extrair as informações estruturadas em formato JSON estrito.
@@ -20,7 +21,7 @@ Sua tarefa é analisar visualmente a imagem da carta fornecida e extrair as info
 Retorne APENAS um objeto JSON válido (sem blocos de código markdown adicionais ou texto fora do JSON) com o seguinte esquema:
 
 {
-  "code": "Código numérico de 5 dígitos da carta (ex.: '06026' ou '06202'). No canto inferior direito da carta há um número impresso de 2 ou 3 dígitos (ex.: '26' ou '202'). O prefixo do pacote é '{PACK_PREFIX}'. Se o número for '26', o código é '{PACK_PREFIX}026'. Se for '202', é '{PACK_PREFIX}202'. Se não conseguir ler com certeza, retorne null.",
+  "code": "Código da carta (ex.: '06026', '06202' ou '06015a'). No canto inferior direito da carta há um número impresso de 2 ou 3 dígitos, que pode conter uma letra de sufixo (ex.: '26', '202' ou '15a'). O prefixo do pacote é '{PACK_PREFIX}'. Se o número for '26', o código é '{PACK_PREFIX}026'. Se for '15a', o código é '{PACK_PREFIX}015a'. Se não conseguir ler com certeza, retorne null.",
   "name": "Nome/Título da carta no topo (ex.: 'Alvo Fácil', 'Palavra de Comando'). Não use tags HTML no nome.",
   "subname": "Subtítulo da carta logo abaixo do nome, se houver (geralmente em cartas únicas com um asterisco ou personagens). Se não houver, use null.",
   "traits": "Características/Traits da carta logo abaixo da ilustração ou nome, terminando com ponto final (ex.: 'Truque. Miríade.' ou 'Magia.'). Não use tags HTML como <i> ou <b> aqui, retorne apenas o texto puro dos traits.",
@@ -124,7 +125,7 @@ CARD_JSON_SCHEMA = {
     "properties": {
         "code": {
             "type": ["string", "null"],
-            "description": "Código numérico de 5 dígitos da carta (ex.: '06026' ou '06202'), ou null se não legível.",
+            "description": "Código da carta (ex.: '06026', '06202' ou '06015a'), ou null se não legível.",
         },
         "name": {
             "type": "string",
@@ -175,7 +176,7 @@ GEMINI_RESPONSE_SCHEMA = {
         "code": {
             "type": "STRING",
             "nullable": True,
-            "description": "Código numérico de 5 dígitos da carta (ex.: '06026') ou null.",
+            "description": "Código da carta (ex.: '06026' ou '06015a') ou null.",
         },
         "name": {
             "type": "STRING",
@@ -539,19 +540,7 @@ def _normalize_llm_result(raw_dict: dict, pack_prefix: str) -> dict:
     """Padroniza e sanitiza o dicionário retornado pela LLM."""
     code = raw_dict.get("code")
     if code:
-        code_str = str(code).strip()
-        # Se veio apenas o número curto (ex.: 26 ou 202), formata com o prefixo
-        digits = re.findall(r"\d+", code_str)
-        if digits:
-            num = digits[0]
-            if len(num) <= 3:
-                code = pack_prefix + num.zfill(3)
-            elif len(num) == 5:
-                code = num
-            else:
-                code = code_str
-        else:
-            code = code_str
+        code = card_data.normalize_code(code, pack_prefix)
 
     fields = {}
     field_keys = ["name", "subname", "traits", "text", "flavor", "back_text", "back_flavor"]

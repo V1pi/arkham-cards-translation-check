@@ -652,13 +652,13 @@ class App(tk.Tk):
             if code:
                 prompt_msg = (
                     f"⚠️ O código '{code}' não foi encontrado nos arquivos de tradução.\n\n"
-                    f"Digite o número/código correto da carta (ex.: '6', '26', '202' ou '{pack_prefix}026') "
+                    f"Digite o número/código correto da carta (ex.: '6', '26', '15a' ou '{pack_prefix}015a') "
                     f"para vincular aos textos já reconhecidos por {engine_name}:"
                 )
             else:
                 prompt_msg = (
                     f"O motor ({engine_name}) não identificou o código da carta automaticamente.\n\n"
-                    f"Digite o número da carta (ex.: '6', '26', '202' ou '{pack_prefix}026'):"
+                    f"Digite o número ou código da carta (ex.: '6', '26', '15a' ou '{pack_prefix}015a'):"
                 )
 
             user_input = simpledialog.askstring("Código da Carta", prompt_msg, parent=self)
@@ -671,7 +671,7 @@ class App(tk.Tk):
             if not entry:
                 messagebox.showwarning(
                     "Carta não encontrada",
-                    f"Código '{code}' não foi encontrado na base de traduções.\nVerifique o número e tente novamente.",
+                    f"Código '{code}' não foi encontrado na base de traduções.\nVerifique o código e tente novamente.",
                     parent=self
                 )
 
@@ -692,7 +692,7 @@ class App(tk.Tk):
         pack_prefix = config.get_setting("pack_prefix", "06")
         user_input = simpledialog.askstring(
             "Escolher Carta",
-            f"Digite o número ou código da carta (ex.: '6', '26', '202' ou '{pack_prefix}026'):",
+            f"Digite o número ou código da carta (ex.: '6', '26', '15a' ou '{pack_prefix}015a'):",
             parent=self
         )
         if not user_input:

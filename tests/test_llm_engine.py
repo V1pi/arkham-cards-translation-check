@@ -59,6 +59,26 @@ Espero ter ajudado!"""
         assert res["code"] == "06202"
         assert res["fields"]["name"] == "Palavra de Comando"
 
+    def test_normalize_llm_result_letter_suffix(self):
+        raw = {
+            "code": "15a",
+            "name": "Portal de Sonho",
+            "subname": "Jornada Maravilhosa",
+            "traits": "Terras Oníricas.",
+            "text": "Vinculado (Caixa de Portal).",
+        }
+        res = llm_engine._normalize_llm_result(raw, pack_prefix="06")
+        assert res["code"] == "06015a"
+        assert res["fields"]["name"] == "Portal de Sonho"
+
+        raw_full = {
+            "code": "06015b",
+            "name": "Portal de Sonho",
+            "subname": "Realidade Sem Sentido",
+        }
+        res_full = llm_engine._normalize_llm_result(raw_full, pack_prefix="06")
+        assert res_full["code"] == "06015b"
+
     def test_fetch_gemini_models_empty_key(self):
         ok, models, msg = llm_engine.fetch_gemini_models("")
         assert not ok
