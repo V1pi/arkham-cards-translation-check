@@ -44,9 +44,20 @@ Clique no botão **`⚙️ Configurar`** na interface para alternar entre:
 - **OpenAI Compatible**: Suporte a qualquer API compatível com OpenAI (OpenAI oficial, OpenRouter, LM Studio, vLLM, DeepSeek, Groq, etc.) informando a URL e a API Key.
 - **Ollama**: Conecte ao seu Ollama local (ex.: `http://localhost:11434`) com modelos de visão como `llama3.2-vision` ou `llava`.
 
-### Atalhos de teclado
-- **`Shift + Enter`**: Captura a foto da câmera e congela a imagem para OCR.
-- Clique em **`↻ Atualizar`** para retomar o vídeo ao vivo da câmera quando quiser capturar uma nova carta.
+### Atalhos de Teclado (macOS & Vim Friendly)
+
+| Ação | Atalho | Descrição |
+|---|---|---|
+| 📷 **Capturar Carta** | `Shift + Enter` | Enquadra, congela o frame e inicia o reconhecimento. |
+| ✍️ **Editar Texto** | Direto no campo | Foco automático no campo de texto ao carregar a carta. |
+| 🔀 **Próximo Campo** | `Tab` ou `Ctrl + J` | Salva o campo atual e avança para o próximo sem perder o foco. |
+| 🔀 **Campo Anterior** | `Shift + Tab` ou `Ctrl + K` | Salva o campo atual e volta para o anterior. |
+| 🔤 **Formatação Rápida** | `⌘B` (`<b>`) / `⌘I` (`<i>`) | Envolve o texto selecionado nas tags ou insere no cursor. |
+| ✅ **Aceitar Tudo (Salvar)** | `⌘S` | Salva todos os campos no JSON. |
+| ⏩ **Próxima Carta** | `Esc` | Limpa a interface e retoma a câmera ao vivo. |
+| 🚀 **Salvar e Próxima (Combo)** | `⌘Shift + S` | Salva tudo no JSON e avança imediatamente para a próxima carta. |
+| 📁 **Buscar Arquivo no PC** | `⌘O` | Abre a caixa de diálogo para escolher uma imagem do disco. |
+| 🔍 **Digitar Código Manualmente** | `⌘M` | Abre diálogo para digitar o número/código da carta. |
 
 ---
 

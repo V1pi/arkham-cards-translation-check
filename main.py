@@ -83,13 +83,65 @@ class App(tk.Tk):
     # Atalhos de Teclado
     # ------------------------------------------------------------------
     def _setup_shortcuts(self):
-        """Configura atalhos globais de teclado."""
+        """Configura atalhos essenciais para macOS (1 atalho direto por ação + navegação Vim/Tab)."""
+        # 1. Capturar foto da câmera
         self.bind_all("<Shift-Return>", self._on_shortcut_capture)
+
+        # 2. Navegação de campos no campo de texto (Tab / Shift-Tab) e estilo Vim (Ctrl+J / Ctrl+K)
+        self.txt_ocr.bind("<Tab>", self._on_tab_key)
+        self.txt_ocr.bind("<Shift-Tab>", self._on_shift_tab_key)
+        self.txt_ocr.bind("<ISO_Left_Tab>", self._on_shift_tab_key)
+        self.bind_all("<Control-j>", self._on_tab_key)
+        self.bind_all("<Control-k>", self._on_shift_tab_key)
+
+        # 3. Formatação rápida no campo de texto (⌘B / ⌘I)
+        self.txt_ocr.bind("<Command-b>", lambda e: self._format_wrap_selection("<b>", "</b>", e))
+        self.txt_ocr.bind("<Command-i>", lambda e: self._format_wrap_selection("<i>", "</i>", e))
+
+        # 4. Aceitar Tudo (⌘S)
+        self.bind_all("<Command-s>", self._on_shortcut_accept_all)
+
+        # 5. Próxima Carta (Esc)
+        self.bind_all("<Escape>", self._on_shortcut_next)
+
+        # 6. Combo: Aceitar Tudo + Próxima de uma vez (⌘Shift+S)
+        self.bind_all("<Command-Shift-S>", self._on_shortcut_accept_all_and_next)
+        self.bind_all("<Command-Shift-s>", self._on_shortcut_accept_all_and_next)
+
+        # 7. Buscar Arquivo (⌘O) / Digitar Código (⌘M)
+        self.bind_all("<Command-o>", self._on_shortcut_open_file)
+        self.bind_all("<Command-m>", self._on_shortcut_manual_code)
 
     def _on_shortcut_capture(self, event=None):
         """Manipulador do atalho para capturar a imagem da câmera."""
         if str(self.btn_capture["state"]) != "disabled":
             self._capture_and_process()
+        return "break"
+
+    def _on_shortcut_accept_all(self, event=None):
+        self._action_accept_all()
+        return "break"
+
+    def _on_shortcut_accept_single(self, event=None):
+        self._action_accept()
+        return "break"
+
+    def _on_shortcut_next(self, event=None):
+        self._action_next()
+        return "break"
+
+    def _on_shortcut_accept_all_and_next(self, event=None):
+        self._action_accept_all_and_next()
+        return "break"
+
+    def _on_shortcut_open_file(self, event=None):
+        if str(self.btn_load_file["state"]) != "disabled":
+            self._load_image_from_file()
+        return "break"
+
+    def _on_shortcut_manual_code(self, event=None):
+        if str(self.btn_choose["state"]) != "disabled":
+            self._choose_card_manually()
         return "break"
 
     # ------------------------------------------------------------------
@@ -177,11 +229,11 @@ class App(tk.Tk):
                                        command=self._capture_and_process)
         self.btn_capture.grid(row=0, column=0, sticky="ew", padx=(0, 2), pady=2)
 
-        self.btn_load_file = ttk.Button(btn_frame, text="📁 BUSCAR CARTA NO PC",
+        self.btn_load_file = ttk.Button(btn_frame, text="📁 BUSCAR CARTA (⌘O)",
                                          command=self._load_image_from_file)
         self.btn_load_file.grid(row=0, column=1, sticky="ew", padx=(2, 0), pady=2)
 
-        self.btn_choose = ttk.Button(btn_frame, text="🔍 Escolher por Código (Manual)",
+        self.btn_choose = ttk.Button(btn_frame, text="🔍 Escolher por Código (⌘M)",
                                       command=self._choose_card_manually)
         self.btn_choose.grid(row=1, column=0, columnspan=2, sticky="ew", pady=2)
 
@@ -220,6 +272,9 @@ class App(tk.Tk):
                                          state="readonly")
         self.field_combo.grid(row=0, column=1, sticky="ew")
         self.field_combo.bind("<<ComboboxSelected>>", self._on_field_selected)
+
+        ttk.Label(field_frame, text="Tab / ⌃J", font=("TkDefaultFont", 8),
+                  foreground="#888").grid(row=0, column=2, sticky="e", padx=(4, 0))
 
         # Tradução atual (JSON)
         ttk.Label(right, text="Tradução atual (JSON):").grid(row=2, column=0, sticky="w")
@@ -324,11 +379,11 @@ class App(tk.Tk):
         btn_row = ttk.Frame(bottom)
         btn_row.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(6, 0))
 
-        ttk.Button(btn_row, text="✅ ACEITAR TUDO", command=self._action_accept_all,
+        ttk.Button(btn_row, text="✅ ACEITAR TUDO (⌘S)", command=self._action_accept_all,
                    style="Accent.TButton").pack(side="left", padx=4)
         ttk.Button(btn_row, text="✔️ ACEITAR CAMPO", command=self._action_accept).pack(side="left", padx=4)
         ttk.Button(btn_row, text="⏭  MANTER", command=self._action_keep).pack(side="left", padx=4)
-        ttk.Button(btn_row, text="⏩ PRÓXIMA", command=self._action_next).pack(side="left", padx=4)
+        ttk.Button(btn_row, text="⏩ PRÓXIMA (Esc)", command=self._action_next).pack(side="left", padx=4)
 
     # ------------------------------------------------------------------
     # Configurações & Status do Motor
@@ -697,6 +752,8 @@ class App(tk.Tk):
         if available_fields:
             self.field_combo.current(0)
             self._show_field(available_fields[0])
+            self.txt_ocr.focus_set()
+            self.txt_ocr.mark_set(tk.INSERT, "1.0")
 
     def _load_card_from_llm(self, entry: dict, fields_dict: dict):
         """Preenche a UI com os dados da carta e os campos já estruturados pelo LLM."""
@@ -725,6 +782,8 @@ class App(tk.Tk):
         if available_fields:
             self.field_combo.current(0)
             self._show_field(available_fields[0])
+            self.txt_ocr.focus_set()
+            self.txt_ocr.mark_set(tk.INSERT, "1.0")
 
     def _insert_symbol(self, symbol: str):
         """Insere um wildcard/símbolo na posição atual do cursor no campo de texto oficial."""
@@ -734,6 +793,77 @@ class App(tk.Tk):
             self._on_ocr_edit()
         except Exception:
             pass
+
+    def _select_field_by_index(self, index: int, event=None):
+        """Seleciona um campo pelo índice numérico (0 a N-1)."""
+        if not hasattr(self, '_field_keys') or not self._field_keys:
+            return "break"
+        if 0 <= index < len(self._field_keys):
+            if self._current_field_key:
+                self.ocr_text_by_field[self._current_field_key] = self.txt_ocr.get("1.0", "end-1c")
+            try:
+                combo_len = len(self.field_combo["values"])
+                if 0 <= index < combo_len:
+                    self.field_combo.current(index)
+            except Exception:
+                pass
+            self._show_field(self._field_keys[index])
+            self.txt_ocr.focus_set()
+            self.txt_ocr.mark_set(tk.INSERT, tk.END)
+            self.txt_ocr.see(tk.INSERT)
+        return "break"
+
+    def _next_field(self, event=None):
+        """Avança para o próximo campo da carta."""
+        if not hasattr(self, '_field_keys') or not self._field_keys:
+            return "break"
+        curr_idx = self.field_combo.current()
+        if curr_idx < 0:
+            curr_idx = 0
+        next_idx = (curr_idx + 1) % len(self._field_keys)
+        self._select_field_by_index(next_idx)
+        return "break"
+
+    def _prev_field(self, event=None):
+        """Volta para o campo anterior da carta."""
+        if not hasattr(self, '_field_keys') or not self._field_keys:
+            return "break"
+        curr_idx = self.field_combo.current()
+        if curr_idx < 0:
+            curr_idx = 0
+        prev_idx = (curr_idx - 1 + len(self._field_keys)) % len(self._field_keys)
+        self._select_field_by_index(prev_idx)
+        return "break"
+
+    def _on_tab_key(self, event=None):
+        """Trata tecla Tab no campo de texto para avançar de campo sem conflito de foco no macOS."""
+        self.after(20, self._next_field)
+        return "break"
+
+    def _on_shift_tab_key(self, event=None):
+        """Trata tecla Shift-Tab no campo de texto para recuar de campo sem conflito de foco no macOS."""
+        self.after(20, self._prev_field)
+        return "break"
+
+    def _format_wrap_selection(self, tag_open: str, tag_close: str, event=None):
+        """Envolve o texto selecionado com tags HTML (ex: <b>texto</b>) ou insere na posição do cursor."""
+        try:
+            if self.txt_ocr.tag_ranges("sel"):
+                sel_start = self.txt_ocr.index("sel.first")
+                sel_end = self.txt_ocr.index("sel.last")
+                selected_text = self.txt_ocr.get(sel_start, sel_end)
+                wrapped = f"{tag_open}{selected_text}{tag_close}"
+                self.txt_ocr.delete(sel_start, sel_end)
+                self.txt_ocr.insert(sel_start, wrapped)
+                self.txt_ocr.tag_remove("sel", "1.0", tk.END)
+            else:
+                self.txt_ocr.insert(tk.INSERT, f"{tag_open}{tag_close}")
+                pos = self.txt_ocr.index(f"{tk.INSERT}-{len(tag_close)}c")
+                self.txt_ocr.mark_set(tk.INSERT, pos)
+            self._on_ocr_edit()
+        except Exception:
+            pass
+        return "break"
 
     def _on_field_selected(self, event=None):
         idx = self.field_combo.current()
@@ -782,13 +912,13 @@ class App(tk.Tk):
     # ------------------------------------------------------------------
     # Ações
     # ------------------------------------------------------------------
-    def _action_accept(self):
+    def _action_accept(self, event=None):
         """Aceita o texto do campo atualmente selecionado e salva no JSON."""
         if not self.current_card:
-            return
+            return "break"
         field = getattr(self, '_current_field_key', None)
         if not field:
-            return
+            return "break"
 
         ocr_text = self.txt_ocr.get("1.0", "end-1c").strip()
         self.ocr_text_by_field[field] = ocr_text
@@ -806,11 +936,12 @@ class App(tk.Tk):
             self.status_var.set(f"✅ Campo '{FIELD_LABELS.get(field, field)}' salvo no JSON.")
         except Exception as e:
             messagebox.showerror("Erro ao salvar", str(e))
+        return "break"
 
-    def _action_accept_all(self):
+    def _action_accept_all(self, event=None) -> bool:
         """Aceita todos os campos reconhecidos e salva tudo no JSON de uma só vez."""
         if not self.current_card or not self.current_card_file:
-            return
+            return False
 
         # Salva o campo atualmente em foco antes de processar
         curr_field = getattr(self, '_current_field_key', None)
@@ -830,7 +961,7 @@ class App(tk.Tk):
             updated_fields[field] = new_text
 
         if not updated_fields:
-            return
+            return False
 
         try:
             card_data.save_card(self.current_card, self.current_card_file, updated_fields)
@@ -847,8 +978,16 @@ class App(tk.Tk):
             card_name = self.current_card.get('name', '')
             card_code = self.current_card.get('code', '')
             self.status_var.set(f"✅ Todos os campos da carta {card_code} ('{card_name}') foram salvos no JSON com sucesso!")
+            return True
         except Exception as e:
             messagebox.showerror("Erro ao salvar todos os campos", str(e))
+            return False
+
+    def _action_accept_all_and_next(self, event=None):
+        """Aceita todos os campos, salva no JSON e avança imediatamente para a próxima carta."""
+        if self._action_accept_all():
+            self._action_next()
+        return "break"
 
     def _on_ocr_edit(self, event=None):
         if getattr(self, '_is_updating_ui', False):
@@ -860,11 +999,12 @@ class App(tk.Tk):
             json_text = self.json_fields.get(field, "")
             self._update_diff(json_text, ocr_text)
 
-    def _action_keep(self):
+    def _action_keep(self, event=None):
         """Não altera nada."""
         self.status_var.set("⏭  Mantido sem alteração.")
+        return "break"
 
-    def _action_next(self):
+    def _action_next(self, event=None):
         """Pula para a próxima carta (limpa a UI e retoma vídeo)."""
         self._is_updating_ui = True
         try:
@@ -872,6 +1012,7 @@ class App(tk.Tk):
             self.current_card = None
             self.current_card_file = None
             self._current_field_key = None
+            self._field_keys = []
             self.json_fields = {}
             self.ocr_text_by_field = {}
 
@@ -890,6 +1031,7 @@ class App(tk.Tk):
             self.status_var.set("Pronto. Aponte para uma carta ou busque uma imagem no PC.")
         finally:
             self._is_updating_ui = False
+        return "break"
 
     # ------------------------------------------------------------------
     # Limpeza
