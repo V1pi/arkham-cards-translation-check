@@ -10,7 +10,7 @@
         "code": "06324",
         "name": "Abigail Foreman",
         "subname": "Aprendiz de Bibliotec\u00e1ria",
-        "text": "[fast] [fast]: Anexe um ativo de [Tomo] <i>Tomo</i> em sua \u00e1rea de jogo a Abigail Foreman ou troque um ativo de [Tomo] <i>Tomo</i> em sua \u00e1rea de jogo por um ativo anexado. O ativo anexado a ela n\u00e3o ocupa espa\u00e7os de m\u00e3o. <i>(Limite de 1 ativo anexado.)</i>\n[reaction] [reaction] Ap\u00f3s voc\u00ea resolver uma habilidade [action] [action] do ativo de <i>Tomo</i> [Tomo] anexado, esgote Abigail Foreman: Resolva os efeitos do ativo novamente.",
+        "text": "[fast]: Anexe um ativo de [[Tomo]] em sua \u00e1rea de jogo a Abigail Foreman ou troque um ativo de [[Tomo]] em sua \u00e1rea de jogo por um ativo anexado. O ativo anexado a ela n\u00e3o ocupa espa\u00e7os de m\u00e3o. (Limite de 1 ativo anexado.)\n[reaction] Ap\u00f3s voc\u00ea resolver uma habilidade [action] do ativo de [[Tomo]] anexado, esgote Abigail Foreman: Resolva os efeitos do ativo novamente.",
         "traits": "Aliado. Miskatonic.",
         "slot": "Aliado"
     },
@@ -18,7 +18,7 @@
         "code": "06325",
         "flavor": "Ele est\u00e1 sempre observando voc\u00ea.",
         "name": "O Olho da Verdade",
-        "text": "Se este teste de per\u00edcia estiver em uma trai\u00e7\u00e3o e o teste for bem-sucedido, adicione essa trai\u00e7\u00e3o ao painel de vit\u00f3rias e anexe O Olho da Verdade a ela.\nEnquanto estiver anexado, O Olho da Verdade contribui com seus \u00edcones de per\u00edcia em todos os testes das c\u00f3pias da trai\u00e7\u00e3o anexada.",
+        "text": "Se este teste de per\u00edcia estiver em uma trai\u00e7\u00e3o e o teste for bem-sucedido, adicione essa trai\u00e7\u00e3o ao painel de vit\u00f3rias e anexe O Olho da Verdade a ela. Enquanto estiver anexado, O Olho da Verdade contribui com seus \u00edcones de per\u00edcia em todos os testes das c\u00f3pias da trai\u00e7\u00e3o anexada.",
         "traits": "Magia. Treinado."
     },
     {

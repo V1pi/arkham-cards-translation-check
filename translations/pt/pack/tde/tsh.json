@@ -21,8 +21,8 @@
     },
     {
         "code": "06158",
-        "name": "C\u00f3dice do Outro Mundo",
-        "text": "Usa (3 segredos).\n[action] Esgote o C\u00f3dice do Outro Mundo e gaste 1 segredo: Procure nas 9 cartas do topo do baralho de encontro e escolha uma carta n\u00e3o [[Elite]] entre elas. Descarte uma c\u00f3pia da carta escolhida em jogo. Embaralhe todas as cartas procuradas de volta no baralho de encontro.",
+        "name": "C\u00f3dice de Outro Mundo",
+        "text": "Usa (3 segredos).\n[action] Esgote C\u00f3dice de Outro Mundo e gaste 1 segredo: Procure entre as 9 cartas do topo do baralho de encontros e escolha uma carta n\u00e3o [[Elite]] entre elas. Descarte de jogo uma c\u00f3pia da carta escolhida. Embaralhe todas as cartas procuradas de volta no baralho de encontros.",
         "traits": "Item. Tomo.",
         "slot": "M\u00e3o"
     },
@@ -35,8 +35,8 @@
     },
     {
         "code": "06160",
-        "name": "\"Deus saber\u00e1 quem eles s\u00e3o...\"",
-        "text": "Jogue apenas durante um de seus turnos em que voc\u00ea derrotou inimigos com um total de 6 ou mais de vida.\nAdicione \"Deus saber\u00e1 quem eles s\u00e3o...\" ao painel de vit\u00f3rias e encerre seu turno imediatamente. Ao ganhar experi\u00eancia durante a resolu\u00e7\u00e3o deste cen\u00e1rio, ganhe 1 de experi\u00eancia adicional.",
+        "name": "\"Deus Saber\u00e1 quem eles s\u00e3o...\"",
+        "text": "Jogue apenas durante um de seus turnos em que voc\u00ea derrotou inimigos com um total de 6 ou mais de vida.\nAdicione \u201cDeus saber\u00e1 quem eles s\u00e3o...\u201d ao painel de vit\u00f3rias e encerre seu turno imediatamente. Ao ganhar experi\u00eancia durante a resolu\u00e7\u00e3o deste cen\u00e1rio, ganhe 1 de experi\u00eancia adicional.",
         "traits": "T\u00e1tica. Predestinado."
     },
     {

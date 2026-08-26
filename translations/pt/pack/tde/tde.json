@@ -184,7 +184,7 @@
     {
         "code": "06025",
         "name": "Guardi\u00e3o do Cristalizador",
-        "text": "Vinculado (Cristalizador de Sonhos). Ca\u00e7ador.\n<b>Presa</b> - Apenas investigador com um Cristalizador de Sonhos.\nGuardi\u00e3o do Cristalizador entra em jogo esgotado.\n<b>For\u00e7ado</b> - Se n\u00e3o houver um Cristalizador de Sonhos em jogo: Reserve Guardi\u00e3o do Cristalizador, fora de jogo.",
+        "text": "Vinculado (Cristalizador de Sonhos).\nCa\u00e7ador.\n<b>Presa</b> \u2013 Apenas o investigador com um Cristalizador de Sonhos.\nGuardi\u00e3o do Cristalizador entra em jogo esgotado.\n<b>For\u00e7ado</b> \u2013 Se n\u00e3o houver nenhum Cristalizador de Sonhos em jogo: Separe Guardi\u00e3o do Cristalizador, fora de jogo.",
         "traits": "Monstro."
     },
     {
