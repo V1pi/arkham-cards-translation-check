@@ -50,108 +50,108 @@
     {
         "code": "06006",
         "name": "Becky",
-        "subname": "Marlin Model 1894 Customizada",
-        "text": "Apenas no baralho de Tommy Muldoon. Usa (2 muni\u00e7\u00f5es).\nCada recurso obtido pela habilidade [reaction] de Tommy Muldoon pode, em vez disso, ser colocado sobre Becky, como muni\u00e7\u00e3o.\n[action] Gaste 1 muni\u00e7\u00e3o: <b>Lute.</b> Voc\u00ea recebe +2 [combat] e causa +1 de dano neste ataque.",
+        "subname": "Marlin Model 1894 Personalizado",
+        "text": "Apenas no baralho de Tommy Muldoon. Usa (2 muni\u00e7\u00f5es).\nCada recurso obtido por meio da habilidade [reaction] de Tommy Muldoon pode ser colocado em Becky, como muni\u00e7\u00e3o.\n[action] Gaste 1 muni\u00e7\u00e3o: <b>Lute.</b> Voc\u00ea recebe +2 [combat] e causa +1 de dano neste ataque.",
         "traits": "Item. Arma. Arma de Fogo.",
         "slot": "M\u00e3o x2"
     },
     {
         "code": "06007",
         "name": "Erro de Novato",
-        "text": "<b>Revela\u00e7\u00e3o</b> - Descarte cada ativo que voc\u00ea controla com dano ou horror sobre ele. Se nenhum ativo for descartado por este efeito, embaralhe Erro de Novato de volta em seu baralho.",
+        "text": "<b>Revela\u00e7\u00e3o</b> - Descarte cada ativo que voc\u00ea controla com dano ou horror nele. Se nenhum ativo for descartado por este efeito, embaralhe Erro de Novato de volta em seu baralho.",
         "traits": "Trope\u00e7o. Defeito."
     },
     {
         "code": "06008",
-        "name": "Evid\u00eancia Oculta",
-        "text": "Apenas no baralho de Mandy Thompson.\nEmbaralhe Evid\u00eancia Oculta em seu baralho.\n[reaction] Quando voc\u00ea procurar em seu baralho e Evid\u00eancia Oculta estiver entre as cartas procuradas, revele-a: Compre-a e descubra 1 pista em seu local. (M\u00e1x. de uma habilidade [[Pesquisa]] por busca.)",
+        "name": "Ind\u00edcios Ocultos",
+        "text": "Apenas no baralho de Mandy Thompson.\nEmbaralhe Ind\u00edcios Ocultos em seu baralho.\n[reaction] Quando voc\u00ea procurar em seu baralho e Ind\u00edcios Ocultos estiver entre as cartas procuradas, revele-a: Compre-a e descubra 1 pista em seu local. (M\u00e1x. de uma habilidade de [[Pesquisa]] por procura.)",
         "traits": "Introspec\u00e7\u00e3o. Pesquisa."
     },
     {
         "code": "06009",
         "name": "Descoberta Chocante",
-        "text": "<b>Revela\u00e7\u00e3o</b> - Embaralhe Descoberta Chocante de volta em seu baralho. (Se n\u00e3o puder, descarte-a e compre a carta do topo do baralho de encontro, em vez disso.)\n<b>For\u00e7ado</b> - Quando voc\u00ea procurar em seu baralho e esta carta estiver entre as cartas procuradas: Descarte-a. Cancele a busca e todos os seus efeitos. Embaralhe o baralho procurado. Compre a carta do topo do baralho de encontro.",
+        "text": "<b>Revela\u00e7\u00e3o</b> - Embaralhe Descoberta Chocante de volta em seu baralho. (Se voc\u00ea n\u00e3o puder, descarte-a e compre a carta do topo do baralho de encontros em vez disso.)\n<b>For\u00e7ado</b> - Quando voc\u00ea procurar em seu baralho e esta carta estiver entre as cartas procuradas: Descarte-a. Cancele a procura e todos os seus efeitos. Embaralhe o baralho procurado. Compre a carta do topo do baralho de encontros.",
         "traits": "Trope\u00e7o. Mist\u00e9rio."
     },
     {
         "code": "06010",
         "name": "Contratos de Recompensa",
-        "text": "Permanente. Apenas no baralho de Tony Morgan. Usa (6 recompensas).\n[reaction]: Ap\u00f3s um inimigo entrar em jogo: Mova 1-3 recompensas de Contratos de Recompensa para aquele inimigo, at\u00e9 o m\u00e1ximo de sua vida.\n<b>For\u00e7ado</b> - Ap\u00f3s voc\u00ea derrotar um inimigo com 1 ou mais recompensas sobre ele: Mova suas recompensas para a sua reserva de recursos, como recursos.",
+        "text": "Permanente. Apenas no baralho de Tony Morgan.\nUsa (6 recompensas).\n[reaction]: Ap\u00f3s um inimigo entrar em jogo: Mova 1-3 recompensas de Contratos de Recompensa para esse inimigo, at\u00e9 um m\u00e1ximo igual \u00e0 vida desse inimigo.\n<b>For\u00e7ado</b> - Ap\u00f3s voc\u00ea derrotar um inimigo com 1 ou mais recompensas nele: Mova as recompensas dele para a sua reserva de recursos, como recursos.",
         "traits": "Trabalho."
     },
     {
         "code": "06011",
-        "name": "Colt .38 de Tony",
-        "text": "Apenas no baralho de Tony Morgan. Usa (3 muni\u00e7\u00f5es).\n[reaction]: Ap\u00f3s voc\u00ea jogar o Colt .38 de Tony: Jogue outro Colt .38 de Tony da sua m\u00e3o, sem custo.\n[action] Gaste 1 muni\u00e7\u00e3o: <b>Lute.</b> Voc\u00ea recebe +1 [combat] para cada recompensa sobre o inimigo atacado. Este ataque causa +1 de dano. Se este ataque derrotar um inimigo com 1 ou mais recompensas sobre ele, coloque 1 recompensa em Contratos de Recompensa.",
+        "name": "Long Colt .38 de Tony",
+        "text": "Apenas no baralho de Tony Morgan. Usa (3 muni\u00e7\u00f5es).\n[reaction]: Ap\u00f3s voc\u00ea jogar Long Colt .38 de Tony: Jogue outra Long Colt .38 de Tony da sua m\u00e3o, sem custo.\n[action] Gaste 1 muni\u00e7\u00e3o: <b>Lute.</b> Voc\u00ea recebe +1 [combat] para cada recompensa no inimigo atacado. Este ataque causa +1 de dano. Se este ataque derrotar um inimigo com 1 ou mais recompensas nele, coloque 1 recompensa em Contratos de Recompensa.",
         "traits": "Item. Arma. Arma de Fogo.",
         "slot": "M\u00e3o"
     },
     {
         "code": "06012",
-        "name": "A Presa de Tony",
-        "text": "<b>Aparecer</b> - Local mais distante de Tony Morgan.\nDistante.\n<b>For\u00e7ado</b> - Ap\u00f3s A Presa de Tony entrar em jogo: Coloque 1 perdi\u00e7\u00e3o sobre ela. Ent\u00e3o, coloque 1 recurso sobre ela <i>(da reserva de fichas)</i>, como uma recompensa.",
+        "name": "Presa de Tony",
+        "text": "<b>Surgir</b> - O local mais distante de Tony Morgan. Arredio.\n<b>For\u00e7ado</b> - Ap\u00f3s Presa de Tony entrar em jogo: Coloque 1 perdi\u00e7\u00e3o nela. Ent\u00e3o, coloque 1 recurso nela <i>(da reserva de fichas)</i>, como uma recompensa.",
         "traits": "Humanoide. Monstro. Abissal."
     },
     {
         "code": "06013",
-        "name": "Caixa de Portal",
+        "name": "Caixa de Portais",
         "subname": "Mundos dentro de Mundos",
-        "text": "Apenas no baralho de Luke Robinson. Usa (3 cargas).\n[fast] Esgote a Caixa de Portal e gaste 1 carga: Desengaje de cada inimigo engajado com voc\u00ea, procure Portal de Sonho <i>(Jornada Maravilhosa)</i> entre suas cartas vinculadas, coloque-o em jogo e mova-se para ele.",
+        "text": "Apenas no baralho de Luke Robinson. Usa (3 cargas).\n[fast] Esgote Caixa de Portais e gaste 1 carga: Desengaje de cada inimigo engajado com voc\u00ea, procure Portal dos Sonhos <i>(Viagem Maravilhosa)</i> em suas cartas vinculadas, coloque-o em jogo e mova-se para l\u00e1.",
         "traits": "Item. Rel\u00edquia.",
         "slot": "M\u00e3o"
     },
     {
         "code": "06014",
         "name": "Desconectado da Realidade",
-        "text": "<b>Revela\u00e7\u00e3o</b> - Se Portal de Sonho <i>(Jornada Maravilhosa)</i> j\u00e1 estiver em jogo, vire-o. Caso contr\u00e1rio, procure Portal de Sonho <i>(Realidade Sem Sentido)</i> entre suas cartas vinculadas e coloque-o em jogo. Em qualquer caso, desengaje de cada inimigo engajado com voc\u00ea e mova-se para o Portal de Sonho.",
+        "text": "<b>Revela\u00e7\u00e3o</b> - Se Portal dos Sonhos (<i>Viagem Maravilhosa</i>) j\u00e1 estiver em jogo, vire-o para o outro lado. Caso contr\u00e1rio, procure Portal dos Sonhos (<i>Realidade sem Prop\u00f3sito</i>) em suas cartas vinculadas e coloque-o em jogo. Em ambos os casos, desengaje de cada inimigo engajado com voc\u00ea e mova-se para Portal dos Sonhos.",
         "traits": "Loucura."
     },
     {
         "code": "06015a",
-        "name": "Portal de Sonho",
-        "subname": "Jornada Maravilhosa",
-        "text": "Vinculado (Caixa de Portal).\nPortal de Sonho est\u00e1 conectado a cada outro local revelado, e vice-versa. Inimigos e investigadores que n\u00e3o sejam Luke Robinson n\u00e3o podem entrar no Portal de Sonho.\n<b>For\u00e7ado</b> - No final da fase de investiga\u00e7\u00e3o: Reserve Portal de Sonho, fora de jogo. (Se Luke Robinson estiver aqui, mova-o para qualquer local revelado.)",
+        "name": "Portal dos Sonhos",
+        "subname": "Viagem Maravilhosa",
+        "text": "Vinculado (Caixa de Portais).\nO Portal dos Sonhos est\u00e1 conectado a cada outro local revelado e vice-versa. Os inimigos e investigadores que n\u00e3o sejam Luke Robinson n\u00e3o podem entrar no Portal dos Sonhos.\n<b>For\u00e7ado</b> - No final da fase de investiga\u00e7\u00e3o: Separe Portal dos Sonhos, fora de jogo. (Se Luke Robinson estiver aqui, mova-o para qualquer local revelado.)",
         "traits": "Terras On\u00edricas."
     },
     {
         "code": "06015b",
-        "name": "Portal de Sonho",
-        "subname": "Realidade Sem Sentido",
-        "text": "Vinculado (Desconectado da Realidade).\nInimigos e investigadores que n\u00e3o sejam Luke Robinson n\u00e3o podem entrar no Portal de Sonho.\n[reaction] Ap\u00f3s voc\u00ea investigar o Portal de Sonho com sucesso: Vire-o.\n<b>For\u00e7ado</b> - No final da fase de investiga\u00e7\u00e3o: Reserve Portal de Sonho, fora de jogo. (Se Luke Robinson estiver aqui, mova-o para qualquer local revelado, e ele sofre 2 de horror.)",
+        "name": "Portal dos Sonhos",
+        "subname": "Realidade sem Prop\u00f3sito",
+        "text": "Vinculado (Desconectado da Realidade).\nOs inimigos e investigadores que n\u00e3o sejam Luke Robinson n\u00e3o podem entrar no Portal dos Sonhos.\n[reaction] Ap\u00f3s voc\u00ea investigar com sucesso o Portal dos Sonhos: Vire-o.\n<b>For\u00e7ado</b> - No final da fase de investiga\u00e7\u00e3o: Separe Portal dos Sonhos, fora de jogo. (Se Luke Robinson estiver aqui, mova-o para qualquer local revelado, e ele sofre 2 de horror.)",
         "traits": "Terras On\u00edricas."
     },
     {
         "code": "06016",
-        "name": "O Violino de Patrice",
+        "name": "Violino de Patrice",
         "subname": "Minha Musa",
-        "text": "Apenas no baralho de Patrice Hathaway.\n[fast] Escolha e descarte 1 carta da sua m\u00e3o e esgote O Violino de Patrice: Escolha um investigador em seu local para ganhar 1 recurso ou comprar 1 carta.",
+        "text": "Apenas no baralho de Patrice Hathaway.\n[fast] Escolha e descarte 1 carta da sua m\u00e3o e esgote Violino de Patrice: Escolha um investigador em seu local para ganhar 1 recurso ou comprar 1 carta.",
         "traits": "Item. Instrumento.",
         "slot": "M\u00e3o"
     },
     {
         "code": "06017",
         "name": "Observador de Outra Dimens\u00e3o",
-        "text": "Perigo. Oculto. Ca\u00e7ador.\n<b>Revela\u00e7\u00e3o</b> - Adicione secretamente este inimigo \u00e0 sua m\u00e3o.\nVoc\u00ea pode lutar ou evadir este inimigo enquanto ele estiver na sua m\u00e3o (como se ele estivesse em seu local). Se voc\u00ea tiver sucesso, descarte-o da sua m\u00e3o. Se falhar, coloque-o em jogo engajado com voc\u00ea.\n<b>For\u00e7ado</b> - Quando seu baralho ficar sem cartas, se este inimigo estiver na sua m\u00e3o: Ele o ataca <i>(da sua m\u00e3o)</i>.",
+        "text": "Perigo. Oculto. Ca\u00e7ador.\n<b>Revela\u00e7\u00e3o</b> - Adicione secretamente este inimigo \u00e0 sua m\u00e3o. Voc\u00ea pode evadir ou lutar contra este inimigo enquanto ele estiver na sua m\u00e3o (como se ele estivesse em seu local). Se voc\u00ea tiver sucesso, descarte-o da sua m\u00e3o. Se voc\u00ea falhar, fa\u00e7a-o surgir engajado com voc\u00ea.\n<b>For\u00e7ado</b> - Quando o seu baralho ficar sem cartas, se este inimigo estiver na sua m\u00e3o: Ele ataca voc\u00ea <i>(da sua m\u00e3o)</i>.",
         "traits": "Monstro. Extradimensional."
     },
     {
         "code": "06018",
-        "name": "A L\u00e2mina Faminta",
+        "name": "A L\u00e2mina Voraz",
         "subname": "L\u00e2mina Calamitosa de Celepha\u00efs",
-        "text": "Limite de 1 por baralho. Como custo adicional para jogar esta carta, voc\u00ea deve procurar 3 c\u00f3pias de Sede de Sangue entre suas cartas vinculadas e embaralh\u00e1-las em seu baralho.\n[action]: <b>Lute.</b> Voc\u00ea recebe +1 [combat] neste ataque para cada c\u00f3pia de Sede de Sangue anexada. Este ataque causa +1 de dano. Se este ataque derrotar um inimigo, coloque 1 recurso nesta carta <i>(do banco de fichas)</i>, como uma oferenda.",
-        "traits": "Item. Arma. Corpo a corpo. Rel\u00edquia. Amaldi\u00e7oada.",
+        "text": "Limite de 1 por baralho. Como um custo adicional para jogar esta carta, voc\u00ea deve procurar 3 c\u00f3pias de Sede de Sangue em suas cartas vinculadas e embaralh\u00e1-las em seu baralho.\n[action]: Lute. Voc\u00ea recebe +1 [combat] neste ataque para cada c\u00f3pia de Sede de Sangue anexada. Este ataque causa +1 de dano. Se este ataque derrotar um inimigo, coloque 1 recurso nesta carta <i>(da reserva de fichas)</i>, como uma oferenda.",
+        "traits": "Item. Arma. Corpo a Corpo. Rel\u00edquia. Amaldi\u00e7oado.",
         "slot": "M\u00e3o"
     },
     {
         "code": "06019",
         "name": "Sede de Sangue",
-        "text": "Vinculado (A L\u00e2mina Faminta).\n<b>Revela\u00e7\u00e3o</b> - Remova 2 oferendas de A L\u00e2mina Faminta para anexar Sede de Sangue a ela. Se n\u00e3o puder, sofra 1 de horror e embaralhe Sede de Sangue de volta em seu baralho.\n[free] Enquanto ataca com A L\u00e2mina Faminta, embaralhe Sede de Sangue em seu baralho: Voc\u00ea causa +1 de dano neste ataque. (M\u00e1x. de uma vez por ataque.)",
+        "text": "Vinculado (A L\u00e2mina Voraz).\n<b>Revela\u00e7\u00e3o</b> \u2013 Remova 2 oferendas de A L\u00e2mina Voraz para anexar Sede de Sangue a ela. Se voc\u00ea n\u00e3o puder, sofra 1 de horror e embaralhe Sede de Sangue de volta em seu baralho.\n[fast] Enquanto estiver atacando com A L\u00e2mina Voraz, embaralhe Sede de Sangue em seu baralho: Voc\u00ea causa +1 de dano neste ataque. (M\u00e1x. de uma vez por ataque.)",
         "traits": "Loucura."
     },
     {
         "code": "06020",
         "name": "Juramento Solene",
-        "text": "Mir\u00edade. Veloz.\nJogue Voto Solene sob o controle de outro investigador em seu local.\n[fast] Se o dono de Voto Solene estiver em seu local, esgote Voto Solene: Mova 1 de dano ou horror de uma carta que voc\u00ea controla para uma carta que aquele investigador controla.",
+        "text": "Mir\u00edade. Veloz.\nJogue Juramento Solene sob o controle de outro investigador em seu local.\n[fast] Se o dono de Juramento Solene estiver em seu local, esgote Juramento Solene: Mova 1 de dano ou horror de uma carta que voc\u00ea controla para uma carta que esse investigador controla.",
         "traits": "Esp\u00edrito."
     },
     {
@@ -195,76 +195,76 @@
     },
     {
         "code": "06027",
-        "name": "Observa\u00e7\u00e3o Estelar",
-        "text": "M\u00e1x. de duas vezes por jogo.\nJogue apenas se houver 10 ou mais cartas no baralho de encontro.\nProcure 1 c\u00f3pia de As Estrelas Est\u00e3o Certas entre suas cartas vinculadas e embaralhe-a entre as 10 primeiras cartas do baralho de encontro.",
-        "traits": "Introspec\u00e7\u00e3o. Aug\u00faorio."
+        "name": "Observar as Estrelas",
+        "text": "M\u00e1ximo de duas vezes por jogo.\nJogue somente se houver 10 ou mais cartas no baralho de encontros.\nProcure 1 c\u00f3pia de As Estrelas Est\u00e3o Certas em suas cartas vinculadas e embaralhe-a entre as 10 cartas do topo do baralho de encontros.",
+        "traits": "Introspec\u00e7\u00e3o. Aug\u00fario."
     },
     {
         "code": "06028",
         "name": "As Estrelas Est\u00e3o Certas",
-        "text": "Vinculado (Observa\u00e7\u00e3o Estelar).\n<b>Revela\u00e7\u00e3o</b> - Remova As Estrelas Est\u00e3o Certas do jogo. Escolha um investigador. Aquele investigador compra 1 carta, ganha 1 recurso e pode realizar uma a\u00e7\u00e3o imediata como se fosse o seu turno (esta a\u00e7\u00e3o n\u00e3o conta para o n\u00famero de a\u00e7\u00f5es que aquele investigador pode realizar a cada turno).",
-        "traits": "Aug\u00faorio."
+        "text": "Vinculado (Observar as Estrelas).\n<b>Revela\u00e7\u00e3o</b> - Remova As Estrelas Est\u00e3o Certas do jogo. Escolha um investigador. Esse investigador compra 1 carta, ganha 1 recurso e pode realizar uma a\u00e7\u00e3o imediatamente, como se fosse o turno dele (essa a\u00e7\u00e3o n\u00e3o conta para a quantidade de a\u00e7\u00f5es que esse investigador pode realizar a cada turno).",
+        "traits": "Aug\u00fario."
     },
     {
         "code": "06029",
-        "name": "Portal Aberto",
-        "text": "Mir\u00edade. Veloz.\nJogue apenas durante o seu turno.\nAnexe ao seu local. Limite de grupo de 3 em jogo.\nInvestigadores podem se mover entre quaisquer dois locais com um Portal Aberto anexado como se os locais fossem conectados.",
+        "name": "Port\u00e3o Aberto",
+        "text": "Mir\u00edade. Veloz.\nJogue apenas durante o seu turno.\nAnexe ao seu local. Limite de grupo de 3 em jogo.\nOs investigadores podem se mover entre quaisquer dois locais com um Port\u00e3o Aberto anexado como se os locais estivessem conectados.",
         "traits": "Magia."
     },
     {
         "code": "06030",
-        "name": "Miss Doyle",
-        "subname": "General Gata de Ulthar",
-        "text": "Limite de 1 por baralho.\n<b>For\u00e7ado</b> - Ap\u00f3s Miss Doyle entrar em jogo: Procure Esperan\u00e7a, Fervor e Augure entre suas cartas vinculadas. Escolha 1 aleatoriamente para colocar em jogo e embaralhe os outros 2 em seu baralho. Quando Miss Doyle sair de jogo, encontre cada um desses ativos (mesmo que estejam fora de jogo) e reserve-os, fora de jogo.",
+        "name": "Senhorita Doyle",
+        "subname": "General Gato de Ulthar",
+        "text": "Limite de 1 por baralho.\n<b>For\u00e7ado</b> - Ap\u00f3s Senhorita Doyle entrar em jogo: Procure Esperan\u00e7a, Zelo e \u00c1ugure em suas cartas vinculadas. Aleatoriamente, escolha 1 para colocar em jogo e embaralhe as outras 2 cartas em seu baralho. Quando Senhorita Doyle sair de jogo, encontre cada um desses ativos (mesmo que estejam fora de jogo) e separe-os, fora de jogo.",
         "traits": "Aliado. Criatura. Terras On\u00edricas.",
         "slot": "Aliado"
     },
     {
         "code": "06031",
         "name": "Esperan\u00e7a",
-        "text": "Vinculado (Miss Doyle). Veloz.\n<b>For\u00e7ado</b> - Ap\u00f3s Esperan\u00e7a entrar em jogo: Descarte Fervor e Augure.\n[action] Se Esperan\u00e7a estiver pronta, esgote-a ou descarte-a: <b>Evada.</b> Tente evadir com um valor base de [agility] igual a 5. (Se voc\u00ea descartou Esperan\u00e7a, este teste \u00e9 automaticamente bem-sucedido. Em seguida, voc\u00ea pode embaralhar Esperan\u00e7a em seu baralho para colocar Fervor ou Augure em jogo da sua pilha de descarte.)",
+        "text": "Vinculado (Senhorita Doyle). Veloz.\n<b>For\u00e7ado</b> - Ap\u00f3s Esperan\u00e7a entrar em jogo: Descarte Zelo e \u00c1ugure.\n[action] Se Esperan\u00e7a estiver preparada, esgote-a ou descarte-a: <b>Evada.</b> Tente evadir com uma [agility] de valor base 5. (Se voc\u00ea descartou Esperan\u00e7a, este teste \u00e9 automaticamente bem-sucedido. Ent\u00e3o, voc\u00ea pode embaralhar Esperan\u00e7a em seu baralho para colocar Zelo ou \u00c1ugure em jogo da sua pilha de descarte.)",
         "traits": "Aliado. Criatura. Terras On\u00edricas."
     },
     {
         "code": "06032",
-        "name": "Fervor",
-        "text": "Vinculado (Miss Doyle). Veloz.\n<b>For\u00e7ado</b> - Ap\u00f3s Fervor entrar em jogo: Descarte Esperan\u00e7a e Augure.\n[action] Se Fervor estiver pronto, esgote-o ou descarte-o: <b>Lute.</b> Lute com um valor base de [combat] igual a 5. (Se voc\u00ea descartou Fervor, este teste \u00e9 automaticamente bem-sucedido. Em seguida, voc\u00ea pode embaralhar Fervor em seu baralho para colocar Esperan\u00e7a ou Augure em jogo da sua pilha de descarte.)",
+        "name": "Zelo",
+        "text": "Vinculado (Senhorita Doyle). Veloz.\n<b>For\u00e7ado</b> - Ap\u00f3s Zelo entrar em jogo: Descarte Esperan\u00e7a e \u00c1ugure.\n[action] Se Zelo estiver preparado, esgote-o ou descarte-o: <b>Lute.</b> Lute com um [combat] de valor base 5. (Se voc\u00ea descartou Zelo, este teste \u00e9 automaticamente bem-sucedido. Ent\u00e3o, voc\u00ea pode embaralhar Zelo em seu baralho para colocar Esperan\u00e7a ou \u00c1ugure em jogo da sua pilha de descarte.)",
         "traits": "Aliado. Criatura. Terras On\u00edricas."
     },
     {
         "code": "06033",
-        "name": "Augure",
-        "text": "Vinculado (Miss Doyle). Veloz.\n<b>For\u00e7ado</b> - Ap\u00f3s Augure entrar em jogo: Descarte Esperan\u00e7a e Fervor.\n[action] Se Augure estiver pronta, esgote-a ou descarte-a: <b>Investigue.</b> Investigue com um valor base de [intellect] igual a 5. (Se voc\u00ea descartou Augure, este teste \u00e9 automaticamente bem-sucedido. Em seguida, voc\u00ea pode embaralhar Augure em seu baralho para colocar Esperan\u00e7a ou Fervor em jogo da sua pilha de descarte.)",
+        "name": "\u00c1ugure",
+        "text": "Vinculado (Senhorita Doyle). Veloz.\n<b>For\u00e7ado</b> - Ap\u00f3s \u00c1ugure entrar em jogo: Descarte Esperan\u00e7a e Zelo.\n[action] Se \u00c1ugure estiver preparado, esgote-o ou descarte-o: <b>Investigue.</b> Investigue com um [intellect] de valor base 5. (Se voc\u00ea descartou \u00c1ugure, este teste \u00e9 automaticamente bem-sucedido. Ent\u00e3o, voc\u00ea pode embaralhar \u00c1ugure em seu baralho para colocar Esperan\u00e7a ou Zelo em jogo da sua pilha de descarte.)",
         "traits": "Aliado. Criatura. Terras On\u00edricas."
     },
     {
         "code": "06034",
         "name": "Descoberta Fortuita",
-        "text": "Mir\u00edade.\nX \u00e9 o n\u00famero de outras c\u00f3pias de Descoberta Fortuita na sua pilha de descarte.\n<b>Investigue.</b> Voc\u00ea recebe +X [intellect] para esta investiga\u00e7\u00e3o. Se voc\u00ea tiver sucesso, descubra X pistas adicionais em seu local.",
+        "text": "Mir\u00edade.\nX \u00e9 o n\u00famero de outras c\u00f3pias de Descoberta Fortuita em sua pilha de descarte.\n<b>Investigue.</b> Voc\u00ea recebe +X [intellect] nesta investiga\u00e7\u00e3o. Se voc\u00ea tiver sucesso, descubra X pistas adicionais em seu local.",
         "traits": "Sorte. Introspec\u00e7\u00e3o."
     },
     {
         "code": "06035",
         "name": "Egoc\u00eantrico",
-        "text": "Apenas em modo multiplayer.\n<b>Revela\u00e7\u00e3o</b> - Coloque Egoc\u00eantrico em jogo na sua \u00e1rea de amea\u00e7as.\nVoc\u00ea n\u00e3o pode comprometer cartas nos testes de per\u00edcia de outros investigadores nem afetar outros investigadores com efeitos de cartas de jogador (exceto aspectos que causam dano ou horror).\n[action] [action]: Descarte Egoc\u00eantrico.",
+        "text": "Apenas Multijogador.\n<b>Revela\u00e7\u00e3o</b> - Coloque Egoc\u00eantrico em jogo em sua \u00e1rea de amea\u00e7as.\nVoc\u00ea n\u00e3o pode comprometer cartas em testes de per\u00edcia de outros investigadores ou afetar outros investigadores com efeitos de cartas de jogador (exceto aspectos que causam dano ou horror).\n[action] [action]: Descarte Egoc\u00eantrico.",
         "traits": "Defeito."
     },
     {
         "code": "06036",
         "name": "Cleptomania",
-        "text": "Apenas em modo multiplayer.\n<b>Revela\u00e7\u00e3o</b> - Coloque Cleptomania em jogo na sua \u00e1rea de jogo.\n[action]: Assuma o controle de um ativo de [[Item]] ou 2 recursos de outro investigador em seu local. Ent\u00e3o, embaralhe Cleptomania em seu baralho.\n<b>For\u00e7ado</b> - No final do seu turno: Sofra 1 de horror.",
+        "text": "Apenas Multijogador.\n<b>Revela\u00e7\u00e3o</b> - Coloque Cleptomania em jogo em sua \u00e1rea de jogo.\n[action]: Assuma o controle de um ativo de [[Item]] ou 2 recursos de outro investigador em seu local. Ent\u00e3o, embaralhe Cleptomania em seu baralho.\n<b>For\u00e7ado</b> - No final do seu turno: Sofra 1 de horror.",
         "traits": "Loucura. Talento."
     },
     {
         "code": "06037",
         "name": "Narcolepsia",
-        "text": "Apenas em modo multiplayer.\n<b>Revela\u00e7\u00e3o</b> - Coloque Narcolepsia em jogo na sua \u00e1rea de amea\u00e7as.\nVoc\u00ea n\u00e3o pode realizar a\u00e7\u00f5es, acionar habilidades nem jogar cartas.\n[action]: \"Acorde!\" Descarte Narcolepsia.\n<b>For\u00e7ado</b> - Ap\u00f3s voc\u00ea sofrer dano ou horror: Descarte Narcolepsia.",
+        "text": "Apenas Multijogador.\n<b>Revela\u00e7\u00e3o</b> - Coloque Narcolepsia em jogo em sua \u00e1rea de amea\u00e7as.\nVoc\u00ea n\u00e3o pode realizar a\u00e7\u00f5es, ativar habilidades ou jogar cartas.\n[action]: \"Acorde!\" Descarte Narcolepsia.\n<b>For\u00e7ado</b> - Ap\u00f3s voc\u00ea sofrer dano ou horror: Descarte Narcolepsia.",
         "traits": "Loucura."
     },
     {
         "code": "06038",
         "name": "Seu Pior Pesadelo",
-        "text": "Apenas em modo multiplayer.\nCa\u00e7ador.\n<b>Presa</b> - Apenas o portador.\nO portador de Seu Pior Pesadelo n\u00e3o pode atac\u00e1-lo, causar dano nem derrot\u00e1-lo.",
+        "text": "Apenas Multijogador.\nCa\u00e7ador.\n<b>Presa</b> - Apenas o portador.\nO portador de Seu Pior Pesadelo n\u00e3o pode atac\u00e1-lo, causar dano a ele ou derrot\u00e1-lo.",
         "traits": "Monstro."
     }
 ]

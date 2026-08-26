@@ -2,21 +2,21 @@
     {
         "code": "06155",
         "name": "Tetsuo Mori",
-        "subname": "Nobre Demais para o Seu Pr\u00f3prio Bem",
-        "text": "Tetsuo Mori pode receber dano e/ou horror causado a outros investigadores em seu local.\n[reaction] Quando Tetsuo Mori for derrotado: Escolha um investigador em seu local. Aquele investigador procura em sua pilha de descarte ou nas 9 cartas do topo do seu baralho por um ativo de [[Item]] e o adiciona \u00e0 sua m\u00e3o. Embaralhe o baralho se ele for procurado.",
+        "subname": "Nobre Demais para seu Pr\u00f3prio Bem",
+        "text": "Voc\u00ea pode atribuir a Tetsuo Mori dano e/ou horror causados a outros investigadores em seu local.\n[reaction] Quando Tetsuo Mori for derrotado: Escolha um investigador em seu local. Esse investigador procura um ativo de [[Item]] na pilha de descarte dele ou nas 9 cartas do topo do baralho dele e o adiciona \u00e0 m\u00e3o dele. Embaralhe o baralho dele se ele procurou no baralho.",
         "traits": "Aliado. Pol\u00edcia.",
         "slot": "Aliado"
     },
     {
         "code": "06156",
         "name": "\"Engane-me uma vez...\"",
-        "text": "Veloz. Jogue quando voc\u00ea for descartar uma carta de trai\u00e7\u00e3o ap\u00f3s resolver qualquer um de seus efeitos.\nColoque \"Engane-me uma vez...\" em jogo na sua \u00e1rea de jogo e anexe aquela trai\u00e7\u00e3o a ela.\n[reaction] Quando qualquer investigador comprar uma c\u00f3pia da carta de trai\u00e7\u00e3o anexada, descarte \"Engane-me uma vez...\": Cancele o efeito de revela\u00e7\u00e3o daquela carta.",
+        "text": "Veloz. Jogue quando voc\u00ea for descartar uma carta de trai\u00e7\u00e3o ap\u00f3s resolver qualquer um de seus efeitos. Coloque \"Engane-me uma vez...\" em jogo em sua \u00e1rea de jogo e anexe essa trai\u00e7\u00e3o a ela.\n[reaction] Quando algum investigador comprar uma c\u00f3pia da carta de trai\u00e7\u00e3o anexada, descarte \"Engane-me uma vez...\": Cancele o efeito de revela\u00e7\u00e3o dessa carta.",
         "traits": "Introspec\u00e7\u00e3o. T\u00e1tica."
     },
     {
         "code": "06157",
-        "name": "Autossacrif\u00edcio",
-        "text": "Comprometa apenas em um teste de per\u00edcia (de qualquer tipo) sendo realizado por outro investigador em seu local.\nSe este teste falhar, voc\u00ea deve resolver todos os efeitos do teste com falha, em vez do investigador que o realizou. Ent\u00e3o, ou voc\u00ea compra 2 cartas, ou o investigador que realizou o teste compra 2 cartas.",
+        "name": "Altru\u00edsmo",
+        "text": "Comprometa apenas em um teste de per\u00edcia (de qualquer tipo) realizado por outro investigador em seu local.\nSe este teste falhar, voc\u00ea deve resolver todos os efeitos do teste malsucedido, em vez do investigador realizando o teste. Ent\u00e3o, voc\u00ea compra 2 cartas ou o investigador realizando o teste compra 2 cartas.",
         "traits": "Esp\u00edrito."
     },
     {
@@ -41,8 +41,8 @@
     },
     {
         "code": "06161",
-        "name": "Recarga R\u00e1pida",
-        "text": "Veloz. Jogue apenas durante o seu turno.\nEscolha um ativo de [[Arma de Fogo]] que voc\u00ea controla com menos fichas de muni\u00e7\u00e3o do que o seu valor de usa (X). Coloque muni\u00e7\u00e3o naquele ativo at\u00e9 que ele tenha muni\u00e7\u00e3o igual ao seu valor de usa (X).",
+        "name": "Recarga Veloz",
+        "text": "Veloz. Jogue apenas durante o seu turno.\nEscolha um ativo de [[Arma de Fogo]] que voc\u00ea controla com menos fichas de muni\u00e7\u00e3o do que o seu valor de usos (X). Coloque muni\u00e7\u00e3o nesse ativo at\u00e9 que ele tenha uma quantidade de muni\u00e7\u00e3o igual ao seu valor de usos (X).",
         "traits": "T\u00e1tica. Truque."
     },
     {
@@ -56,8 +56,8 @@
     },
     {
         "code": "06163",
-        "flavor": "Voc\u00ea n\u00e3o confia necessariamente nas palavras ocultistas, mas n\u00e3o tem outra escolha.",
-        "name": "Palavras Curadoras",
+        "flavor": "Voc\u00ea n\u00e3o necessariamente confia nas palavras ocultistas, mas n\u00e3o tem outra escolha.",
+        "name": "Palavras da Cura",
         "text": "Usa (3 cargas).\n[action] Gaste 1 carga: Cure 1 de dano de um investigador em seu local.",
         "traits": "Magia.",
         "slot": "Arcano"
@@ -65,27 +65,27 @@
     {
         "code": "06164",
         "name": "Forma Et\u00e9rea",
-        "text": "<b>Evada.</b> Adicione o seu valor de [willpower] ao seu valor de per\u00edcia para esta tentativa de evas\u00e3o. Se voc\u00ea tiver sucesso, desengaje de cada outro inimigo engajado com voc\u00ea, e pelo restante da rodada, voc\u00ea \u00e9 et\u00e9reo (inimigos n\u00e3o podem engajar ou ser engajados com voc\u00ea, e voc\u00ea n\u00e3o pode atacar ou causar dano a inimigos).",
+        "text": "<b>Evada.</b> Adicione seu valor de [willpower] ao seu valor de per\u00edcia nesta tentativa de evas\u00e3o. Se voc\u00ea tiver sucesso, desengaje de cada outro inimigo engajado com voc\u00ea e, pelo restante da rodada, voc\u00ea est\u00e1 et\u00e9reo (os inimigos n\u00e3o podem engajar com voc\u00ea ou ficar engajados com voc\u00ea, e voc\u00ea n\u00e3o pode atacar ou causar dano aos inimigos).",
         "traits": "Magia."
     },
     {
         "code": "06165",
-        "flavor": "Voc\u00ea arranca da m\u00e3o do cad\u00e1ver.\nN\u00e3o \u00e9 como se ele fosse reclamar.",
-        "name": "Garimpando Suprimentos",
-        "text": "Escolha uma carta de n\u00edvel 0 na sua pilha de descarte. Adicione a carta escolhida \u00e0 sua m\u00e3o.",
+        "flavor": "Voc\u00ea a arranca da m\u00e3o do cad\u00e1ver.\nEle n\u00e3o vai poder reclamar mesmo.",
+        "name": "Surrupiar Suprimentos",
+        "text": "Escolha uma carta de n\u00edvel 0 em sua pilha de descarte. Adicione a carta escolhida \u00e0 sua m\u00e3o.",
         "traits": "Sorte."
     },
     {
         "code": "06166",
         "name": "For\u00e7a Bruta",
-        "text": "M\u00e1x. de 1 comprometida por teste de per\u00edcia.\nEnquanto For\u00e7a Bruta estiver comprometida durante uma a\u00e7\u00e3o b\u00e1sica de luta, ela ganha [combat][combat] e o texto: \"Se este teste for bem-sucedido por 2 ou mais, este ataque causa +2 de dano.\"",
+        "text": "M\u00e1x. de 1 comprometida por teste de per\u00edcia.\nEnquanto For\u00e7a Bruta estiver comprometida durante uma a\u00e7\u00e3o de lutar b\u00e1sica, ela ganha [combat][combat] e o texto: \"Se este teste for bem-sucedido por 2 ou mais, este ataque causa +2 de dano.\"",
         "traits": "Inato. Desenvolvido."
     },
     {
         "code": "06167",
-        "flavor": "\"Discreto\" n\u00e3o significa que voc\u00ea est\u00e1 despreparado.",
+        "flavor": "\"Sem pretens\u00f5es\" n\u00e3o quer dizer que voc\u00ea esteja despreparado.",
         "name": "Vers\u00e1til",
-        "text": "Permanente.\nVoc\u00ea ganha +5 de Tamanho de Baralho.\nAs Op\u00e7\u00f5es de Constru\u00e7\u00e3o de Baralho do seu investigador ganham: \"mais uma carta de n\u00edvel 0 de qualquer classe ([guardian], [seeker], [rogue], [mystic] ou [survivor]).\"",
+        "text": "Permanente.\nVoc\u00ea recebe +5 de Tamanho do Baralho.\nAs Op\u00e7\u00f5es de Constru\u00e7\u00e3o de Baralho do seu investigador ganham: \"uma outra carta de n\u00edvel 0 de qualquer classe ([guardian], [seeker], [rogue], [mystic] ou [survivor]).\"",
         "traits": "Talento."
     }
 ]

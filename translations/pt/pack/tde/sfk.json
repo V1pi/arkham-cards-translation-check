@@ -1,14 +1,14 @@
 [
     {
         "code": "06110",
-        "name": "Primeira Vigu\u00edlia",
-        "text": "Veloz. Jogue quando a etapa de \"comprar cartas de encontro\" da fase de mitos for come\u00e7ar.\nEm vez de resolver aquela etapa, olhe as X cartas do topo do baralho de encontro, onde X \u00e9 o n\u00famero de investigadores. Distribua essas cartas entre os investigadores como preferir, distribuindo no m\u00e1ximo 1 carta para cada investigador que n\u00e3o seja voc\u00ea mesmo. Ent\u00e3o, um por um, cada investigador compra a(s) carta(s) distribu\u00edda(s) a ele.",
+        "name": "Primeiro Turno de Vigia",
+        "text": "Veloz. Jogue quando a etapa \"comprar cartas de encontro\" da fase do mythos for come\u00e7ar.\nEm vez de resolver essa etapa, olhe as X cartas do topo do baralho de encontros, onde X \u00e9 o n\u00famero de investigadores. Distribua essas cartas entre os investigadores como desejar, distribuindo no m\u00e1ximo 1 carta para cada investigador que n\u00e3o seja voc\u00ea.\nEnt\u00e3o, um cada vez, cada investigador compra as cartas que lhe foram distribu\u00eddas.",
         "traits": "T\u00e1tica."
     },
     {
         "code": "06111",
-        "name": "Ousadia",
-        "text": "Comprometa apenas em um teste de per\u00edcia durante um ataque ou tentativa de evas\u00e3o contra um inimigo. Aquele inimigo ganha retaliar e alerta pela dura\u00e7\u00e3o deste teste de per\u00edcia. Ap\u00f3s este teste terminar, compre 1 carta.",
+        "name": "Aud\u00e1cia",
+        "text": "Comprometa apenas em um teste de per\u00edcia durante um ataque ou tentativa de evas\u00e3o contra um inimigo. Esse inimigo ganha retalia\u00e7\u00e3o e alerta durante este teste de per\u00edcia. Ap\u00f3s este teste terminar, compre 1 carta.",
         "traits": "Inato."
     },
     {
@@ -33,33 +33,33 @@
     },
     {
         "code": "06115",
-        "flavor": "Voc\u00ea nunca esteve satisfeito com o caminho seguro.",
-        "name": "Impulso",
-        "text": "Se este teste de per\u00edcia for bem-sucedido, reduza a dificuldade do pr\u00f3ximo teste de per\u00edcia que voc\u00ea realizar nesta fase em X, onde X \u00e9 a quantidade que este teste de per\u00edcia teve sucesso (at\u00e9 um m\u00e1ximo de 3).",
-        "traits": "Praticado."
+        "flavor": "Voc\u00ea nunca se contentou com o caminho mais f\u00e1cil.",
+        "name": "Momentum",
+        "text": "Se este teste de per\u00edcia for bem-sucedido, reduza a dificuldade do pr\u00f3ximo teste de per\u00edcia que voc\u00ea realizar nesta fase em X, onde X \u00e9 a sua margem de sucesso neste teste de per\u00edcia (at\u00e9 um m\u00e1ximo de 3).",
+        "traits": "Treinado."
     },
     {
         "code": "06116",
-        "flavor": "...assim foi, e assim sempre ser\u00e1.",
+        "flavor": "... assim foi e assim sempre ser\u00e1.",
         "name": "Pergaminho das Profecias",
-        "text": "Usa (4 segredos).\n[action] Gaste 1 segredo: Escolha um investigador em seu local. Aquele investigador compra 3 cartas, depois descarta 1 carta da sua m\u00e3o.",
+        "text": "Usa (4 segredos).\n[action] Gaste 1 segredo: Escolha um investigador em seu local. Esse investigador compra 3 cartas, ent\u00e3o ele descarta 1 carta da m\u00e3o dele.",
         "traits": "Item. Tomo.",
         "slot": "M\u00e3o"
     },
     {
         "code": "06117",
-        "flavor": "Um futuro macabro se apresenta diante de voc\u00ea.\nVoc\u00ea vai se afastar? Ou vai abra\u00e7\u00e1-lo?",
+        "flavor": "Um futuro terr\u00edvel est\u00e1 diante de voc\u00ea.\nVoc\u00ea foge dele? Ou o aceita?",
         "name": "Ler os Sinais",
-        "text": "<b>Investigue.</b> Adicione o seu valor de [willpower] ao seu valor de per\u00edcia para esta investiga\u00e7\u00e3o. Voc\u00ea pode ignorar qualquer efeito ou palavra-chave em seu local que seria ativado durante esta investiga\u00e7\u00e3o. Se voc\u00ea tiver sucesso, descubra 1 pista adicional neste local.",
+        "text": "<b>Investigue.</b> Adicione seu valor de [willpower] ao seu valor de per\u00edcia nesta investiga\u00e7\u00e3o. Voc\u00ea pode ignorar qualquer efeito ou palavra-chave em seu local que seria ativada durante esta investiga\u00e7\u00e3o. Se voc\u00ea tiver sucesso, descubra 1 pista adicional nesse local.",
         "traits": "Magia."
     },
     {
         "code": "06118",
-        "flavor": "Eu avisei para voc\u00ea ficar longe de mim. Agora estamos nessa juntos.",
+        "flavor": "\"Avisei para ficar longe de mim.\nAgora estamos juntos nessa.\"",
         "name": "Jessica Hyde",
-        "subname": "Lugar Errado, Hora Errada",
-        "text": "Voc\u00ea recebe +1 [combat].\nJessica Hyde entra em jogo com 2 de dano sobre ela.\n[reaction] Ap\u00f3s o seu turno terminar: Cure 1 de dano de Jessica Hyde.",
-        "traits": "Aliado. Viajante. Amaldi\u00e7oada.",
+        "subname": "No Lugar Errado, na Hora Errada",
+        "text": "Voc\u00ea recebe +1 [combat].\nJessica Hyde entra em jogo com 2 de dano nela.\n[reaction] Ap\u00f3s o seu turno terminar: Cure 1 de dano de Jessica Hyde.",
+        "traits": "Aliado. Viajante. Amaldi\u00e7oado.",
         "slot": "Aliado"
     }
 ]

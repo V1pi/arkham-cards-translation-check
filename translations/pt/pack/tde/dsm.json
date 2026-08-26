@@ -1,16 +1,16 @@
 [
     {
         "code": "06195",
-        "name": ".35 Winchester",
-        "text": "Usa (5 muni\u00e7\u00f5es).\n[action] Gaste 1 muni\u00e7\u00e3o: <b>Lute.</b> Voc\u00ea recebe +2 [combat] neste ataque. Se uma ficha de caos de +1, 0 ou [elder_sign] for revelada durante este ataque, este ataque causa +2 de dano.",
+        "name": "Winchester .35",
+        "text": "Usa (5 muni\u00e7\u00f5es).\n[action] Gaste 1 muni\u00e7\u00e3o: <b>Lute</b>. Voc\u00ea recebe +2 [combat] neste ataque. Se uma ficha de caos +1, 0 ou [elder_sign] for revelada durante este ataque, este ataque causa +2 de dano.",
         "traits": "Item. Arma. Arma de Fogo.",
         "slot": "M\u00e3o x2"
     },
     {
         "code": "06196",
-        "flavor": "Fique de olho em qualquer problema, ela me disse.\nEu revirei os olhos. Sempre havia algum problema.",
+        "flavor": "Fique atento e cuidadoso com poss\u00edveis problemas, ela me disse. Dei de ombros. Sempre havia problemas.",
         "name": "Salvaguarda",
-        "text": "[reaction] Durante o turno de outro investigador, esgote Salvaguarda: Pelo restante do turno daquele investigador, conforme ele se mover do seu local para um local conectado, voc\u00ea tamb\u00e9m pode se mover para aquele local.",
+        "text": "[reaction] Durante o turno de outro investigador, esgote Salvaguarda: Pelo restante do turno desse investigador, conforme ele se move do seu local para um local conectado, voc\u00ea tamb\u00e9m pode se mover para esse local.",
         "traits": "Talento."
     },
     {
@@ -29,8 +29,8 @@
     {
         "code": "06199",
         "name": "Tr\u00eas Ases",
-        "text": "Mir\u00edade.\nSe voc\u00ea comprometer 3 c\u00f3pias de Tr\u00eas Ases em um teste de per\u00edcia, esse teste automaticamente tem sucesso <i>(n\u00e3o revele fichas de caos da bolsa de caos)</i>. Ent\u00e3o, compre 3 cartas e ganhe 3 recursos (m\u00e1x. de uma vez por teste).",
-        "traits": "Sorte. Praticado."
+        "text": "Mir\u00edade.\nSe voc\u00ea comprometer 3 c\u00f3pias de Tr\u00eas Ases em um teste de per\u00edcia, esse teste \u00e9 automaticamente bem-sucedido <i>(n\u00e3o revele fichas de caos da bolsa de caos)</i>. Ent\u00e3o, compre 3 cartas e ganhe 3 recursos (m\u00e1x. de uma vez por teste).",
+        "traits": "Sorte. Treinado."
     },
     {
         "code": "06200",
@@ -41,34 +41,34 @@
     {
         "code": "06201",
         "name": "L\u00e2mina Espectral",
-        "text": "<b>Lute.</b> Adicione o seu valor de [willpower] ao seu valor de per\u00edcia para este ataque. Imediatamente antes deste ataque, voc\u00ea pode engajar o inimigo atacado. Este ataque causa +1 de dano (+2 de dano em vez disso se o inimigo for n\u00e3o [[Elite]]).",
+        "text": "<b>Lute.</b> Adicione seu valor de [willpower] ao seu valor de per\u00edcia neste ataque. Imediatamente antes deste ataque, voc\u00ea pode engajar com o inimigo atacado. Este ataque causa +1 de dano (+2 de dano em vez disso se o inimigo for n\u00e3o [[Elite]]).",
         "traits": "Magia."
     },
     {
         "code": "06202",
-        "flavor": "Luz para salvar nossos olhos.\nCalor para salvar nossa pele.\nUma centelha para salvar nossas almas.",
+        "flavor": "Luz para salvar nossos olhos.\nCalor para salvar nossa pele.\nUma fagulha para salvar nossas almas.",
         "name": "Palavra de Comando",
-        "text": "Nomeie uma carta de [[Magia]]. Procure em seu baralho 1 c\u00f3pia da carta nomeada e compre-a. Embaralhe seu baralho.",
+        "text": "Nomeie uma carta de [[Magia]]. Procure 1 c\u00f3pia da carta nomeada em seu baralho e compre-a.\nEmbaralhe o seu baralho.",
         "traits": "Magia."
     },
     {
         "code": "06203",
         "name": "Pedra da Lua",
-        "text": "Voc\u00ea recebe +1 [willpower] e +1 [agility].\nVoc\u00ea n\u00e3o pode jogar ou comprometer Pedra da Lua da sua m\u00e3o.\n[reaction] Ap\u00f3s voc\u00ea descartar Pedra da Lua da sua m\u00e3o: Jogue-a <i>(pagando seu custo)</i>.",
+        "text": "Voc\u00ea recebe +1 [willpower] e +1 [agility].\nVoc\u00ea n\u00e3o pode jogar ou comprometer Pedra da Lua da sua m\u00e3o.\n[reaction] Ap\u00f3s voc\u00ea descartar Pedra da Lua da sua m\u00e3o: Jogue-a <i>(pagando o seu custo)</i>.",
         "traits": "Item. Rel\u00edquia. Terras On\u00edricas.",
         "slot": "Acess\u00f3rio"
     },
     {
         "code": "06204",
         "name": "Vis\u00e3o Agu\u00e7ada",
-        "text": "M\u00e1x. de 1 comprometida por teste de per\u00edcia.\nEnquanto Vis\u00e3o Agu\u00e7ada estiver comprometida durante uma a\u00e7\u00e3o b\u00e1sica de investigar, ela ganha [intellect][intellect] e o texto: \"Se este teste for bem-sucedido por 2 ou mais, descubra 1 pista adicional neste local.\"",
+        "text": "M\u00e1x. de 1 comprometida por teste de per\u00edcia.\nEnquanto Vis\u00e3o Agu\u00e7ada estiver comprometida durante uma a\u00e7\u00e3o de investigar b\u00e1sica, ela ganha [intellect][intellect] e o texto: \"Se este teste for bem-sucedido por 2 ou mais, descubra 1 pista adicional nesse local.\"",
         "traits": "Inato. Desenvolvido."
     },
     {
         "code": "06205",
-        "flavor": "\"...toda a vida \u00e9 apenas um conjunto de imagens no c\u00e9rebro, entre as quais n\u00e3o h\u00e1 diferen\u00e7a entre as nascidas de coisas reais e as nascidas de sonhos interiores...\" - H. P. Lovecraft, \"A Chave de Prata\"",
+        "flavor": "\"... a vida \u00e9 apenas um conjunto de imagens no c\u00e9rebro; n\u00e3o h\u00e1 diferen\u00e7a entre aquelas decorrentes de coisas reais e aquelas originadas por sonhos internos...\"\n- H. P. Lovecraft, \"A Chave de Prata\"",
         "name": "Sonho L\u00facido",
-        "text": "Escolha uma carta na sua \u00e1rea de jogo ou revele uma carta na sua m\u00e3o. Procure em seu baralho outra c\u00f3pia daquela carta e compre-a. Embaralhe seu baralho.",
+        "text": "Escolha uma carta em sua \u00e1rea de jogo ou revele uma carta na sua m\u00e3o. Procure outra c\u00f3pia dessa carta em seu baralho e compre-a. Embaralhe o seu baralho.",
         "traits": "Magia."
     }
 ]

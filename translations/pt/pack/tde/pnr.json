@@ -1,8 +1,8 @@
 [
     {
         "code": "06234",
-        "name": "Resgate Hero\u00edco",
-        "text": "Veloz. Jogue quando um inimigo n\u00e3o [[Elite]] for atacar outro investigador em seu local ou em um local conectado.\nMova-se para aquele local se j\u00e1 n\u00e3o estiver l\u00e1. Engaje aquele inimigo e resolva seu ataque contra voc\u00ea em vez disso. Ent\u00e3o, cause 1 de dano a ele.",
+        "name": "Resgate Heroico",
+        "text": "Veloz. Jogue quando um inimigo n\u00e3o [[Elite]] for atacar outro investigador em seu local ou um local conectado.\nMova-se para esse local se voc\u00ea j\u00e1 n\u00e3o estiver l\u00e1. Engaje com esse inimigo e resolva o ataque dele contra voc\u00ea em vez disso. Ent\u00e3o cause 1 de dano ao inimigo.",
         "traits": "Esp\u00edrito. T\u00e1tica."
     },
     {
@@ -37,49 +37,49 @@
     },
     {
         "code": "06239",
-        "name": "Pressa",
-        "text": "Limite de 1 por investigador.\n[reaction] Ap\u00f3s voc\u00ea realizar o mesmo tipo de a\u00e7\u00e3o duas vezes seguidas, esgote Pressa: Realize mais uma a\u00e7\u00e3o daquele tipo <i>(os tipos incluem ativar, engajar, evadir, lutar, investigar, mover, jogar, pegar recurso e comprar carta)</i>.",
+        "name": "Celeridade",
+        "text": "Limite de 1 por investigador.\n[reaction] Ap\u00f3s voc\u00ea realizar o mesmo tipo de a\u00e7\u00e3o duas vezes seguidas, esgote Celeridade: Realize outra a\u00e7\u00e3o desse tipo novamente <i>(os tipos incluem ativar, engajar, evadir, lutar, investigar, mover-se, jogar, recurso e comprar)</i>.",
         "traits": "Ritual.",
         "slot": "Arcano"
     },
     {
         "code": "06240",
-        "flavor": "\"Voc\u00ea \u00e9 um man\u00edaco, Wini!\"\n\"Eu sei! N\u00e3o \u00e9 maravilhoso?\"",
-        "name": "Temer\u00e1rio",
-        "text": "Ap\u00f3s voc\u00ea comprometer Temer\u00e1rio em um teste de per\u00edcia, revele cartas do topo do seu baralho at\u00e9 revelar uma per\u00edcia de [rogue] que voc\u00ea possa comprometer neste teste. Comprometa-a. Embaralhe cada outra carta revelada de volta em seu baralho.",
-        "traits": "Sorte. Praticado."
+        "flavor": "\"Voc\u00ea \u00e9 doido, Wini!\"\n\"Eu sei! N\u00e3o \u00e9 maravilhoso?\"",
+        "name": "Audacioso",
+        "text": "Ap\u00f3s voc\u00ea comprometer Audacioso em um teste de per\u00edcia, revele cartas do topo de seu baralho at\u00e9 revelar uma per\u00edcia [rogue] que voc\u00ea possa comprometer nesse teste. Comprometa-a. Embaralhe cada outra carta revelada de volta em seu baralho.",
+        "traits": "Sorte. Treinado."
     },
     {
         "code": "06241",
-        "name": "Fortalecer-se",
-        "subname": "Vigor",
-        "text": "Mir\u00edade. Limite de 1 Fortalecer-se <i>(Vigor)</i> por baralho.\nAt\u00e9 3 cartas Fortalecer-se ocupam um \u00fanico espa\u00e7o arcano.\nSempre que um efeito de carta exigir que voc\u00ea use [willpower] em vez de [combat], voc\u00ea pode ignorar esse aspecto do efeito.\n[fast] Esgote Fortalecer-se: Voc\u00ea recebe +2 [combat] neste teste.",
+        "name": "Fortalecer Ess\u00eancia",
+        "subname": "Estamina",
+        "text": "Mir\u00edade. Limite de 1 Fortalecer Ess\u00eancia <i>(Estamina)</i> por baralho.\nAt\u00e9 3 cartas de Fortalecer Ess\u00eancia ocupam um \u00fanico espa\u00e7o arcano.\nSempre que o efeito de uma carta exigir que voc\u00ea use [willpower] em vez de [combat], voc\u00ea pode ignorar esse aspecto do efeito.\n[fast] Esgote Fortalecer Ess\u00eancia: Voc\u00ea recebe +2 [combat] neste teste.",
         "traits": "Ritual.",
         "slot": "Arcano"
     },
     {
         "code": "06242",
-        "name": "Fortalecer-se",
-        "subname": "Prontid\u00e3o",
-        "text": "Mir\u00edade. Limite de 1 Fortalecer-se <i>(Prontid\u00e3o)</i> por baralho.\nAt\u00e9 3 cartas Fortalecer-se ocupam um \u00fanico espa\u00e7o arcano.\nSempre que um efeito de carta exigir que voc\u00ea use [willpower] em vez de [agility], voc\u00ea pode ignorar esse aspecto do efeito.\n[fast] Esgote Fortalecer-se: Voc\u00ea recebe +2 [agility] neste teste.",
+        "name": "Fortalecer Ess\u00eancia",
+        "subname": "Vivacidade",
+        "text": "Mir\u00edade. Limite de 1 Fortalecer Ess\u00eancia <i>(Vivacidade)</i> por baralho.\nAt\u00e9 3 cartas de Fortalecer Ess\u00eancia ocupam um \u00fanico espa\u00e7o arcano.\nSempre que o efeito de uma carta exigir que voc\u00ea use [willpower] em vez de [agility], voc\u00ea pode ignorar esse aspecto do efeito.\n[fast] Esgote Fortalecer Ess\u00eancia: Voc\u00ea recebe +2 [agility] neste teste.",
         "traits": "Ritual.",
         "slot": "Arcano"
     },
     {
         "code": "06243",
-        "name": "Fortalecer-se",
+        "name": "Fortalecer Ess\u00eancia",
         "subname": "Acuidade",
-        "text": "Mir\u00edade. Limite de 1 Fortalecer-se <i>(Acuidade)</i> por baralho.\nAt\u00e9 3 cartas Fortalecer-se ocupam um \u00fanico espa\u00e7o arcano.\nSempre que um efeito de carta exigir que voc\u00ea use [willpower] em vez de [intellect], voc\u00ea pode ignorar esse aspecto do efeito.\n[fast] Esgote Fortalecer-se: Voc\u00ea recebe +2 [intellect] neste teste.",
+        "text": "Mir\u00edade. Limite de 1 Fortalecer Ess\u00eancia <i>(Acuidade)</i> por baralho.\nAt\u00e9 3 cartas de Fortalecer Ess\u00eancia ocupam um \u00fanico espa\u00e7o arcano.\nSempre que o efeito de uma carta exigir que voc\u00ea use [willpower] em vez de [intellect], voc\u00ea pode ignorar esse aspecto do efeito.\n[fast] Esgote Fortalecer Ess\u00eancia: Voc\u00ea recebe +2 [intellect] neste teste.",
         "traits": "Ritual.",
         "slot": "Arcano"
     },
     {
         "code": "06244",
-        "flavor": "\"\u00c0s vezes, este mundo... eu gostaria de nunca ter voltado.\"",
+        "flavor": "\"\u00c0s vezes, este mundo... Gostaria de nunca ter voltado.\"",
         "name": "Twila Katherine Price",
         "subname": "Perdida em um Sonho",
-        "text": "[reaction] Ap\u00f3s voc\u00ea gastar 1 ou mais cargas de um ativo de [[Magia]], esgote Twila Katherine Price: Coloque 1 carga naquele ativo.",
-        "traits": "Aliado. Artista. Sonhadora.",
+        "text": "[reaction] Ap\u00f3s voc\u00ea gastar 1 ou mais cargas de um ativo de [[Magia]], esgote Twila Katherine Price: Coloque 1 carga nesse ativo.",
+        "traits": "Aliado. Artista. Sonhador.",
         "slot": "Aliado"
     },
     {
@@ -90,8 +90,8 @@
     },
     {
         "code": "06246",
-        "name": "Recuo Expedito",
-        "text": "M\u00e1x. de 1 comprometida por teste de per\u00edcia.\nEnquanto Recuo Expedito estiver comprometida durante uma a\u00e7\u00e3o b\u00e1sica de evadir, ela ganha [agility][agility] e o texto: \"Se este teste for bem-sucedido por 2 ou mais, voc\u00ea pode evadir automaticamente outro inimigo em seu local.\"",
+        "name": "Retirada R\u00e1pida",
+        "text": "M\u00e1x. de 1 comprometida por teste de per\u00edcia.\nEnquanto Retirada R\u00e1pida estiver comprometida durante uma a\u00e7\u00e3o de evadir b\u00e1sica, ela ganha [agility][agility] e o texto: \"Se este teste for bem-sucedido por 2 ou mais, voc\u00ea pode evadir automaticamente outro inimigo em seu local.\"",
         "traits": "Inato. Desenvolvido."
     }
 ]

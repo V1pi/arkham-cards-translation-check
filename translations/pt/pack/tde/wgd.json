@@ -30,44 +30,44 @@
     },
     {
         "code": "06280",
-        "name": "Garrote",
-        "text": "[fast] Durante o seu turno, esgote o Garrote: <b>Lute.</b> Voc\u00ea recebe +2 [combat] neste ataque. Use apenas em um inimigo com exatamente 1 de vida restante.",
+        "name": "Fio de Garrote",
+        "text": "[fast] Durante o seu turno, esgote Fio de Garrote: <b>Lute.</b> Voc\u00ea recebe +2 [combat] neste ataque. Use apenas em um inimigo com exatamente 1 de vida restante.",
         "traits": "Item. Arma.",
         "slot": "Acess\u00f3rio"
     },
     {
         "code": "06281",
-        "flavor": "\"Sheldon? O'Bannion? N\u00e3o me importa. Desde que eu seja paga.\"",
+        "flavor": "\"Sheldon? O'Bannion? N\u00e3o me importa. Desde que me paguem.\"",
         "name": "Delilah O'Rourke",
         "subname": "Assassina do Sindicato",
-        "text": "Voc\u00ea recebe +1 [combat] e +1 [agility].\n[fast] Esgote Delilah O'Rourke e gaste X recursos: Escolha um inimigo em seu local. Cause 1 de dano ao inimigo escolhido (2 de dano em vez disso se aquele inimigo estiver esgotado). X \u00e9 o valor de evas\u00e3o do inimigo escolhido.",
+        "text": "Voc\u00ea recebe +1 [combat] e +1 [agility].\n[fast] Esgote Delilah O'Rourke e gaste X recursos: Escolha um inimigo em seu local. Cause 1 de dano ao inimigo escolhido (ou 2 de dano se esse inimigo estiver esgotado). X \u00e9 o valor de evas\u00e3o do inimigo escolhido.",
         "traits": "Aliado. Criminoso. Sindicato.",
         "slot": "Aliado"
     },
     {
         "code": "06282",
         "name": "C\u00e3o Invocado",
-        "text": "Como custo adicional para jogar C\u00e3o Invocado, voc\u00ea deve procurar 1 c\u00f3pia de Fera Desacorrentada entre suas cartas vinculadas e embaralh\u00e1-la em seu baralho.\n[free] Durante o seu turno, exceto durante uma a\u00e7\u00e3o, esgote C\u00e3o Invocado: <b>Lute/Investigue.</b> Ataque com um valor base de [combat] igual a 5 ou investigue com um valor base de [intellect] igual a 5.",
+        "text": "Como um custo adicional para jogar C\u00e3o Invocado, voc\u00ea deve procurar 1 c\u00f3pia de Fera Indomada em suas cartas vinculadas e embaralh\u00e1-la em seu baralho.\n[fast] Durante o seu turno, exceto durante uma a\u00e7\u00e3o, esgote C\u00e3o Invocado: <b>Lute/Investigue.</b> Ataque com uma per\u00edcia [combat] de valor base 5 ou investigue com uma per\u00edcia [intellect] de valor base 5.",
         "traits": "Aliado. Invoca\u00e7\u00e3o.",
         "slot": "Aliado. Arcano"
     },
     {
         "code": "06283",
-        "name": "Fera Desacorrentada",
-        "text": "Vinculado (C\u00e3o Invocado).\n<b>Presa</b> - Portador.\nCa\u00e7ador. Retaliar.\n<b>Revela\u00e7\u00e3o</b> - Se n\u00e3o houver uma c\u00f3pia de C\u00e3o Invocado em jogo, reserve Fera Desacorrentada, fora de jogo. Caso contr\u00e1rio, reserve o C\u00e3o Invocado de um investigador, fora de jogo, e fa\u00e7a Fera Desacorrentada aparecer engajada com o mesmo investigador.",
-        "traits": "Monstro. Extradimensional. T\u00eendalos."
+        "name": "Fera Indomada",
+        "text": "Vinculado (C\u00e3o Invocado).\n<b>Presa</b> - Portador.\nCa\u00e7ador. Retalia\u00e7\u00e3o.\n<b>Revela\u00e7\u00e3o</b> - Se n\u00e3o houver nenhuma c\u00f3pia de C\u00e3o Invocado em jogo, separe Fera Indomada, fora de jogo. Caso contr\u00e1rio, separe uma c\u00f3pia de C\u00e3o Invocado de um investigador, fora de jogo, e fa\u00e7a Fera Indomada surgir engajada com o mesmo investigador.",
+        "traits": "Monstro. Extradimensional. T\u00edndalos."
     },
     {
         "code": "06284",
-        "name": "Nada a Perder",
-        "text": "Se voc\u00ea tiver menos de 5 recursos, ganhe recursos at\u00e9 ter 5 recursos.\nSe voc\u00ea tiver menos de 5 cartas na m\u00e3o, compre cartas at\u00e9 ter 5 cartas na m\u00e3o.\nRemova Nada a Perder do jogo.",
+        "name": "Nada Mais a Perder",
+        "text": "Se voc\u00ea tiver menos de 5 recursos, ganhe recursos at\u00e9 que voc\u00ea tenha 5 recursos.\nSe voc\u00ea tiver menos de 5 cartas na sua m\u00e3o, compre cartas at\u00e9 que voc\u00ea tenha 5 cartas na sua m\u00e3o.\nRemova Nada Mais a Perder do jogo.",
         "traits": "Esp\u00edrito."
     },
     {
         "code": "06285",
         "name": "O Gato Preto",
-        "subname": "Uma Mentirosa, ou uma Profetisa, ou Ambas",
-        "text": "Sempre que voc\u00ea revelar um s\u00edmbolo [tablet], [elder_thing] ou [elder_sign] durante um teste de per\u00edcia, voc\u00ea pode escolher usar os seguintes efeitos em vez dos efeitos normais daquele s\u00edmbolo:\n[tablet]: -1. O Gato Preto sofre 1 de dano direto.\n[elder_thing]: -1. O Gato Preto sofre 1 de horror direto.\n[elder_sign]: +5. Cure todo o dano e horror de O Gato Preto.",
+        "subname": "Um Mentiroso ou um Profeta, ou Ambos",
+        "text": "Sempre que voc\u00ea revelar um s\u00edmbolo [tablet], [elder_thing] ou [elder_sign] durante um teste de per\u00edcia, voc\u00ea pode escolher usar os seguintes efeitos em vez dos efeitos normais desse s\u00edmbolo:\n[tablet]: -1. O Gato Preto sofre 1 de dano direto.\n[elder_thing]: -1. O Gato Preto sofre 1 de horror direto.\n[elder_sign]: +5. Cure todo o dano e horror de O Gato Preto.",
         "traits": "Aliado. Avatar. Terras On\u00edricas.",
         "slot": "Aliado"
     }
