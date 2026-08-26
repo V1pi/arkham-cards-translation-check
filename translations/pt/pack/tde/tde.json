@@ -157,21 +157,21 @@
     {
         "code": "06021",
         "name": "Segmento de \u00d4nix",
-        "text": "Mir\u00edade. Veloz.\n[free] Se voc\u00ea tiver 3 c\u00f3pias de Segmento de \u00d4nix em jogo: Reserve-as, fora de jogo. Procure Pingente da Rainha entre suas cartas vinculadas e coloque-a em jogo.",
+        "text": "Mir\u00edade. Veloz.\n[fast] Se voc\u00ea tiver 3 c\u00f3pias de Segmento de \u00d4nix em jogo: Separe-as, fora de jogo. Procure Pingente da Rainha em suas cartas vinculadas e coloque-o em jogo.",
         "traits": "Item. Rel\u00edquia. Oculto."
     },
     {
         "code": "06022",
         "name": "Pingente da Rainha",
-        "subname": "Do Nada",
-        "text": "Vinculado (Segmento de \u00d4nix). Usa (3 cargas). Se esta carta n\u00e3o tiver cargas, reserve-a, fora de jogo, e embaralhe 3 c\u00f3pias reservadas de Segmento de \u00d4nix em seu baralho.\n[free] Esgote o Pingente da Rainha e gaste 1 carga: Escolha um local revelado e selecione uma op\u00e7\u00e3o - mova-se para aquele local, descubra 1 pista naquele local, ou evada automaticamente um inimigo naquele local.",
+        "subname": "De Absolutamente Nada",
+        "text": "Vinculado (Segmento de \u00d4nix). Usa (3 cargas). Se n\u00e3o houver cargas nesta carta, separe-a, fora de jogo, e embaralhe 3 c\u00f3pias previamente separadas de Segmento de \u00d4nix em seu baralho.\n[fast] Esgote Pingente da Rainha e gaste 1 carga: Escolha um local revelado e selecione uma das op\u00e7\u00f5es \u2013 mova-se para esse local, descubra 1 pista nesse local ou evada automaticamente um inimigo nesse local.",
         "traits": "Item. Rel\u00edquia.",
         "slot": "Acess\u00f3rio"
     },
     {
         "code": "06023",
-        "name": "Revela\u00e7\u00e3o Surpreendente",
-        "text": "Mir\u00edade.\nRevela\u00e7\u00e3o Surpreendente n\u00e3o pode ser jogada.\n[reaction] Quando voc\u00ea procurar em seu baralho e Revela\u00e7\u00e3o Surpreendente estiver entre as cartas procuradas, descarte-a: Ganhe 2 recursos ou coloque 1 segredo em um ativo que voc\u00ea controla. (M\u00e1x. de uma habilidade [[Pesquisa]] por busca.)",
+        "name": "Revela\u00e7\u00e3o Espantosa",
+        "text": "Mir\u00edade.\nRevela\u00e7\u00e3o Espantosa n\u00e3o pode ser jogada.\n[reaction] Quando voc\u00ea procurar em seu baralho e Revela\u00e7\u00e3o Espantosa estiver entre as cartas procuradas, descarte-a: Ganhe 2 recursos ou coloque 1 segredo em um ativo que voc\u00ea controla. (M\u00e1x. de uma habilidade de [[Pesquisa]] por procura.)",
         "traits": "Pesquisa."
     },
     {

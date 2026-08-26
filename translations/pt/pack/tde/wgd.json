@@ -11,14 +11,14 @@
         "code": "06277",
         "name": "Devorador de Desejos",
         "subname": "Joia dos Deuses",
-        "text": "Vinculado (Vaso Vazio).\n[reaction] Quando voc\u00ea revelar uma ficha de caos [skull], [cultist], [tablet] ou [elder_thing] durante um teste de per\u00edcia, gaste 1 carga: Cancele aquela ficha. Cure 1 de dano e 1 de horror.\n<b>For\u00e7ado</b> - Se Devorador de Desejos n\u00e3o tiver cargas: Procure Vaso Vazio entre suas cartas vinculadas e troque-o por Devorador de Desejos.",
+        "text": "Vinculado (Recept\u00e1culo Vazio).\n[reaction] Quando voc\u00ea revelar uma ficha de caos [skull], [cultist], [tablet] ou [elder_thing] durante um teste de per\u00edcia, gaste 1 carga: Cancele essa ficha de caos. Cure 1 de dano e 1 de horror.\n<b>For\u00e7ado</b> \u2013 Se n\u00e3o houver cargas em Devorador de Desejos: Procure Recept\u00e1culo Vazio em suas cartas vinculadas e troque-o por Devorador de Desejos.",
         "traits": "Item. Rel\u00edquia. Aben\u00e7oado.",
         "slot": "Acess\u00f3rio"
     },
     {
         "code": "06278",
         "name": "Descoberta Surpreendente",
-        "text": "Mir\u00edade.\n[reaction] Quando voc\u00ea procurar em seu baralho e Descoberta Surpreendente estiver entre as cartas procuradas: Coloque-a em jogo em sua \u00e1rea de jogo. Voc\u00ea deve compromet\u00ea-la no pr\u00f3ximo teste de per\u00edcia eleg\u00edvel que voc\u00ea realizar. Se esse teste for bem-sucedido, compre 1 carta. (M\u00e1x. de uma habilidade de <i>Pesquisa</i> por procura.)",
+        "text": "Mir\u00edade.\n[reaction] Quando voc\u00ea procurar em seu baralho e Descoberta Surpreendente estiver entre as cartas procuradas: Coloque-a em jogo em sua \u00e1rea de jogo. Voc\u00ea deve compromet\u00ea-la no pr\u00f3ximo teste de per\u00edcia eleg\u00edvel que voc\u00ea realizar. Se esse teste for bem-sucedido, compre 1 carta. (M\u00e1x. de uma habilidade de [[Pesquisa]] por procura.)",
         "traits": "Sorte. Pesquisa."
     },
     {
