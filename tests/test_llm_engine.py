@@ -292,6 +292,16 @@ Espero ter ajudado!"""
         assert resp_fmt["json_schema"]["strict"] is True
         assert resp_fmt["json_schema"]["schema"] == llm_engine.CARD_JSON_SCHEMA
 
+        # Valida que o envio da imagem usa detail: high
+        user_content = req_body["messages"][0]["content"]
+        image_part = next(part for part in user_content if part.get("type") == "image_url")
+        assert image_part["image_url"]["detail"] == "high"
+
+        # Valida headers enviados
+        headers = captured_requests[0].headers
+        assert headers.get("Http-referer") == "https://github.com/v1pi/arkham-cards-translation-check"
+        assert headers.get("X-title") == "Arkham Translator"
+
     def test_analyze_with_ollama_structured_outputs(self, monkeypatch):
         import json
         import numpy as np

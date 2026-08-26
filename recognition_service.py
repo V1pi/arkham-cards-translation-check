@@ -14,13 +14,14 @@ import card_detector
 def recognize_card(
     frame: np.ndarray,
     known_json_fields: dict | None = None,
+    auto_crop: bool = False,
 ) -> tuple[str | None, dict[str, str], str]:
     """
     Processa a imagem da carta usando o motor selecionado (OCR ou LLM).
-    Garante o recorte e alinhamento da carta antes da análise.
+    Se auto_crop for True, recorta e alinha a carta automaticamente antes da análise.
     """
-    # Recorta e alinha a carta automaticamente se houver contorno detectado
-    processed_frame = card_detector.crop_and_warp_card(frame)
+    # Apenas recorta e alinha caso auto_crop seja explicitamente solicitado
+    processed_frame = card_detector.crop_and_warp_card(frame) if auto_crop else frame
 
     mode = config.get_setting("recognition_mode", "ocr")
 

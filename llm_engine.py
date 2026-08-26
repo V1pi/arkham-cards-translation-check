@@ -24,8 +24,12 @@ Retorne APENAS um objeto JSON válido (sem blocos de código markdown adicionais
   "name": "Nome/Título da carta no topo (ex.: 'Alvo Fácil', 'Palavra de Comando'). Não use tags HTML no nome.",
   "subname": "Subtítulo da carta logo abaixo do nome, se houver (geralmente em cartas únicas com um asterisco ou personagens). Se não houver, use null.",
   "traits": "Características/Traits da carta logo abaixo da ilustração ou nome, terminando com ponto final (ex.: 'Truque. Miríade.' ou 'Magia.'). Não use tags HTML como <i> ou <b> aqui, retorne apenas o texto puro dos traits.",
-  "text": "Texto principal de regras da carta. MANTENHA as quebras de linha com \\n.
-    - FORMATAÇÃO HTML: Caso o texto na imagem esteja em negrito, use o delimitador html <b></b> (ex.: '<b>Forçado</b> - ', '<b>Ação:</b>'). Caso esteja em itálico, use o delimitador html <i></i> (ex.: '<i>(Limite de 1 por rodada.)</i>', 'carta de <i>Magia</i>').
+  "text": "Texto principal de regras da carta. Fica abaixo das traits. MANTENHA as quebras de linha com \\n.
+    - REGRAS COMPLETAS: Transcreva com extrema atenção TODO o texto da caixa de regras na íntegra, sem omitir parágrafos. Isso inclui custos adicionais para jogar, restrições, habilidades constantes, reações ([reaction]), ações ([action]), gatilhos livres ([fast]) e textos explicativos entre parênteses. Não transcreva apenas as habilidades com ícones ou termos em negrito.
+    - FORMATAÇÃO DE TEXTO E TRAITS:
+      - Trait / Característica referenciada no texto (palavras em negrito e itálico simultâneos na imagem, ex.: ***Tomo***, ***Magia***, ***Pesquisa***, ***Item***): Use delimitadores de colchetes duplos [[NomeDaTrait]] (ex.: 'carta de [[Magia]]', 'ativo [[Tomo]]', 'habilidade [[Pesquisa]]').
+      - Negrito simples: use o delimitador html <b></b> (ex.: '<b>Forçado</b> - ', '<b>Ação:</b>', '<b>Presa</b> - ').
+      - Itálico simples: use o delimitador html <i></i> (ex.: '<i>(Limite de 1 por rodada.)</i>').
     - SÍMBOLOS DO JOGO: Substitua qualquer ícone ou símbolo do jogo no texto pelos marcadores correspondentes entre colchetes:
       - Gatilhos e Ações:
         - Ícone de Ação (seta) -> [action]
@@ -61,7 +65,7 @@ Retorne APENAS um objeto JSON válido (sem blocos de código markdown adicionais
         - Sangue -> [blood]
         - Selos de Hemlock Vale -> [seal_a], [seal_b], [seal_c], [seal_d], [seal_e]",
   "flavor": "Texto de ambientação/sabor (flavor text), que fica na parte inferior da caixa de texto. NÃO use tags <i></i> ou <b></b> aqui (flavor é texto puro, pois o jogo já o renderiza naturalmente em itálico). Se não houver, use null.",
-  "back_text": "Texto do verso da carta (se for o verso de uma carta dupla face ou local). Aplique as mesmas regras de <b></b>, <i></i> e [símbolos]. Caso contrário, null.",
+  "back_text": "Texto do verso da carta (se for o verso de uma carta dupla face ou local). Aplique as mesmas regras de <b></b>, <i></i>, [[traits]] e [símbolos]. Caso contrário, null.",
   "back_flavor": "Flavor text do verso da carta (texto puro, sem tags <i></i> ou <b></b>). Caso contrário, null."
 }
 
@@ -83,7 +87,7 @@ Exemplo 2 (Carta 06202 - Palavra de Comando):
   "name": "Palavra de Comando",
   "subname": null,
   "traits": "Magia.",
-  "text": "Nomeie uma carta de <i>Magia</i>. Procure 1 cópia da carta nomeada em seu baralho e compre-a.\\nEmbaralhe o seu baralho.",
+  "text": "Nomeie uma carta de [[Magia]]. Procure 1 cópia da carta nomeada em seu baralho e compre-a.\\nEmbaralhe o seu baralho.",
   "flavor": "Luz para salvar nossos olhos.\\nCalor para salvar nossa pele.\\nUma fagulha para salvar nossas almas.",
   "back_text": null,
   "back_flavor": null
@@ -95,8 +99,20 @@ Exemplo 3 (Carta 06162 - Gregory Gry):
     "flavor": "Muito antes de receber sua primeira mão, o rapaz fora capaz de observar um homem e discernir o significado de suas apostas.",
     "name": "Gregory Gry",
     "subname": "Jornalista Investigativo",
-    "text": "Usa (9 recursos).\n[reaction] Quando você iniciar um teste de perícia, gaste até 3 recursos de Gregory Gry: Se este teste de perícia for bem-sucedido por pelo menos esse valor, gaste essa quantidade de recursos.",
+    "text": "Usa (9 recursos).\\n[reaction] Quando você iniciar um teste de perícia, gaste até 3 recursos de Gregory Gry: Se este teste de perícia for bem-sucedido por pelo menos esse valor, gaste essa quantidade de recursos.",
     "traits": "Aliado. Criminoso. Sonhador.",
+    "back_text": null,
+    "back_flavor": null
+}
+
+Exemplo 4 (Carta com múltiplos parágrafos e custo adicional - 06024 Cristalizador de Sonhos):
+{
+    "code": "06024",
+    "name": "Cristalizador de Sonhos",
+    "subname": null,
+    "traits": "Item. Relíquia.",
+    "text": "Como um custo adicional para jogar esta carta, você deve procurar 1 cópia de Guardião do Cristalizador em suas cartas vinculadas e embaralhá-la em seu baralho.\\n[reaction] Após você jogar um evento: Anexe-o virado para baixo ao Cristalizador de Sonhos em vez de descartá-lo (até um máximo de 5 eventos anexados). Os eventos anexados podem ser comprometidos em testes de perícia como se estivessem em sua mão.",
+    "flavor": null,
     "back_text": null,
     "back_flavor": null
 }
@@ -124,7 +140,7 @@ CARD_JSON_SCHEMA = {
         },
         "text": {
             "type": "string",
-            "description": "Texto principal de regras da carta com tags HTML <b></b>, <i></i> e ícones/símbolos entre colchetes.",
+            "description": "Texto principal de regras da carta, fica localizado abaixo das traits, com tags HTML <b></b>, <i></i>, traits entre colchetes duplos [[Trait]] e ícones/símbolos entre colchetes.",
         },
         "flavor": {
             "type": ["string", "null"],
@@ -177,7 +193,7 @@ GEMINI_RESPONSE_SCHEMA = {
         },
         "text": {
             "type": "STRING",
-            "description": "Texto principal de regras com tags HTML e símbolos entre colchetes.",
+            "description": "Texto principal de regras com tags HTML, traits [[Trait]] e símbolos entre colchetes.",
         },
         "flavor": {
             "type": "STRING",
@@ -226,7 +242,7 @@ def _frame_to_base64_jpeg(frame_or_path) -> str:
         scale = max_dim / max(h, w)
         frame = cv2.resize(frame, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA)
 
-    success, buffer = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+    success, buffer = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
     if not success:
         raise ValueError("Falha ao codificar imagem para JPEG")
 
@@ -439,7 +455,8 @@ def analyze_with_openai(
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": f"data:image/jpeg;base64,{b64_image}"
+                            "url": f"data:image/jpeg;base64,{b64_image}",
+                            "detail": "high",
                         },
                     },
                 ],
@@ -459,6 +476,8 @@ def analyze_with_openai(
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "ArkhamTranslator/1.0",
+        "HTTP-Referer": "https://github.com/v1pi/arkham-cards-translation-check",
+        "X-Title": "Arkham Translator",
     }
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
