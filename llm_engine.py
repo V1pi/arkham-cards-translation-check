@@ -34,7 +34,7 @@ Retorne APENAS um objeto JSON válido (sem blocos de código markdown adicionais
       - Gatilhos e Ações:
         - Ícone de Ação (seta) -> [action]
         - Ícone de Reação (seta curva) -> [reaction]
-        - Ícone de Ação Rápida / Gatilho Livre (raio) -> [fast]
+        - Ícone de Ação Rápida / Gatilho Livre (raio) -> [free]
       - Perícias:
         - Ícone de Vontade (cabeça) -> [willpower]
         - Ícone de Intelecto (livro) -> [intellect]
