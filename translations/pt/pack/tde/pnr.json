@@ -8,8 +8,8 @@
     {
         "code": "06235",
         "name": "Lideran\u00e7a",
-        "text": "Enquanto Lideran\u00e7a estiver comprometida em um teste de per\u00edcia sendo realizado por outro investigador, Lideran\u00e7a ganha [willpower][wild].\nSe este teste for bem-sucedido, ganhe 2 recursos. Se Lideran\u00e7a estiver comprometida em um teste de per\u00edcia sendo realizado por outro investigador, aquele investigador tamb\u00e9m ganha 2 recursos.",
-        "traits": "Praticado."
+        "text": "Enquanto Lideran\u00e7a estiver comprometida em um teste de per\u00edcia sendo realizado por outro investigador, Lideran\u00e7a ganha [willpower][wild].\nSe este teste for bem-sucedido, ganhe 2 recursos.\nSe Lideran\u00e7a estiver comprometida em um teste de per\u00edcia sendo realizado por outro investigador, esse investigador tamb\u00e9m ganha 2 recursos.",
+        "traits": "Treinado."
     },
     {
         "code": "06236",

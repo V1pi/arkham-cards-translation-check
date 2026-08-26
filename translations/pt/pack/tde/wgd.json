@@ -1,9 +1,9 @@
 [
     {
         "code": "06276",
-        "name": "Vaso Vazio",
+        "name": "Recept\u00e1culo Vazio",
         "subname": "Abandonado pelos Deuses",
-        "text": "Limite de 1 por baralho. Usa (0 cargas).\n[reaction] Ap\u00f3s voc\u00ea derrotar um inimigo: Coloque 1 carga no Vaso Vazio.\n[fast] Se houver pelo menos 3 cargas no Vaso Vazio: Procure Devorador de Desejos entre suas cartas vinculadas e troque-o pelo Vaso Vazio, movendo todas as cargas do Vaso Vazio para Devorador de Desejos.",
+        "text": "Limite de 1 por baralho. Usa (0 carga).\n[reaction] Ap\u00f3s voc\u00ea derrotar um inimigo: Coloque 1 carga em Recept\u00e1culo Vazio.\n[fast] Se houver pelo menos 3 cargas em Recept\u00e1culo Vazio: Procure Devorador de Desejos em suas cartas vinculadas e troque-o por Recept\u00e1culo Vazio, movendo todas as cargas de Recept\u00e1culo Vazio para Devorador de Desejos.",
         "traits": "Item. Rel\u00edquia. Aben\u00e7oado.",
         "slot": "Acess\u00f3rio"
     },
