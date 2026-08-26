@@ -21,7 +21,7 @@ Sua tarefa é analisar visualmente a imagem da carta fornecida e extrair as info
 Retorne APENAS um objeto JSON válido (sem blocos de código markdown adicionais ou texto fora do JSON) com o seguinte esquema:
 
 {
-  "code": "Código da carta (ex.: '06026', '06202' ou '06015a'). No canto inferior direito da carta há um número impresso de 2 ou 3 dígitos, que pode conter uma letra de sufixo (ex.: '26', '202' ou '15a'). O prefixo do pacote é '{PACK_PREFIX}'. Se o número for '26', o código é '{PACK_PREFIX}026'. Se for '15a', o código é '{PACK_PREFIX}015a'. Se não conseguir ler com certeza, retorne null.",
+  "code": "Número ou código da carta impresso no rodapé (geralmente no canto inferior direito, ex.: '26', '202', '15a', '15b', '06026', '06015a'). Olhe com extrema atenção no canto inferior direito da carta e transcreva exatamente os dígitos e a letra de sufixo que encontrar (ex.: '26', '202', '15a', '15b', '06026' ou '06015a').",
   "name": "Nome/Título da carta no topo (ex.: 'Alvo Fácil', 'Palavra de Comando'). Não use tags HTML no nome.",
   "subname": "Subtítulo da carta logo abaixo do nome, se houver (geralmente em cartas únicas com um asterisco ou personagens). Se não houver, use null.",
   "traits": "Características/Traits da carta logo abaixo da ilustração ou nome, terminando com ponto final (ex.: 'Truque. Miríade.' ou 'Magia.'). Não use tags HTML como <i> ou <b> aqui, retorne apenas o texto puro dos traits.",
@@ -141,7 +141,7 @@ CARD_JSON_SCHEMA = {
     "properties": {
         "code": {
             "type": ["string", "null"],
-            "description": "Código da carta (ex.: '06026', '06202' ou '06015a'), ou null se não legível.",
+            "description": "Número ou código da carta no rodapé/canto inferior direito (ex.: '26', '202', '15a', '15b', '06026', '06015a').",
         },
         "name": {
             "type": "string",
@@ -192,7 +192,7 @@ GEMINI_RESPONSE_SCHEMA = {
         "code": {
             "type": "STRING",
             "nullable": True,
-            "description": "Código da carta (ex.: '06026' ou '06015a') ou null.",
+            "description": "Número ou código da carta no rodapé/canto inferior direito (ex.: '26', '202', '15a', '15b', '06026', '06015a').",
         },
         "name": {
             "type": "STRING",

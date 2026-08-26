@@ -49,6 +49,11 @@ class TestCardDataNormalization:
         assert card_data.normalize_code("15-a", pack_prefix="06") == "06015a"
         assert card_data.normalize_code("  15a  ", pack_prefix="06") == "06015a"
 
+    def test_with_prefix_text(self):
+        assert card_data.normalize_code("Nº 26", pack_prefix="06") == "06026"
+        assert card_data.normalize_code("No. 15a", pack_prefix="06") == "06015a"
+        assert card_data.normalize_code("Carta 15b", pack_prefix="06") == "06015b"
+
     def test_empty_or_none(self):
         assert card_data.normalize_code("") == ""
         assert card_data.normalize_code(None) == ""

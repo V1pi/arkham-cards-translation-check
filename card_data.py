@@ -40,8 +40,8 @@ def normalize_code(code: str, pack_prefix: str | None = None) -> str:
         import config
         pack_prefix = config.get_setting("pack_prefix", "06")
 
-    # Tenta casar formato: dígitos seguidos opcionalmente por letras (ex: "15a", "06015b", "26", "06026")
-    match = re.match(r"^[\s#]*(\d+)[-_\s.]*([a-zA-Z]*)\s*$", code_str)
+    # Tenta casar formato: dígitos seguidos opcionalmente por letra de sufixo (ex: "15a", "15b", "26", "202", "06015a", "06026")
+    match = re.search(r"(\d+)[-_\s.]*([a-zA-Z]*)", code_str)
     if match:
         num, letter = match.groups()
         letter = letter.lower()
