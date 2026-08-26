@@ -27,9 +27,13 @@ Retorne APENAS um objeto JSON válido (sem blocos de código markdown adicionais
   "traits": "Características/Traits da carta logo abaixo da ilustração ou nome, terminando com ponto final (ex.: 'Truque. Miríade.' ou 'Magia.'). Não use tags HTML como <i> ou <b> aqui, retorne apenas o texto puro dos traits.",
   "text": "Texto principal de regras da carta. Fica abaixo das traits. MANTENHA as quebras de linha com \\n.
     - REGRAS COMPLETAS: Transcreva com extrema atenção TODO o texto da caixa de regras na íntegra, sem omitir parágrafos. Isso inclui custos adicionais para jogar, restrições, habilidades constantes, reações ([reaction]), ações ([action]), gatilhos livres ([fast]) e textos explicativos entre parênteses. Não transcreva apenas as habilidades com ícones ou termos em negrito.
+    - PONTUAÇÃO E HIFENIZAÇÃO (MUITO IMPORTANTE):
+      - USE SEMPRE O HÍFEN SIMPLES '-' (ASCII 0x2D) e NUNCA use travessão ('—') ou meia-risca ('–') após palavras-chave, gatilhos ou no meio do texto.
+      - Exemplos obrigatórios: '<b>Forçado</b> - ', '<b>Revelação</b> - ', '<b>Presa</b> - ', '<b>Geração</b> - '.
+      - Use aspas retas normais (" e ').
     - FORMATAÇÃO DE TEXTO E TRAITS:
       - Trait / Característica referenciada no texto (palavras em negrito e itálico simultâneos na imagem, ex.: ***Tomo***, ***Magia***, ***Pesquisa***, ***Item***): Use delimitadores de colchetes duplos [[NomeDaTrait]] (ex.: 'carta de [[Magia]]', 'ativo [[Tomo]]', 'habilidade [[Pesquisa]]').
-      - Negrito simples: use o delimitador html <b></b> (ex.: '<b>Forçado</b> - ', '<b>Ação:</b>', '<b>Presa</b> - ').
+      - Negrito simples: use o delimitador html <b></b> (ex.: '<b>Forçado</b> - ', '<b>Ação:</b>', '<b>Presa</b> - ', '<b>Revelação</b> - ').
       - Itálico simples: use o delimitador html <i></i> (ex.: '<i>(Limite de 1 por rodada.)</i>').
     - SÍMBOLOS DO JOGO: Substitua qualquer ícone ou símbolo do jogo no texto pelos marcadores correspondentes entre colchetes:
       - Gatilhos e Ações:
@@ -117,6 +121,18 @@ Exemplo 4 (Carta com múltiplos parágrafos e custo adicional - 06024 Cristaliza
     "back_text": null,
     "back_flavor": null
 }
+
+Exemplo 5 (Carta com palavras-chave e gatilhos em negrito usando hífen simples '-' - 06017 Observador de Outra Dimensão):
+{
+    "code": "06017",
+    "name": "Observador de Outra Dimensão",
+    "subname": null,
+    "traits": "Monstro. Extradimensional.",
+    "text": "Perigo. Oculto. Caçador.\\n<b>Revelação</b> - Adicione secretamente este inimigo à sua mão. Você pode evadir ou lutar contra este inimigo enquanto ele estiver na sua mão (como se ele estivesse em seu local). Se você tiver sucesso, descarte-o da sua mão. Se você falhar, faça-o surgir engajado com você.\\n<b>Forçado</b> - Quando o seu baralho ficar sem cartas, se este inimigo estiver na sua mão: Ele ataca você <i>(da sua mão)</i>.",
+    "flavor": null,
+    "back_text": null,
+    "back_flavor": null
+}
 """
 
 # JSON Schema estrito para Structured Outputs (OpenAI, Ollama, etc.)
@@ -141,7 +157,7 @@ CARD_JSON_SCHEMA = {
         },
         "text": {
             "type": "string",
-            "description": "Texto principal de regras da carta, fica localizado abaixo das traits, com tags HTML <b></b>, <i></i>, traits entre colchetes duplos [[Trait]] e ícones/símbolos entre colchetes.",
+            "description": "Texto principal de regras da carta, com tags <b></b>, <i></i>, [[traits]], [ícones] e SEMPRE hífen simples '-' (nunca travessão) após palavras-chave como <b>Forçado</b> - ou <b>Revelação</b> -.",
         },
         "flavor": {
             "type": ["string", "null"],
@@ -546,7 +562,15 @@ def _normalize_llm_result(raw_dict: dict, pack_prefix: str) -> dict:
     field_keys = ["name", "subname", "traits", "text", "flavor", "back_text", "back_flavor"]
     for k in field_keys:
         val = raw_dict.get(k)
-        fields[k] = str(val).strip() if val is not None else ""
+        if val is not None:
+            text_val = str(val).strip()
+            # Substitui travessões (—), meia-risca (–) e sinal de menos (−) por hífen simples (-)
+            text_val = text_val.replace("—", "-").replace("–", "-").replace("−", "-")
+            # Substitui aspas curvas por aspas normais
+            text_val = text_val.replace("“", "\"").replace("”", "\"").replace("‘", "'").replace("’", "'")
+            fields[k] = text_val
+        else:
+            fields[k] = ""
 
     return {
         "code": code,

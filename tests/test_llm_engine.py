@@ -71,13 +71,16 @@ Espero ter ajudado!"""
         assert res["code"] == "06015a"
         assert res["fields"]["name"] == "Portal de Sonho"
 
-        raw_full = {
-            "code": "06015b",
-            "name": "Portal de Sonho",
-            "subname": "Realidade Sem Sentido",
+    def test_normalize_llm_result_dashes_and_quotes(self):
+        raw = {
+            "code": "06017",
+            "name": "Observador",
+            "text": "<b>Revelação</b> — Adicione esta carta.\n<b>Forçado</b> – Ao descartar: Ele ataca você.",
+            "flavor": "“Citação com aspas curvas”.",
         }
-        res_full = llm_engine._normalize_llm_result(raw_full, pack_prefix="06")
-        assert res_full["code"] == "06015b"
+        res = llm_engine._normalize_llm_result(raw, pack_prefix="06")
+        assert res["fields"]["text"] == "<b>Revelação</b> - Adicione esta carta.\n<b>Forçado</b> - Ao descartar: Ele ataca você."
+        assert res["fields"]["flavor"] == "\"Citação com aspas curvas\"."
 
     def test_fetch_gemini_models_empty_key(self):
         ok, models, msg = llm_engine.fetch_gemini_models("")
